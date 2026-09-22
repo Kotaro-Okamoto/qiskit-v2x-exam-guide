@@ -1,0 +1,1762 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Qiskit v2.X Developer 認定試験 (C1000-179) 完全対策ガイド</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;700&display=swap" rel="stylesheet">
+<script>
+  window.MathJax = { tex: {inlineMath: [['$','$']], displayMath: [['$$','$$']]}, svg: {fontCache: 'global'} };
+</script>
+<script id="MathJax-script" async src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/3.2.2/es5/tex-svg.min.js"></script>
+<style>
+:root{
+  --ink:#16162a; --ink-soft:#43435f; --muted:#7b7b95;
+  --paper:#f3f4f8; --card:#ffffff; --line:#e3e4ee;
+  --violet:#5b3df0; --violet-deep:#3a23b8; --magenta:#c0399f; --amber:#e8920c;
+  --phase:linear-gradient(90deg,#5b3df0 0%,#8a3edb 35%,#c0399f 65%,#e8920c 100%);
+  --code-bg:#1a1b2e; --code-ink:#e7e7f5; --good:#13895a; --bad:#cf3b4d;
+  --radius:14px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth; scroll-padding-top:64px}
+body{
+  margin:0; background:var(--paper); color:var(--ink);
+  font-family:"Noto Sans JP","Hiragino Kaku Gothic ProN","Inter",system-ui,sans-serif;
+  line-height:1.85; font-size:16px; -webkit-font-smoothing:antialiased;
+}
+.wrap{max-width:920px; margin:0 auto; padding:0 22px}
+h1,h2,h3,h4,.disp{font-family:"Space Grotesk","Noto Sans JP",sans-serif; letter-spacing:-.01em}
+code,pre,.mono{font-family:"JetBrains Mono",ui-monospace,Menlo,monospace}
+
+/* top bar */
+.topbar{position:sticky; top:0; z-index:50; background:rgba(243,244,248,.92);
+  backdrop-filter:blur(10px); border-bottom:1px solid var(--line)}
+.topbar .wrap{display:flex; align-items:center; gap:14px; height:56px; overflow-x:auto}
+.topbar .brand{font-weight:700; font-size:14px; white-space:nowrap; color:var(--ink)}
+.topbar nav{display:flex; gap:4px; white-space:nowrap}
+.topbar nav a{font-size:13px; color:var(--ink-soft); text-decoration:none; padding:5px 9px;
+  border-radius:8px}
+.topbar nav a:hover{background:#e7e8f1; color:var(--violet-deep)}
+
+/* hero */
+.hero{padding:54px 0 30px; border-bottom:1px solid var(--line)}
+.eyebrow{font-size:12px; letter-spacing:.22em; text-transform:uppercase; color:var(--violet);
+  font-weight:600; margin:0 0 14px}
+.hero h1{font-size:clamp(28px,5.4vw,46px); line-height:1.12; margin:0 0 16px; font-weight:700}
+.hero h1 .g{background:var(--phase); -webkit-background-clip:text; background-clip:text; color:transparent}
+.hero .lead{font-size:17px; color:var(--ink-soft); max-width:620px; margin:0 0 28px}
+.facts{display:flex; flex-wrap:wrap; gap:10px; margin-bottom:6px}
+.fact{background:var(--card); border:1px solid var(--line); border-radius:12px;
+  padding:12px 16px; min-width:120px}
+.fact b{display:block; font-family:"Space Grotesk",sans-serif; font-size:22px; color:var(--violet-deep); line-height:1.2}
+.fact span{font-size:12px; color:var(--muted)}
+
+/* weight chart (signature) */
+.weights{margin:30px 0 6px}
+.weights h3{font-size:13px; letter-spacing:.05em; color:var(--muted); margin:0 0 14px; font-weight:600}
+.wrow{display:grid; grid-template-columns:30px 1fr auto; gap:12px; align-items:center; margin:9px 0}
+.wrow .n{font-family:"Space Grotesk",sans-serif; font-weight:600; color:var(--muted); font-size:13px}
+.wrow .label{font-size:14px}
+.wrow .label a{color:var(--ink); text-decoration:none; border-bottom:1px solid transparent}
+.wrow .label a:hover{border-color:var(--violet)}
+.wbar{height:9px; border-radius:6px; background:#e7e8f1; overflow:hidden; margin-top:5px}
+.wbar i{display:block; height:100%; background:var(--phase); border-radius:6px}
+.wpct{font-family:"Space Grotesk",sans-serif; font-weight:600; font-size:14px; color:var(--violet-deep); min-width:34px; text-align:right}
+
+/* sections */
+section{padding:42px 0; border-bottom:1px solid var(--line)}
+.kicker{font-size:12px; letter-spacing:.2em; text-transform:uppercase; color:var(--violet); font-weight:600; margin:0 0 8px}
+section h2{font-size:clamp(22px,3.6vw,30px); margin:0 0 6px; line-height:1.2}
+.sechead{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; flex-wrap:wrap}
+.wtag{background:var(--violet); color:#fff; font-family:"Space Grotesk",sans-serif; font-weight:600;
+  font-size:13px; padding:4px 11px; border-radius:999px; white-space:nowrap}
+h3{font-size:18px; margin:30px 0 8px; color:var(--ink)}
+h4{font-size:15px; margin:20px 0 6px; color:var(--violet-deep)}
+p{margin:10px 0}
+ul,ol{margin:10px 0; padding-left:22px}
+li{margin:5px 0}
+a{color:var(--violet-deep)}
+strong{font-weight:700}
+hr{border:none; border-top:1px dashed var(--line); margin:26px 0}
+table{width:100%; border-collapse:collapse; margin:14px 0; font-size:14px}
+th,td{border:1px solid var(--line); padding:8px 11px; text-align:left; vertical-align:top}
+th{background:#eceef6; font-weight:600}
+td code, th code, p code, li code{background:#ececf6; color:var(--violet-deep); padding:1px 6px;
+  border-radius:5px; font-size:.88em}
+
+/* code blocks */
+pre{background:var(--code-bg); color:var(--code-ink); padding:16px 18px; border-radius:12px;
+  overflow-x:auto; font-size:13.5px; line-height:1.65; margin:14px 0}
+pre code{background:none; color:inherit; padding:0; font-size:inherit}
+.cmt{color:#8a8ab5}
+
+/* callouts */
+.box{border-radius:12px; padding:14px 18px; margin:16px 0; border:1px solid var(--line)}
+.box .t{font-weight:700; font-size:13px; letter-spacing:.04em; margin-bottom:5px; display:flex; align-items:center; gap:7px}
+.exam{background:#fbf3e6; border-color:#f0d8a8}
+.exam .t{color:#b9740a}
+.en{background:#eef0fb; border-color:#cfd4f3}
+.en .t{color:var(--violet-deep)}
+.en .q{font-family:"JetBrains Mono",monospace; font-size:13px; background:#fff; border:1px solid #d9ddf5;
+  border-radius:8px; padding:8px 11px; margin:7px 0; color:#2c2c4a}
+.warn{background:#fdeef0; border-color:#f4c4cc}
+.warn .t{color:var(--bad)}
+.why{background:#eef7f2; border-color:#bfe3d0}
+.why .t{color:#13895a}
+.why p{margin:7px 0}
+.trap{background:#fef4ea; border-color:#f3cf9e}
+.trap .t{color:#c15b0a}
+.trap p{margin:7px 0}
+
+/* problems */
+.q{background:var(--card); border:1px solid var(--line); border-radius:var(--radius);
+  padding:18px 20px; margin:16px 0}
+.q .qh{display:flex; gap:10px; align-items:baseline; margin-bottom:6px}
+.q .qnum{font-family:"Space Grotesk",sans-serif; font-weight:700; color:var(--violet); font-size:14px; white-space:nowrap}
+.q .src{font-size:11px; color:#fff; background:var(--muted); border-radius:6px; padding:2px 7px; margin-left:auto; white-space:nowrap}
+.q .src.off{background:var(--amber)}
+.q .stem{font-size:14.5px}
+.q .opts{list-style:none; padding:0; margin:10px 0 4px}
+.q .opts li{padding:3px 0 3px 26px; position:relative; font-size:14px}
+.q .opts li::before{content:attr(data-k); position:absolute; left:0; top:3px;
+  font-family:"Space Grotesk",sans-serif; font-weight:600; color:var(--muted); font-size:13px}
+details.ans{margin-top:10px; border-top:1px dashed var(--line); padding-top:10px}
+details.ans summary{cursor:pointer; font-weight:600; font-size:13px; color:var(--violet-deep); list-style:none}
+details.ans summary::-webkit-details-marker{display:none}
+details.ans summary::before{content:"▸ "; }
+details.ans[open] summary::before{content:"▾ "}
+.ansbody{font-size:14px; margin-top:8px}
+.ansbody .correct{display:inline-block; background:var(--good); color:#fff; font-weight:700;
+  font-size:13px; padding:2px 10px; border-radius:7px; font-family:"Space Grotesk",sans-serif; margin-bottom:6px}
+
+/* plan */
+.day{background:var(--card); border:1px solid var(--line); border-radius:12px; padding:16px 18px; margin:12px 0;
+  display:grid; grid-template-columns:64px 1fr; gap:16px; align-items:start}
+.day .d{font-family:"Space Grotesk",sans-serif; font-weight:700; color:var(--violet); font-size:14px;
+  border-right:1px solid var(--line); padding-right:14px; height:100%}
+.day .d small{display:block; color:var(--muted); font-weight:500; font-size:11px}
+.day h4{margin:0 0 4px; color:var(--ink); font-size:15px}
+.day p{margin:3px 0; font-size:13.5px; color:var(--ink-soft)}
+
+/* cheat */
+.cheat{columns:2; column-gap:20px}
+.cheat .ch{break-inside:avoid; background:var(--card); border:1px solid var(--line); border-radius:11px;
+  padding:13px 15px; margin:0 0 14px}
+.cheat .ch h4{margin:0 0 6px}
+.cheat .ch ul{margin:4px 0; padding-left:18px; font-size:13px}
+.cheat .ch li{margin:3px 0}
+
+footer{padding:36px 0 60px; color:var(--muted); font-size:13px}
+
+@media(max-width:680px){
+  .cheat{columns:1}
+  .day{grid-template-columns:1fr; gap:6px}
+  .day .d{border-right:none; border-bottom:1px solid var(--line); padding:0 0 8px; display:flex; gap:8px; align-items:baseline}
+  .topbar .brand{display:none}
+}
+@media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+:focus-visible{outline:2px solid var(--violet); outline-offset:2px; border-radius:4px}
+</style>
+</head>
+<body>
+
+<div class="topbar"><div class="wrap">
+  <span class="brand">Qiskit v2.X 対策ガイド</span>
+  <nav>
+    <a href="#plan">7日計画</a>
+    <a href="#s0">⓪全体フロー</a>
+    <a href="#s1">①操作</a>
+    <a href="#s2">②可視化</a>
+    <a href="#s3">③回路</a>
+    <a href="#s4">④実行</a>
+    <a href="#s5">⑤Sampler</a>
+    <a href="#s6">⑥Estimator</a>
+    <a href="#s7">⑦結果</a>
+    <a href="#s8">⑧QASM</a>
+    <a href="#exam">問題集</a>
+    <a href="#examC">図問題</a>
+    <a href="#examD">API問題</a>
+    <a href="#examE">実行順問題</a>
+    <a href="#cheat">チート</a>
+  </nav>
+</div></div>
+
+<header class="hero"><div class="wrap">
+  <p class="eyebrow">IBM C1000-179 / Associate</p>
+  <h1>Qiskit v2.X Developer 認定試験<br><span class="g">完全対策ガイド</span></h1>
+  <p class="lead">公式ブループリント全8セクションの教科書 ＋ 公式サンプルテストの論点マップ ＋ オリジナル予想問題64問(図問題つき)。問題文は試験と同じ英語、解説は日本語です。このガイドは<strong>「仕組みを理解すれば解ける」</strong>ことを最優先に構成しています。短期集中なら7日プラン、じっくり派は §0 の全体フローから読み進めてください。</p>
+  <div class="box exam" style="max-width:720px"><div class="t">⚑ このガイドの学習方針</div>
+  <p style="margin:8px 0"><strong>「暗記だけ」でも「理解だけ」でも足りない試験だと考えて準備するのが安全です。</strong>公式ブループリントは8セクションそれぞれに到達目標を挙げており、覚えるべき名前と、理解していないと答えられない概念の両方が含まれます。そこで次の5点を軸に構成しました。</p>
+  <ul style="margin:8px 0 8px 18px;line-height:1.85">
+    <li><strong>理屈で導けない名前は確実に固める。</strong>メソッド名・引数名・実行モード名などは数が限られているので、覚えれば確実な得点源になります。⚠注意コラムに集めました。</li>
+    <li><strong>回路を1ゲートずつ追う練習をする。</strong>状態ベクトル・qsphere・ヒストグラムから回路を逆算する力が、図を読む設問の土台になります。</li>
+    <li><strong>処理の流れ全体を押さえる。</strong>service → backend → transpile → primitive → run → result の依存関係が分かっていれば、実行順を問う形式に強くなります(§0)。</li>
+    <li><strong>用語を自分の言葉で言えるようにする。</strong>「PUB とは何か」「Estimator は何を返す道具か」を説明できる状態にしておくと、概念の説明文を選ぶ形式に対応できます。</li>
+    <li><strong>Primitive は丸暗記を避ける。</strong>Sampler と Estimator は「何のための道具か」から入ると定着します(§5・§6 を理解ベースで書いた理由です)。</li>
+  </ul>
+  <p style="margin:8px 0">仕組みを理解して解ける部分は理解で、覚えるしかない部分は「覚えること」として明示しました。<strong>ブループリントの配点が高いセクションから優先</strong>するのが基本方針です(下の重点グラフ)。</p></div>
+
+  <div class="box why" style="max-width:720px"><div class="t">💡 併用をおすすめする教材</div>
+  <p>・<strong>公式サンプル問題の解説</strong>(日本語):<a href="https://schrodinteq.github.io/japanese/ibmcertsamplev2x01/" target="_blank">前編(Q1〜Q11)</a> / <a href="https://schrodinteq.github.io/japanese/ibmcertsamplev2x02/" target="_blank">後編(Q12〜Q21)</a><br>
+  ・<strong>練習問題集</strong>(英語・全5回×50問):<a href="https://www.udemy.com/course/ibm-certified-quantum-computation-qiskit-v2x-practice-exams" target="_blank">IBM Certified Quantum Computation Qiskit v2.x Practice Exams(Udemy)</a><br>
+  練習問題集はかなり細かい暗記まで踏み込むので、その分<strong>弱点の発見に有効</strong>です。このガイドで理解を作り、問題集で穴を見つけ、間違えた箇所をこのガイドに戻って埋める、という往復が効率的です。</p></div>
+  <div class="facts">
+    <div class="fact"><b>68</b><span>問題数</span></div>
+    <div class="fact"><b>47</b><span>合格ライン (約69%)</span></div>
+    <div class="fact"><b>90</b><span>分</span></div>
+    <div class="fact"><b>EN</b><span>出題言語(英語)</span></div>
+  </div>
+
+  <div class="weights">
+    <h3>配点 — 太いバーから優先攻略(③回路・①操作・④実行で49%)</h3>
+    <div class="wrow"><span class="n">01</span><div><span class="label"><a href="#s1">量子操作の実行 / Perform quantum operations</a></span><div class="wbar"><i style="width:88%"></i></div></div><span class="wpct">16%</span></div>
+    <div class="wrow"><span class="n">02</span><div><span class="label"><a href="#s2">可視化 / Visualize circuits, measurements, states</a></span><div class="wbar"><i style="width:61%"></i></div></div><span class="wpct">11%</span></div>
+    <div class="wrow"><span class="n">03</span><div><span class="label"><a href="#s3">量子回路の作成 / Create quantum circuits</a></span><div class="wbar"><i style="width:100%"></i></div></div><span class="wpct">18%</span></div>
+    <div class="wrow"><span class="n">04</span><div><span class="label"><a href="#s4">量子回路の実行 / Run quantum circuits</a></span><div class="wbar"><i style="width:83%"></i></div></div><span class="wpct">15%</span></div>
+    <div class="wrow"><span class="n">05</span><div><span class="label"><a href="#s5">Sampler プリミティブ</a></span><div class="wbar"><i style="width:67%"></i></div></div><span class="wpct">12%</span></div>
+    <div class="wrow"><span class="n">06</span><div><span class="label"><a href="#s6">Estimator プリミティブ</a></span><div class="wbar"><i style="width:67%"></i></div></div><span class="wpct">12%</span></div>
+    <div class="wrow"><span class="n">07</span><div><span class="label"><a href="#s7">結果の取得と分析 / Retrieve & analyze results</a></span><div class="wbar"><i style="width:56%"></i></div></div><span class="wpct">10%</span></div>
+    <div class="wrow"><span class="n">08</span><div><span class="label"><a href="#s8">OpenQASM</a></span><div class="wbar"><i style="width:33%"></i></div></div><span class="wpct">6%</span></div>
+  </div>
+</div></header>
+
+<main class="wrap">
+
+<section id="plan">
+  <p class="kicker">Study Plan</p>
+  <div class="sechead"><h2>1週間の学習計画</h2></div>
+  <p>1日2〜3時間を想定。<strong>手を動かすこと</strong>が最優先です。<code>pip install qiskit qiskit-ibm-runtime</code> でローカル環境を作り、各コードを実際に実行してください(<a href="https://quantum.cloud.ibm.com/">IBM Quantum Platform</a> の無料枠 + <code>AerSimulator</code> で十分)。</p>
+
+  <div class="day"><div class="d">Day 1<small>全体像＋基礎</small></div><div>
+    <h4>まず §0 全体フロー → セクション①②(量子操作・可視化, 27%)</h4>
+    <p>最初に <a href="#s0">§0 実行の全体フロー</a> を読み、「サービス→バックエンド→回路→変換→プリミティブ→実行→結果」という流れを頭に入れてください。ここが分かっていると、以降のセクションが「流れのどの部分の話か」として整理されます。<br>そのうえで、ゲートと位相、Pauli/テンソル積、Bloch球とqsphereの読み方へ。教科書①②を読み、公式サンプルQ1〜Q6を解きます。</p>
+  </div></div>
+  <div class="day"><div class="d">Day 2<small>回路</small></div><div>
+    <h4>セクション③(量子回路の作成, 18%・最重要)</h4>
+    <p>レジスタ、パラメータ化回路、ダイナミック回路(if_test/else_/for_loop)。Q4・Q7・Q8を解き、自分でも書いて実行。</p>
+  </div></div>
+  <div class="day"><div class="d">Day 3<small>実行</small></div><div>
+    <h4>セクション④(量子回路の実行, 15%)</h4>
+    <p>トランスパイル(generate_preset_pass_manager / ISA回路)、実行モード(job・batch・session)。Q9〜Q11を解く。</p>
+  </div></div>
+  <div class="day"><div class="d">Day 4<small>Sampler</small></div><div>
+    <h4>セクション⑤(Sampler, 12%)</h4>
+    <p>SamplerV2、PUB、shots、run()、結果のget_counts()。Q13・Q14を解き、Bell回路をSamplerで実行。</p>
+  </div></div>
+  <div class="day"><div class="d">Day 5<small>Estimator</small></div><div>
+    <h4>セクション⑥(Estimator, 12%)＋誤り抑制/緩和</h4>
+    <p>EstimatorV2、observable、precision↔shots、ZNE/DD/twirling、resilience。Q12・Q15・Q16・Q17を解く。</p>
+  </div></div>
+  <div class="day"><div class="d">Day 6<small>結果+QASM</small></div><div>
+    <h4>セクション⑦⑧(結果分析・OpenQASM, 16%)— 暗記の要注意ゾーン</h4>
+    <p><code>.data.c</code>/<code>.data.meas</code> の使い分け、<code>get_counts().get()</code>、<code>session.details()</code> の全キー、Session/Batchの<code>backend=</code>、OpenQASM3の型とdump/構文。Q18〜Q21 と <strong>Part D(API問題14問)</strong>を解く。ここは概念でなく暗記なので、⚠注意コラムを重点的に。</p>
+  </div></div>
+  <div class="day"><div class="d">Day 7<small>総仕上げ</small></div><div>
+    <h4>模試 & 弱点復習</h4>
+    <p>公式サンプル21問を時間を計って通しで解く(目標9割)→ <strong>Part B/C/D の予想問題を全問</strong> → 直前チートシートを暗記。間違えた問題は「なぜ他がダメか」まで言えるように。<strong>IBM公式のAssessment Test(Pearson VUE)</strong>や市販の模擬試験も、68問×90分という時間配分の感覚を掴むのに有効。</p>
+  </div></div>
+
+  <div class="box exam"><div class="t">⚑ 仕上げの基準</div>
+  公式サンプルテストの21問を「なぜその答えになるか」「なぜ他の選択肢がダメか」まで説明できる状態にし、IBM公式のAssessment Testで安定して高得点が出るなら、準備は十分と判断できます。丸暗記ではなく、<strong>各コードを実際に実行して挙動を確認する</strong>のが最短ルートです。</div>
+</section>
+
+<section id="s0">
+  <p class="kicker">Textbook · Section 00</p>
+  <div class="sechead"><h2>実行の全体フロー<br><span class="disp" style="font-size:16px;color:var(--muted)">The whole pipeline — 順序を理解する</span></h2><span class="wtag">最重要</span></div>
+
+  <p><strong>コードの実行順を問う形式</strong>に備えておく価値があります。個々のメソッド名を覚えていても、「なぜこの順番でなければならないのか」が分かっていないと解けません。逆にここを理解すると、④⑤⑥⑦の問題がまとめて解けるようになります。まずこの流れを頭に入れてください。</p>
+
+  <pre><code><span class="cmt"># ① サービスに接続する(IBMの量子計算サービスへの窓口を作る)</span>
+from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
+service = QiskitRuntimeService()
+
+<span class="cmt"># ② 使う量子コンピュータ(バックエンド)を決める</span>
+backend = service.least_busy(operational=True, simulator=False)
+
+<span class="cmt"># ③ 回路を組む(まだ実機のことは考えない、理想的な回路)</span>
+qc = QuantumCircuit(2, 2)
+qc.h(0); qc.cx(0, 1); qc.measure([0,1], [0,1])
+
+<span class="cmt"># ④ その実機で動く形に変換する(トランスパイル)</span>
+pm  = generate_preset_pass_manager(optimization_level=1, backend=backend)
+isa = pm.run(qc)
+
+<span class="cmt"># ⑤ 道具(プリミティブ)を用意する</span>
+sampler = Sampler(mode=backend)
+
+<span class="cmt"># ⑥ 実行する(PUB のリストを渡す)</span>
+job = sampler.run([isa])
+
+<span class="cmt"># ⑦ 結果を受け取る</span>
+result = job.result()
+counts = result[0].data.c.get_counts()</code></pre>
+
+  <p style="margin-top:14px"><strong>流れを図にすると次の通りです:</strong></p>
+<svg viewBox="0 0 760 92" width="100%" style="max-width:760px;display:block;margin:6px auto 18px" xmlns="http://www.w3.org/2000/svg">
+  <defs><marker id="ar0" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0,0 L8,4 L0,8 z" fill="#8a8db0"/></marker></defs>
+  <g font-size="12" text-anchor="middle" font-family="sans-serif">
+    <rect x="4"   y="22" width="92" height="40" rx="8" fill="#efe9ff" stroke="#5b3df0"/><text x="50"  y="40" fill="#16162a">① service</text><text x="50" y="55" font-size="9" fill="#7b7b95">窓口を作る</text>
+    <rect x="112" y="22" width="92" height="40" rx="8" fill="#efe9ff" stroke="#5b3df0"/><text x="158" y="40" fill="#16162a">② backend</text><text x="158" y="55" font-size="9" fill="#7b7b95">実機を決める</text>
+    <rect x="220" y="22" width="92" height="40" rx="8" fill="#fdf0f8" stroke="#c0399f"/><text x="266" y="40" fill="#16162a">③ 回路</text><text x="266" y="55" font-size="9" fill="#7b7b95">理想の回路</text>
+    <rect x="328" y="22" width="100" height="40" rx="8" fill="#fdf0f8" stroke="#c0399f"/><text x="378" y="40" fill="#16162a">④ transpile</text><text x="378" y="55" font-size="9" fill="#7b7b95">ISA回路へ変換</text>
+    <rect x="444" y="22" width="100" height="40" rx="8" fill="#eef7ef" stroke="#2e8b57"/><text x="494" y="40" fill="#16162a">⑤ primitive</text><text x="494" y="55" font-size="9" fill="#7b7b95">mode=で場を渡す</text>
+    <rect x="560" y="22" width="84" height="40" rx="8" fill="#eef7ef" stroke="#2e8b57"/><text x="602" y="40" fill="#16162a">⑥ run</text><text x="602" y="55" font-size="9" fill="#7b7b95">PUBのリスト</text>
+    <rect x="660" y="22" width="94" height="40" rx="8" fill="#fff7e6" stroke="#d9a13b"/><text x="707" y="40" fill="#16162a">⑦ result</text><text x="707" y="55" font-size="9" fill="#7b7b95">結果を受け取る</text>
+    <line x1="96"  y1="42" x2="110" y2="42" stroke="#8a8db0" stroke-width="1.6" marker-end="url(#ar0)"/>
+    <line x1="204" y1="42" x2="218" y2="42" stroke="#8a8db0" stroke-width="1.6" marker-end="url(#ar0)"/>
+    <line x1="312" y1="42" x2="326" y2="42" stroke="#8a8db0" stroke-width="1.6" marker-end="url(#ar0)"/>
+    <line x1="428" y1="42" x2="442" y2="42" stroke="#8a8db0" stroke-width="1.6" marker-end="url(#ar0)"/>
+    <line x1="544" y1="42" x2="558" y2="42" stroke="#8a8db0" stroke-width="1.6" marker-end="url(#ar0)"/>
+    <line x1="644" y1="42" x2="658" y2="42" stroke="#8a8db0" stroke-width="1.6" marker-end="url(#ar0)"/>
+  </g>
+</svg>
+
+<h3>0-1. なぜこの順番なのか(理由が分かれば並び替え問題は解ける)</h3>
+  <table>
+    <tr><th>順番</th><th>やること</th><th>なぜその位置なのか</th></tr>
+    <tr><td>①</td><td><code>QiskitRuntimeService()</code></td><td>すべての出発点。<strong>バックエンドはサービス経由でしか取得できない</strong>ので、必ず最初。</td></tr>
+    <tr><td>②</td><td>backend を決める</td><td>次のトランスパイルが「どの実機に合わせるか」を必要とするため、<strong>変換より前</strong>に決まっていなければならない。</td></tr>
+    <tr><td>③</td><td>回路を組む</td><td>変換される「元の回路」。①②とは独立なので、実は先に書いてもよい。</td></tr>
+    <tr><td>④</td><td>トランスパイル</td><td><strong>実行より前</strong>。理想的な回路のままでは実機で動かないため、必ず変換してから渡す。</td></tr>
+    <tr><td>⑤</td><td>プリミティブを作る</td><td>実行の直前。<strong>どこで動かすか(backend / session / batch)を <code>mode=</code> で渡す</strong>。</td></tr>
+    <tr><td>⑥</td><td><code>run()</code></td><td>変換済み回路(ISA回路)を渡して実行。ここで初めてジョブが投入される。</td></tr>
+    <tr><td>⑦</td><td><code>result()</code></td><td>実行後にしか結果は存在しない。当然いちばん最後。</td></tr>
+  </table>
+
+  <div class="box why"><div class="t">💡 並び替え問題は「依存関係」で解く</div>
+  <p>順番を丸暗記する必要はありません。<strong>「その行が必要とするものが、それより前で作られているか」</strong>を見れば決まります。</p>
+  <p>・<code>service.least_busy()</code> は <code>service</code> が要る → service が先<br>
+  ・<code>generate_preset_pass_manager(backend=backend)</code> は <code>backend</code> が要る → backend が先<br>
+  ・<code>pm.run(qc)</code> は <code>pm</code> と <code>qc</code> が要る → 両方が先<br>
+  ・<code>sampler.run([isa])</code> は <code>sampler</code> と変換済みの <code>isa</code> が要る → 両方が先<br>
+  ・<code>job.result()</code> は <code>job</code> が要る → run が先</p>
+  <p>この「<strong>使う変数は、使う前に作られていなければならない</strong>」という当たり前の原則だけで、正しい順番は一意に決まります。</p></div>
+
+  <div class="box why"><div class="t">💡 なぜトランスパイルが必要なのか(理解しておくと④が楽になります)</div>
+  <p>私たちが書く回路は「理想的な量子コンピュータ」向けです。しかし実機には制約があります。</p>
+  <p>・<strong>使えるゲートの種類が決まっている</strong>(basis gates)。実機は数種類の基本ゲートしか実行できず、H や CX もそれらの組み合わせに置き換える必要があります。<br>
+  ・<strong>qubit の繋がり方が決まっている</strong>(coupling map)。隣り合っていない qubit 同士では2量子ビットゲートを直接かけられません。<br>
+  ・<strong>無駄を削れる</strong>(optimization)。打ち消し合うゲートなどを整理できます。</p>
+  <p>この「実機の事情に合わせて書き換える」作業がトランスパイルで、変換後の回路を <strong>ISA回路</strong>(Instruction Set Architecture に沿った回路)と呼びます。<strong>プリミティブに渡すのは必ずこのISA回路</strong>です。</p></div>
+
+  <h3>0-2. Session / Batch を使う場合</h3>
+  <p>複数のジョブをまとめたい場合は、プリミティブを作る前に Session や Batch を開き、それをプリミティブに渡します。</p>
+  <pre><code>with Session(backend=backend) as session:      <span class="cmt"># Session/Batch には backend= で実機を渡す</span>
+    sampler = Sampler(mode=session)            <span class="cmt"># プリミティブには mode= で「実行の場」を渡す</span>
+    job = sampler.run([isa])</code></pre>
+  <div class="box why"><div class="t">💡 <code>mode=</code> と <code>backend=</code> が別の名前である理由</div>
+  <p>混同しやすい2つですが、<strong>意味を考えると自然に区別できます</strong>。</p>
+  <p>・<strong>Session / Batch</strong> は「どの実機を予約するか」を決めるもの。だから引数は <strong><code>backend=</code></strong>(実機そのもの)。<br>
+  ・<strong>Sampler / Estimator</strong> は「どういう文脈で実行するか」を受け取ります。渡せるのは backend 単体でも、Session でも、Batch でもよい。<strong>複数の種類を受け取れるので、より広い意味の <code>mode=</code>(実行モード)という名前</strong>になっています。</p>
+  <p>つまり <code>mode=</code> は「実行の場所・文脈」を指す包括的な引数、<code>backend=</code> は「実機」を指す具体的な引数、という関係です。</p></div>
+
+  <div class="box exam"><div class="t">⚑ ここは最優先で押さえる</div>
+  実行順を問う形式は、この流れがそのまま骨格になります。<strong>service → backend → circuit → transpile → primitive → run → result</strong>。迷ったら「この行が使っている変数は、どこで作られたか」を確認してください。</div>
+</section>
+
+<section id="s1">
+  <p class="kicker">Textbook · Section 01</p>
+  <div class="sechead"><h2>量子操作の実行<br><span class="disp" style="font-size:16px;color:var(--muted)">Perform quantum operations</span></h2><span class="wtag">16%</span></div>
+
+  <h3>1-1. 量子ビットと状態</h3>
+  <p>1量子ビットは $|0\rangle=\begin{pmatrix}1\\0\end{pmatrix}$、$|1\rangle=\begin{pmatrix}0\\1\end{pmatrix}$ の重ね合わせ $|\psi\rangle=\alpha|0\rangle+\beta|1\rangle$($|\alpha|^2+|\beta|^2=1$)。測定で $|1\rangle$ が出る確率は $|\beta|^2$。Bloch球では極角 $\theta$(Z軸からの傾き)で確率が決まり、$\theta=\pi/2$(赤道)なら $|0\rangle,|1\rangle$ が各50%。</p>
+
+  <h3>1-2. 単一量子ビットゲート(暗記必須)</h3>
+  <table>
+    <tr><th>ゲート</th><th>作用</th><th>位相(対|1⟩)</th></tr>
+    <tr><td><code>x</code> (NOT)</td><td>$|0\rangle\leftrightarrow|1\rangle$ ・X軸π回転</td><td>—</td></tr>
+    <tr><td><code>y</code></td><td>Y軸π回転</td><td>—</td></tr>
+    <tr><td><code>z</code></td><td>$|1\rangle$ の符号反転 diag(1,−1)</td><td>$\pi$</td></tr>
+    <tr><td><code>h</code> (Hadamard)</td><td>$|0\rangle\to\frac{|0\rangle+|1\rangle}{\sqrt2}$、$|1\rangle\to\frac{|0\rangle-|1\rangle}{\sqrt2}$</td><td>—</td></tr>
+    <tr><td><code>s</code> / <code>sdg</code></td><td>diag(1, $i$) / diag(1, $-i$)</td><td>$\pi/2$ / $-\pi/2$</td></tr>
+    <tr><td><code>t</code> / <code>tdg</code></td><td>diag(1, $e^{i\pi/4}$)</td><td>$\pi/4$ / $-\pi/4$</td></tr>
+    <tr><td><code>p(λ)</code> (Phase)</td><td>diag(1, $e^{i\lambda}$)</td><td>$\lambda$</td></tr>
+    <tr><td><code>rx,ry,rz(θ)</code></td><td>各軸まわりθ回転</td><td>—</td></tr>
+  </table>
+  <div class="box exam"><div class="t">⚑ 試験ポイント:Z軸回転ゲートの位相</div>
+  <strong>T → π/4、S → π/2、Z → π</strong>(いずれも $|1\rangle$ への位相)。公式サンプルQ2の頻出ネタ。「Tゲートを$|1\rangle$に作用させると位相は?」→ <strong>π/4</strong>。</div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Applying the Qiskit T Gate to a qubit in state |1⟩ introduces which global phase? → π/4 phase</div></div>
+
+  <div class="box why"><div class="t">💡 なぜ位相ゲートは |1⟩ にだけ効くのか(頻出の落とし穴)</div>
+  <p>Z・S・T・P は $\mathrm{diag}(1,\ \cdot)$ の形で、<strong>|1⟩ の係数にだけ数をかけ、|0⟩ は1倍で不変</strong>。だから <strong>$Z|0\rangle=|0\rangle$, $S|0\rangle=|0\rangle$, $T|0\rangle=|0\rangle$</strong>(|0⟩を動かせない)。図問題やBell問題で「Zがあるから位相反転?」と誘われるが、Zが |0⟩ 成分にかかっていれば<strong>無効</strong>。</p>
+  <p>理由:意味があるのは状態<strong>間の相対位相</strong>だけ。|0⟩ に位相をかけても全体にかかる<strong>グローバル位相</strong>になり、$e^{i\phi}|\psi\rangle$ と $|\psi\rangle$ は物理的に同一(測定でも干渉でも観測不能)。だから慣習上 |1⟩ 基準で定義される。</p></div>
+
+  <div class="box why"><div class="t">💡 RX / RY / RZ の違い(確率を変えるのはどれ?)</div>
+  <p>Bloch球で各軸まわりの回転。|0⟩ から始めると:<br>
+  ・<strong>RZ</strong>=Z軸まわり → |0⟩(北極=軸の真上)は動かず <strong>P(1)=0 のまま</strong>(位相だけ変える)<br>
+  ・<strong>RY</strong>=Y軸まわり → 実数のまま倒れる。<strong>$P(1)=\sin^2(\theta/2)$</strong>、位相が付かず一番素直(計算問題の主役)<br>
+  ・<strong>RX</strong>=X軸まわり → 倒れるが |1⟩ 側に $-i$ が付く。<strong>確率はRYと同じ</strong>($|-i|=1$ で消える)</p>
+  <p>ワナ:「|0⟩ に <code>rz</code> をかけて測定、P(1)は?」→ <strong>0</strong>($\sin^2$ を計算させる罠。Z軸は確率を変えない)。</p></div>
+
+  <h3>1-3. RYで作る確率(計算問題の定番)</h3>
+  <p>$RY(\theta)|0\rangle=\cos\frac\theta2|0\rangle+\sin\frac\theta2|1\rangle$。よって $|1\rangle$ の確率は $\sin^2(\theta/2)$。</p>
+  <pre><code>from qiskit import QuantumCircuit
+import numpy as np
+qc = QuantumCircuit(1)
+qc.ry(np.pi/2, 0)      <span class="cmt"># θ=π/2 → P(1)=sin²(π/4)=0.5</span>
+qc.measure_all()</code></pre>
+  <p><code>np.pi/2</code>→0.5、<code>np.pi</code>→1.0、<code>np.pi/4</code>→約0.146、<code>3*np.pi/4</code>→約0.854 はそのまま覚える。</p>
+
+  <div class="box why"><div class="t">💡 なぜ角度が半分($\theta/2$)なのか + |+⟩|−⟩ 記法</div>
+  <p>数式では |0⟩ と |1⟩ は90°ズレた直交ベクトルだが、<strong>Bloch球ではこれを180°(真反対)に描く=角度を2倍に拡大した地図</strong>。だからBloch球で「$\theta$ 倒す」と、係数の世界では半分の $\theta/2$ で効く。式は暗記でなく「北極から $\theta$ 倒す→$\cos\frac\theta2|0\rangle+\sin\frac\theta2|1\rangle$」と図から書ける。赤道(真横)=半々=$P(1)=0.5$。</p>
+  <p><strong>$|+\rangle=\frac{1}{\sqrt2}(|0\rangle+|1\rangle)$、$|-\rangle=\frac{1}{\sqrt2}(|0\rangle-|1\rangle)$</strong> はHで作る重ね合わせの略記。計算で猛烈に便利:<strong>$H|0\rangle=|+\rangle$, $H|1\rangle=|-\rangle$, $H|+\rangle=|0\rangle$, $H|-\rangle=|1\rangle$</strong>。多段回路は $\frac{1}{\sqrt2}(\dots)$ を展開せず、この行き来で一発。Bloch球では $|+\rangle$=赤道+x、$|-\rangle$=赤道−x。</p></div>
+
+  <h3>1-3b. 6つの特別な状態と3軸(見分けの土台)</h3>
+  <table>
+    <tr><th>軸</th><th>+方向</th><th>−方向</th><th>$|1\rangle$係数の特徴</th></tr>
+    <tr><td>Z軸</td><td>$|0\rangle$</td><td>$|1\rangle$</td><td>重ね合わせでない</td></tr>
+    <tr><td>X軸</td><td>$|+\rangle=\frac{|0\rangle+|1\rangle}{\sqrt2}$</td><td>$|-\rangle=\frac{|0\rangle-|1\rangle}{\sqrt2}$</td><td>係数が実数(±1)</td></tr>
+    <tr><td>Y軸</td><td>$|+i\rangle=\frac{|0\rangle+i|1\rangle}{\sqrt2}$</td><td>$|-i\rangle=\frac{|0\rangle-i|1\rangle}{\sqrt2}$</td><td>係数が虚数(±$i$)</td></tr>
+  </table>
+  <div class="box why"><div class="t">💡 主要ゲートの行列(行列を見て当てる問題の判定表)</div>
+  <p>行列からゲートを当てる問題は、<strong>「値がどこにあるか」と「特徴的な数」</strong>で判定できます。</p>
+  <p style="text-align:center;margin:14px 0">
+  $I=\begin{pmatrix}1&0\\0&1\end{pmatrix}\qquad
+  X=\begin{pmatrix}0&1\\1&0\end{pmatrix}\qquad
+  Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix}$</p>
+  <p style="text-align:center;margin:14px 0">
+  $Z=\begin{pmatrix}1&0\\0&-1\end{pmatrix}\qquad
+  H=\dfrac{1}{\sqrt2}\begin{pmatrix}1&1\\1&-1\end{pmatrix}=\begin{pmatrix}0.707&0.707\\0.707&-0.707\end{pmatrix}$</p>
+  <table>
+    <tr><th>見た目の特徴</th><th>ゲート</th></tr>
+    <tr><td>対角に 1, 1</td><td>I</td></tr>
+    <tr><td>反対角に 1, 1(実数)</td><td>X</td></tr>
+    <tr><td>反対角に $\pm i$(虚数 <code>j</code>)</td><td>Y</td></tr>
+    <tr><td>対角に 1, <strong>−1</strong></td><td>Z</td></tr>
+    <tr><td><strong>4つとも 0.707</strong>、右下だけ −</td><td>H</td></tr>
+  </table>
+  <p>とくに <strong>0.707(= $1/\sqrt2$)が見えたら H</strong> のサインです(Hは重ね合わせを作るゲートなので $1/\sqrt2$ が現れます)。Z は 0.707 を含みません(1 と −1 だけ)。X と Y の区別は次のコラムの通り、<strong>虚数 $i$ の有無</strong>で行います。</p></div>
+  <div class="box trap"><div class="t">⚠ 勘違い注意①:X と Y は行列がそっくり($i$で見分ける)</div>
+  <p>$X=\begin{pmatrix}0&1\\1&0\end{pmatrix}$、$Y=\begin{pmatrix}0&-i\\i&0\end{pmatrix}$。どちらも「反対角」で似ているが、<strong>虚数 $i$ があれば Y、実数1なら X</strong>。状態も同じで、$|1\rangle$係数が ±1なら X軸($|\pm\rangle$)、±$i$ なら Y軸($|\pm i\rangle$)。<br>Qiskit/Pythonの行列出力では虚数を <code>j</code> で書く:<code>0.-1.j</code>=$-i$、<code>0.+1.j</code>=$+i$。<strong>出力に <code>±1.j</code>(虚部が0でない成分)があれば Y が含まれる</strong>。<code>1.+0.j</code> はただの1。</p></div>
+  <div class="box trap"><div class="t">⚠ 勘違い注意②:「状態を動かさないゲート」は基準状態で逆になる</div>
+  <p>「位相ゲート(Z,S,T)は状態を変えない」は <strong>|0⟩・|1⟩ 限定のルール</strong>。$|+\rangle$/$|-\rangle$ に対しては逆で、Z系が状態を<strong>変え</strong>(例:$Z|+\rangle=|-\rangle$)、動かさないのは <strong>X と I</strong>。<br>原理:<strong>状態が乗っている軸のゲートは、その状態を動かさない</strong>。|0⟩→Z軸なのでZ系が無力、|+⟩→X軸なのでXが無力、$|+i\rangle$→Y軸なのでYが無力。$I$ は常にどの状態も動かさない。<br>「$|+\rangle$ を変えないゲートは?」→ <strong>X と I</strong>(Z・S・T ではない)。</p></div>
+  <div class="box why"><div class="t">💡 Involutory(対合)= $M^2=I$(2回で元に戻る)</div>
+  <p>「2回かけると単位行列に戻る」ゲート。<strong>X, Y, Z, H, I は involutory</strong>(自分が逆)。<strong>T・S は違う</strong>($T^2=S$, $S^2=Z$、位相を半端に回すので一周しない)。パウリとHがエルミートかつユニタリ→$M^2=I$、という①の性質と同じ話。</p></div>
+  <div class="box why"><div class="t">💡 ランダム生成関数は <code>random_○○</code>(スネークケース・対象を明示)</div>
+  <p><code>qi.random_unitary(dim)</code> / <code>random_statevector</code> / <code>random_density_matrix</code> / <code>random_pauli</code>。<code>RandomUnitary</code>(大文字始まり=クラス風)や <code>random(3)</code>(対象なし)、<code>unitary(3)</code> はダミー。Qiskitの関数は<strong>小文字スネークケース＋対象を明示</strong>、が命名の見分け方。</p></div>
+
+  <h3>1-4. Pauli クラスとテンソル積(超頻出)</h3>
+  <p><code>Pauli('AB')</code> は $A\otimes B$ を表す。<strong>Qiskitはリトルエンディアン:文字列の右端が qubit 0</strong>。</p>
+  <pre><code>from qiskit.quantum_info import Pauli, SparsePauliOp
+Pauli('IZ').to_matrix()   <span class="cmt"># I⊗Z = diag(1,-1,1,-1)  右端Zがq0</span>
+Pauli('-ZI').to_matrix()  <span class="cmt"># 先頭の符号は全体にかかる</span>
+<span class="cmt"># 観測量(オブザーバブル)は SparsePauliOp で表す</span>
+obs = SparsePauliOp(['ZZ','IX'], coeffs=[1.0, 0.5])</code></pre>
+  <p>テンソル積 $A\otimes B=\begin{pmatrix}A_{11}B & A_{12}B\\A_{21}B & A_{22}B\end{pmatrix}$。$I\otimes Z=\mathrm{diag}(1,-1,1,-1)$、$Z\otimes Z=\mathrm{diag}(1,-1,-1,1)$。手計算できるように。</p>
+  <div class="box exam"><div class="t">⚑ 試験ポイント</div>
+  与えられた4×4行列から正しい <code>Pauli('..')</code> を選ぶ問題が出る。①右端=q0、②先頭の<code>-</code>は全体係数、を押さえれば解ける。</div>
+
+  <div class="box why"><div class="t">💡 行列 ↔ 基底状態 ↔ Dirac記法(ここが全部つながる)</div>
+  <p>行列の各成分の位置が基底状態に対応:<strong>成分(行 $i$, 列 $j$) = $|i\rangle\langle j|$</strong>(ケット=行、ブラ=列)。例:$M=\begin{pmatrix}2&-1\\-9&3\end{pmatrix}=2|0\rangle\langle0|-|0\rangle\langle1|-9|1\rangle\langle0|+3|1\rangle\langle1|$。ブラケットの順序を逆にした選択肢が定番のワナ。</p>
+  <p><strong>対角成分</strong>=「その基底状態を測ったときの値(固有値)」。観測量が対角なら状態を変えず値だけ与える。$Z\otimes Z$ の対角 $(1,-1,-1,1)$ は「各qubitの $0\to+1,1\to-1$ の掛け算」。だから Bell では $\langle ZZ\rangle=1$。</p>
+  <p><strong>行列の性質</strong>:ゲートは全て<strong>ユニタリ</strong>($U^\dagger U=I$・可逆)、観測量は<strong>エルミート</strong>($M^\dagger=M$)。パウリ(X,Y,Z)とHは<strong>両方</strong>($M^2=I$)。対角行列なら「実数→エルミート」「絶対値1→ユニタリ」「0か1のみ→射影($M^2=M$)」で即判定。</p></div>
+
+  <h3>1-5. 多量子ビットゲート</h3>
+  <p><code>cx(ctrl,tgt)</code>(CNOT)、<code>cz</code>、<code>ccx</code>(Toffoli)、<code>swap</code>、<code>cp(λ)</code>。制御ゲートは「<strong>制御が |1⟩ のときだけ標的にゲートを掛ける</strong>」。Bell状態は <code>h(0)</code> → <code>cx(0,1)</code> で $\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$。</p>
+  <div class="box why"><div class="t">💡 引数の順序は全ゲート共通:角度 → 制御 → 標的</div>
+  <p><code>cx(0,1)</code>=制御,標的 / <code>ccx(0,1,2)</code>=制御,制御,標的 / <code>cp(λ,0,1)</code>=<strong>角度</strong>,制御,標的 / <code>crx(θ,0,1)</code>=角度,制御,標的。CCXとCPが長いのは「制御が2つ」か「角度がある」かの違いだけで、並べ方は同じ。<strong>角度を持つゲートは必ず角度が先頭</strong>。<code>x</code>(1引数・無条件反転)と <code>cx</code>(2引数・条件付き反転)は別物——引数の数で見分ける。</p></div>
+  <div class="box why"><div class="t">💡 4つのBell状態(ヒストグラム・qsphere問題の土台)</div>
+  <p>$\phi$系=「00と11」、$\psi$系=「01と10」。$\pm$は位相。</p>
+  <p>$|\phi^+\rangle=\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$ = <code>h(0);cx(0,1)</code>(素直)<br>
+  $|\phi^-\rangle=\frac{1}{\sqrt2}(|00\rangle-|11\rangle)$ = <code>h(0);z(0);cx(0,1)</code>(qsphereの色が変わる)<br>
+  $|\psi^+\rangle=\frac{1}{\sqrt2}(|01\rangle+|10\rangle)$ = <code>h(0);x(1);cx(0,1)</code><br>
+  $|\psi^-\rangle=\frac{1}{\sqrt2}(|01\rangle-|10\rangle)$ = <code>h(0);x(1);z(0);cx(0,1)</code></p></div>
+  <div class="box why"><div class="t">💡 CX と CZ の動作と回路記号</div>
+  <p><strong>CX(CNOT)</strong>=制御が1のとき標的を<strong>反転(X)</strong>。制御と標的の役割が違う(入れ替えると別物)→ <strong>非対称、記号は ●と⊕</strong>。<br>
+  <strong>CZ</strong>=制御が1のとき標的に<strong>Z(位相反転)</strong>。結局「<strong>両方が1のとき位相を−1倍</strong>」で、これは制御・標的を入れ替えても同じ(ANDは対称)→ <strong>対称、記号は ●と●</strong>。<br>
+  ⊕(プラスの丸)があれば反転する系(CX/CCX)、●だけなら CZ。CZは状態を動かさず<strong>位相だけ</strong>変えるので確率は不変(qsphereでは |11⟩ だけ色が変わる、ヒストグラムでは変化なし)。<br>
+  回路記号まとめ:×と×=<strong>SWAP</strong> / ●と⊕=<strong>CX</strong> / ●●と⊕=<strong>CCX</strong>(Toffoli) / ●と●=<strong>CZ</strong>。</p></div>
+</section>
+
+<section id="s2">
+  <p class="kicker">Textbook · Section 02</p>
+  <div class="sechead"><h2>回路・測定・状態の可視化<br><span class="disp" style="font-size:16px;color:var(--muted)">Visualize circuits, measurements, and states</span></h2><span class="wtag">11%</span></div>
+
+  <h3>2-1. 可視化関数の対応表</h3>
+  <table>
+    <tr><th>関数</th><th>何を描くか</th></tr>
+    <tr><td><code>qc.draw("mpl")</code></td><td>回路図(<code>"text"</code>/<code>"latex"</code>も可)</td></tr>
+    <tr><td><code>plot_histogram(counts)</code></td><td>測定カウントの棒グラフ</td></tr>
+    <tr><td><code>plot_bloch_multivector(state)</code></td><td>各qubitをBloch球で表示</td></tr>
+    <tr><td><code>plot_state_qsphere(state)</code></td><td>qsphere(後述)</td></tr>
+    <tr><td><code>plot_state_city / hinton / paulivec</code></td><td>密度行列の3D棒 / 行列 / Pauli係数</td></tr>
+    <tr><td><code>array_to_latex(arr)</code></td><td>ベクトル・行列をLaTeX表示</td></tr>
+  </table>
+  <pre><code>from qiskit.quantum_info import Statevector
+from qiskit.visualization import plot_histogram, plot_state_qsphere
+state = Statevector(qc)              <span class="cmt"># 回路から状態ベクトルを得る</span>
+counts = state.sample_counts(shots=1024)
+plot_histogram(counts)</code></pre>
+
+  <h3>2-2. Statevector のインデックス順</h3>
+  <p>$n$ qubitの状態ベクトルは $2^n$ 要素。インデックス $k$ を2進 $q_{n-1}\dots q_1q_0$ と読む。例:3qubitで要素2は $|010\rangle$、要素5は $|101\rangle$。振幅の<strong>絶対値の2乗</strong>が測定確率。</p>
+  <pre><code>Statevector([0,0,0.707,0,0,-0.707,0,0])
+<span class="cmt"># |010⟩ と |101⟩ が等確率(各0.5)で観測される</span></code></pre>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:Hの個数 = 状態の広がり方</div>
+  <p>結果(ヒストグラム/状態ベクトル)から回路を当てる問題の即断法。<strong>H を n個かけると $2^n$ 通りの状態が均等に出る</strong>。<br>
+  ・H 1個 → <strong>2種類</strong>が各50%(状態ベクトルなら 0.707 が2つ)<br>
+  ・H 2個 → <strong>4種類</strong>が各25%(状態ベクトルなら 0.5 が4つ)<br>
+  <code>[0.5, 0.5, 0.5, 0.5]</code> を見たら「Hが2個」の合図。<strong>X は重ね合わせを作らない</strong>(状態を確定反転するだけ)ので広がらない。「H(重ね合わせ)か X(反転)か」で分岐の広がりが決まる。</p></div>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:<code>qc.h(reg)</code> と <code>qc.h(reg[1])</code> は別物</div>
+  <p><strong>レジスタ名だけ=全qubitに適用</strong>、<strong><code>[i]</code>付き=そのqubit1個だけ</strong>。<code>qc.h(myqubit)</code>(2qubitレジスタ)は両方にH → 4状態均等。<code>qc.h(myqubit[1])</code> は1個だけ → 2状態のみ。「4状態均等が欲しいのにレジスタ全体を渡していない」選択肢に注意。</p></div>
+
+  <h3>2-3. qsphere の読み方(頻出)</h3>
+  <ul>
+    <li><strong>節点の位置</strong> = 基底状態($|00\rangle$ が上、$|11\rangle$ が下…)</li>
+    <li><strong>節点の大きさ</strong> = その状態の確率(振幅の大きさ)</li>
+    <li><strong>色</strong> = <strong>位相</strong>。同じ色=同位相、色が違う=位相差あり</li>
+  </ul>
+  <div class="box exam"><div class="t">⚑ 試験ポイント:qsphere</div>
+  「$|00\rangle$ と $|11\rangle$ が<strong>同じ色</strong>」= $\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$(<code>h(0);cx(0,1)</code>)。もし <code>z(0)</code> を足すと $|11\rangle$ の位相が反転し $\frac{1}{\sqrt2}(|00\rangle-|11\rangle)$ になり<strong>色が変わる</strong>。コードと図を結びつける問題が出る。</div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Which code fragment generates the given qsphere where the circles are the same color? → h(0); cx(0,1) (a Bell state with equal phase)</div></div>
+
+  <h3>2-4. ダイナミック回路図の見分け方</h3>
+  <p><code>if_test</code>/<code>else_</code> を含む回路は、条件分岐の箱と <code>c_0=0x1</code> のような条件表示が描かれる。<strong>0x1=16進の1</strong>(<code>if_test((c0, 1))</code>に対応)。<code>else</code> の有無、if内のゲート種別で選択肢を絞る。</p>
+
+  <h3>2-5. plot_state_paulivec の読み方</h3>
+  <p><code>plot_state_paulivec</code> は状態を $I,X,Y,Z$ の和に分解した係数を棒で表す。係数 $c_X,c_Y,c_Z$ は <strong>Bloch球の各軸方向の成分</strong>そのもの($c_I$ は常に1)。</p>
+  <div class="box why"><div class="t">💡 Bloch球の向き = paulivec の棒</div>
+  <p>$|0\rangle$(北極)→ Z=+1、$|1\rangle$→ Z=−1、$|+\rangle$(+x)→ X=+1、$|+i\rangle$(+y)→ Y=+1。<br>例:「I=1, Y=1 の棒」が出る状態は $|+i\rangle=\frac{1}{\sqrt2}(|0\rangle+i|1\rangle)$ で、作り方は <code>h(0); s(0)</code>(Hで赤道→Sで+yへ)。$i$ を付けるのが S の役目。</p></div>
+
+  <h3>2-6. plot_bloch_vector と可視化関数名</h3>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:<code>plot_bloch_vector</code> の2つの座標系</div>
+  <p><strong>直交(デフォルト)</strong>:<code>plot_bloch_vector([x,y,z])</code>。<strong>球座標</strong>:<code>plot_bloch_vector([r,θ,φ], coord_type='spherical')</code>。<br>
+  <strong>θ(theta)は z軸(北極=|0⟩)からの角度</strong>:θ=0→北極(+z=|0⟩)、θ=π/2→赤道、θ=π→南極(−z=|1⟩)。<strong>φ(phi)は赤道上の向き</strong>:φ=0→+x、φ=π/2→+y、φ=π→−x。北極(|0⟩)を指すなら θ=0(φは無関係)。<br>
+  例:+y方向は直交で <code>[0,1,0]</code>、球で <code>[1, π/2, π/2]</code>。+z(北極)は直交 <code>[0,0,1]</code>、球 <code>[1, 0, 0]</code>。<strong>同じ数字 <code>[1,0,0]</code> でも、直交なら+x・球なら+z</strong>と別方向になる(coord_type の有無を必ず確認)。「select all」は直交1つ+球座標1つが正解になりやすい。</p></div>
+  <h3>2-7. 可視化関数の一覧と、図からの見分け方</h3>
+  <p><code>qiskit.visualization</code> には7つの描画関数があります。<strong>名前は「何を描くか」をそのまま表しています</strong>ので、対応さえ掴めば覚えやすくなります。</p>
+  <table>
+    <tr><th>関数</th><th>描かれる図の特徴</th></tr>
+    <tr><td><code>plot_histogram</code></td><td>測定結果の棒グラフ</td></tr>
+    <tr><td><code>plot_bloch_vector</code></td><td>Bloch球1つに矢印1本</td></tr>
+    <tr><td><code>plot_bloch_multivector</code></td><td><strong>qubit の数だけ Bloch球</strong>が並び、それぞれに矢印</td></tr>
+    <tr><td><code>plot_state_qsphere</code></td><td>球1つの上に |00⟩〜|11⟩ が並び、<strong>色で位相</strong>を表す(Phase の色相環が付く)</td></tr>
+    <tr><td><code>plot_state_city</code></td><td><strong>3D の棒グラフ</strong>(ビル群のような見た目)</td></tr>
+    <tr><td><code>plot_state_hinton</code></td><td><strong>格子状の四角</strong>の大きさで値を表す</td></tr>
+    <tr><td><code>plot_state_paulivec</code></td><td>横軸が <strong>I, X, Y, Z</strong> の棒グラフ</td></tr>
+  </table>
+
+  <p style="margin-top:16px"><strong>それぞれの図は、実際には次のような見た目になります</strong>(簡略化したイメージ図です):</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:14px 0 6px">
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <line x1="28" y1="98" x2="190" y2="98" stroke="#c9cbe0" stroke-width="1.5"/>
+        <line x1="28" y1="14" x2="28" y2="98" stroke="#c9cbe0" stroke-width="1.5"/>
+        <rect x="48" y="38" width="40" height="60" fill="#5b3df0"/>
+        <rect x="120" y="38" width="40" height="60" fill="#5b3df0"/>
+        <text x="68" y="112" text-anchor="middle" font-size="11" fill="#16162a">00</text>
+        <text x="140" y="112" text-anchor="middle" font-size="11" fill="#16162a">11</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_histogram</code><br><span style="color:#7b7b95">ビット列ごとの棒グラフ</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="100" cy="62" r="46" fill="none" stroke="#c9cbe0" stroke-width="1.5"/>
+        <ellipse cx="100" cy="62" rx="46" ry="14" fill="none" stroke="#e3e4ee" stroke-width="1"/>
+        <line x1="100" y1="62" x2="100" y2="20" stroke="#c0399f" stroke-width="3"/>
+        <polygon points="100,14 95,24 105,24" fill="#c0399f"/>
+        <text x="100" y="10" text-anchor="middle" font-size="9" fill="#16162a">|0⟩</text>
+        <text x="100" y="118" text-anchor="middle" font-size="9" fill="#16162a">|1⟩</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_bloch_vector</code><br><span style="color:#7b7b95">球1つ+矢印1本</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="55" cy="58" r="36" fill="none" stroke="#c9cbe0" stroke-width="1.5"/>
+        <line x1="55" y1="58" x2="55" y2="26" stroke="#c0399f" stroke-width="2.5"/>
+        <polygon points="55,21 51,29 59,29" fill="#c0399f"/>
+        <text x="55" y="110" text-anchor="middle" font-size="9" fill="#7b7b95">qubit 0</text>
+        <circle cx="145" cy="58" r="36" fill="none" stroke="#c9cbe0" stroke-width="1.5"/>
+        <line x1="145" y1="58" x2="173" y2="58" stroke="#c0399f" stroke-width="2.5"/>
+        <polygon points="178,58 170,54 170,62" fill="#c0399f"/>
+        <text x="145" y="110" text-anchor="middle" font-size="9" fill="#7b7b95">qubit 1</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_bloch_multivector</code><br><span style="color:#7b7b95">qubitの数だけ球が並ぶ</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="88" cy="60" r="44" fill="none" stroke="#c9cbe0" stroke-width="1.5"/>
+        <line x1="88" y1="60" x2="88" y2="16" stroke="#a9abc7" stroke-width="1"/>
+        <line x1="88" y1="60" x2="88" y2="104" stroke="#d9b64a" stroke-width="1"/>
+        <circle cx="88" cy="16" r="7" fill="#4059c9"/>
+        <circle cx="88" cy="104" r="7" fill="#d9b64a"/>
+        <text x="88" y="9" text-anchor="middle" font-size="9" fill="#16162a">|00⟩</text>
+        <text x="88" y="118" text-anchor="middle" font-size="9" fill="#16162a">|11⟩</text>
+        <circle cx="168" cy="88" r="16" fill="none" stroke="#c9cbe0" stroke-width="5" stroke-dasharray="2 2"/>
+        <text x="168" y="92" text-anchor="middle" font-size="8" fill="#7b7b95">Phase</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_state_qsphere</code><br><span style="color:#7b7b95">球1つ+色=位相+色相環</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="30,95 90,110 170,95 110,80" fill="none" stroke="#c9cbe0" stroke-width="1"/>
+        <polygon points="50,90 66,94 66,50 50,46" fill="#5b3df0"/>
+        <polygon points="66,94 82,90 82,46 66,50" fill="#7a5cf5"/>
+        <polygon points="50,46 66,50 82,46 66,42" fill="#9d85f8"/>
+        <polygon points="112,86 128,90 128,58 112,54" fill="#5b3df0"/>
+        <polygon points="128,90 144,86 144,54 128,58" fill="#7a5cf5"/>
+        <polygon points="112,54 128,58 144,54 128,50" fill="#9d85f8"/>
+        <text x="100" y="118" text-anchor="middle" font-size="9" fill="#7b7b95">立体の棒(ビル群)</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_state_city</code><br><span style="color:#7b7b95">3D棒グラフ</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect x="46" y="18" width="100" height="88" fill="#f4f4f9" stroke="#c9cbe0"/>
+        <rect x="54" y="26" width="30" height="30" fill="#16162a"/>
+        <rect x="106" y="70" width="30" height="30" fill="#16162a"/>
+        <rect x="112" y="32" width="18" height="18" fill="#8a8db0"/>
+        <rect x="60" y="76" width="18" height="18" fill="#8a8db0"/>
+        <text x="96" y="118" text-anchor="middle" font-size="9" fill="#7b7b95">四角の大きさ=値</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_state_hinton</code><br><span style="color:#7b7b95">格子状の四角</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:10px;text-align:center;background:#fff">
+      <svg viewBox="0 0 200 120" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <line x1="28" y1="60" x2="190" y2="60" stroke="#c9cbe0" stroke-width="1.5"/>
+        <line x1="28" y1="12" x2="28" y2="108" stroke="#c9cbe0" stroke-width="1.5"/>
+        <rect x="40" y="18" width="26" height="42" fill="#5b3df0"/>
+        <rect x="118" y="60" width="26" height="42" fill="#5b3df0"/>
+        <text x="53" y="114" text-anchor="middle" font-size="10" fill="#16162a">I</text>
+        <text x="92" y="114" text-anchor="middle" font-size="10" fill="#16162a">X</text>
+        <text x="131" y="114" text-anchor="middle" font-size="10" fill="#16162a">Y</text>
+        <text x="170" y="114" text-anchor="middle" font-size="10" fill="#16162a">Z</text>
+      </svg>
+      <div style="font-size:12px;margin-top:6px"><code>plot_state_paulivec</code><br><span style="color:#7b7b95">横軸 I,X,Y,Z の棒(下向き=マイナス)</span></div>
+    </div>
+  </div>
+  <div class="box why"><div class="t">💡 図を見たときの判断</div>
+  <p>・<strong>球が1つで、Phase の色相環が付いている</strong> → qsphere<br>
+  ・<strong>球が複数並んでいる</strong> → bloch_multivector(qubit ごとに1つずつ描かれる)<br>
+  ・<strong>立体の棒</strong> → city / <strong>平面の格子</strong> → hinton<br>
+  ・<strong>横軸が I, X, Y, Z</strong> → paulivec</p>
+  <p>名前の規則も一貫しています。<strong>Bloch球を描くものには <code>bloch</code>、状態を描くものには <code>state_</code> が入ります。</strong></p></div>
+</section>
+
+<section id="s3">
+  <p class="kicker">Textbook · Section 03 — 最重要</p>
+  <div class="sechead"><h2>量子回路の作成<br><span class="disp" style="font-size:16px;color:var(--muted)">Create quantum circuits</span></h2><span class="wtag">18%</span></div>
+
+  <h3>3-1. レジスタの種類(暗記)</h3>
+  <table>
+    <tr><th>レジスタ</th><th>役割</th></tr>
+    <tr><td><code>QuantumRegister</code></td><td>量子ビットを保持</td></tr>
+    <tr><td><code>ClassicalRegister</code></td><td><strong>測定結果を格納</strong>(これが正解になる問題が頻出)</td></tr>
+    <tr><td><code>AncillaRegister</code></td><td>補助qubit(誤り訂正・アルゴリズム用)</td></tr>
+  </table>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Which register stores the result of a measured circuit? → Classical register</div>
+  <div class="q">("Circuit register" という選択肢はQiskitに存在しない=ダミー)</div></div>
+
+  <h3>3-2. 基本の組み立て</h3>
+  <pre><code>from qiskit import QuantumCircuit, QuantumRegister, ClassicalRegister
+qr = QuantumRegister(2, "q"); cr = ClassicalRegister(2, "c")
+qc = QuantumCircuit(qr, cr)
+qc.h(0); qc.cx(0, 1)
+qc.measure(qr, cr)        <span class="cmt"># または qc.measure_all()(meas という名のcregを自動追加)</span>
+qc.barrier(); qc.reset(0) <span class="cmt"># 仕切り / qubitを|0⟩へ初期化</span></code></pre>
+  <p><code>measure_all()</code> は自動で <code>meas</code> という古典レジスタを作る点に注意(後で結果を取り出すとき <code>data.meas</code> になる)。</p>
+
+  <h3>3-3. パラメータ化回路(Parameterized circuits)</h3>
+  <pre><code>from qiskit.circuit import Parameter, ParameterVector
+theta = Parameter("θ")
+qc = QuantumCircuit(1)
+qc.rx(theta, 0)                      <span class="cmt"># 値未定の回転ゲート</span>
+bound = qc.assign_parameters({theta: 3.14})   <span class="cmt"># 後で値を代入</span>
+<span class="cmt"># 複数まとめて: pv = ParameterVector("φ", 3)</span></code></pre>
+  <div class="box exam"><div class="t">⚑ 試験ポイント</div>
+  「初期値未定の回転ゲートを作るには?」→ <code>Parameter('theta')</code> を作って <code>qc.rx(theta, 0)</code>。<br>
+  ✗ <code>qc.rx('theta', 0)</code>(文字列はNG)、✗ <code>ParameterExpression('theta')</code>(実行エラー)。</div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Which fragment creates a rotation gate with an initially undefined value?<br>→ theta = Parameter('theta'); qc.rx(theta, 0)</div></div>
+  <div class="box why"><div class="t">💡 作る=Parameter / 入れる=assign_parameters(辞書)</div>
+  <p>2ステップで1組:<strong>① 空箱を作る</strong> <code>Parameter("θ")</code> → 回路に組む <code>qc.ry(theta,0)</code>。<strong>② 値を入れる</strong> <code>qc.assign_parameters({theta: 1.57})</code>(<strong>辞書</strong> {param:値} で渡すのが鍵)。<code>theta = 1.57</code> と上書きしても回路内のParameterには反映されない。存在しないメソッド <code>set</code>/<code>bind</code> が誤答の定番(bindはv2で assign に統一)。VQE等で「同じ回路に値を次々入れて試す」ための仕組み。</p></div>
+
+  <h3>3-4. ダイナミック回路(Dynamic circuits・v2の目玉)</h3>
+  <p>測定結果に応じて<strong>実行時に</strong>ゲートを変える「古典制御フロー」。<code>with</code> 構文を使う。</p>
+  <pre><code>qc.measure(q0, c0)
+with qc.if_test((c0, 1)) as else_:   <span class="cmt"># c0==1 のとき</span>
+    qc.h(q1)
+with else_:                          <span class="cmt"># それ以外</span>
+    qc.x(q1)
+
+with qc.for_loop(range(3)):          <span class="cmt"># ループ</span>
+    qc.x(0)
+with qc.while_loop((c0, 0)):         <span class="cmt"># 条件ループ</span>
+    qc.h(0); qc.measure(q0, c0)
+with qc.switch(c0) as case:          <span class="cmt"># 多分岐</span>
+    with case(0): qc.x(0)
+    with case(case.DEFAULT): qc.z(0)</code></pre>
+  <div class="box warn"><div class="t">⚠ 注意</div>古い <code>.c_if()</code> は非推奨。v2では <code>if_test</code> 系を使う。条件は <code>(classical_bit, value)</code> のタプル。</div>
+  <div class="box why"><div class="t">💡 条件は「二重カッコ」のタプル + 図の 0x 表記</div>
+  <p>正しい形は <code>if_test((c0, 1))</code>=<strong>二重カッコ</strong>。外側=メソッドの引数、内側=<code>(ビット,値)</code>のタプル。ワナ:<code>if_test(c0, 1)</code>(カッコ1組=別々の2引数)や <code>if_test(c0==1)</code>(比較式)は誤り。<br>
+  回路図の <strong><code>c_0=0x1</code> は16進表記</strong>(0x1=1、0x0=0)。図問題は「else有無・if内のゲート・条件値(0x?)」の3点をコードと照合。レジスタ全体を条件にすると値が大きくなる(2ビットで11=<code>0x3</code>)。</p></div>
+
+  <h3>3-5. 回路の合成</h3>
+  <p><code>qc.compose(other)</code>(他回路を連結)、<code>qc.append(gate, qubits)</code>、<code>gate = sub.to_gate()</code> / <code>to_instruction()</code> でサブルーチン化。ライブラリ:<code>from qiskit.circuit.library import QFT, EfficientSU2</code> など。</p>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:回路連結は <code>compose</code> と <code>&</code>(<code>add</code> ではない)</div>
+  <p>2つの回路をつなぐ方法は2つ:<strong>メソッド <code>qc0.compose(qc1)</code></strong> と <strong>演算子 <code>qc0 &amp; qc1</code></strong>(&はcomposeのショートカット、同じ結果)。「複数選択で2つ選べ」だと <code>compose</code> と <code>&amp;</code> の両方が答えになりやすい。<br><code>qc0.add(qc1)</code> や <code>qc0 add qc1</code> は<strong>存在しない</strong>(エラー)。「足す=add」の連想が罠。ちなみに <code>^</code> は tensor(並列に並べる)。</p></div>
+
+  <h3>3-6. Bell状態の作り分け(頻出・作る/選ぶ両方で出る)</h3>
+  <p>Bell状態の条件:<strong>制御=重ね合わせ(H)、標的=確定(0か1)、そして CX</strong>。CXは「<strong>制御が1のとき標的を反転</strong>」(標的の値ではなく制御が反転を決める)。標的の初期値で、できるペアが変わる。</p>
+  <table>
+    <tr><th>作りたい状態</th><th>コード</th><th>ペアの特徴</th></tr>
+    <tr><td>$\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$</td><td><code>h(0); cx(0,1)</code></td><td>同じ値(00と11)</td></tr>
+    <tr><td>$\frac{1}{\sqrt2}(|00\rangle-|11\rangle)$</td><td><code>h(0); z(0); cx(0,1)</code></td><td>同じ値・位相−</td></tr>
+    <tr><td>$\frac{1}{\sqrt2}(|01\rangle+|10\rangle)$</td><td><code>h(0); x(1); cx(0,1)</code></td><td><strong>違う値(01と10)→ x(1)を足す</strong></td></tr>
+  </table>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:「00と11」か「01と10」かで x(1) の要否が変わる</div>
+  <p>目標が<strong>同じ値のペア(00/11)→ 標的は|0⟩のまま</strong>(<code>h(0);cx(0,1)</code>)。<strong>違う値のペア(01/10)→ 標的を|1⟩に</strong>(<code>x(1)</code> を追加)。<br>不正解の典型:①制御を <code>x(0)</code> で確定にしてしまう(重ね合わせでない→もつれない)、②標的に <code>h(1)</code> で重ね合わせにする(標的は確定であるべき)、③<code>cx</code> でなく <code>cz</code> を使う。迷ったらCXの動作(制御1→標的反転)で1ステップずつ追う。</p></div>
+
+  <h3>3-7. initialize と Operator の作り方</h3>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:<code>initialize</code> の対象qubit指定</div>
+  <p><code>qc.initialize(vec)</code>(省略=全qubit)または <code>qc.initialize(vec, [0,1])</code>(リストで明示)。<strong><code>initialize(vec, all)</code> はエラー</strong>(<code>all</code> はPython組み込み関数で使えない)。もつれ状態は<strong>2qubitまとめた4要素ベクトル</strong>で初期化する(v0,v1に分けて個別 initialize すると積状態にしかならず、もつれは作れない)。ベクトルの中身が目標の状態と一致するかも必ず確認($[0,0.707,0.707,0]$=01/10、$[0.707,0,0,0.707]$=00/11)。</p></div>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:<code>Operator</code> は直接渡す(<code>.define()</code> は無い)</div>
+  <p><code>Operator(qc)</code>(回路から)または <code>Operator([[1,0],[0,-1]])</code>(2×2行列から)。<strong><code>Operator.define(...)</code> は存在しない</strong>メソッド。行列は必ず <code>[[行],[行]]</code> の形(<code>[[1,0,-1,0]]</code> は1×4で形が違い、Zにならない)。</p></div>
+
+  <h3>3-8. QuantumCircuit の主なメソッド・属性(リファレンス)</h3>
+  <p>ここは辞書的に眺めておくだけで十分です。すべてを暗記する必要はありません。<strong>命名には一貫した規則がある</strong>ので、規則を掴んでおけば初めて見る名前でも判断できます。</p>
+  <table>
+    <tr><th>用途</th><th>名前</th></tr>
+    <tr><td>個数を知る</td><td><code>num_qubits</code> / <code>num_clbits</code> / <code>num_ancillas</code> / <code>num_parameters</code></td></tr>
+    <tr><td>中身を取り出す</td><td><code>qubits</code> / <code>clbits</code> / <code>ancillas</code> / <code>qregs</code> / <code>cregs</code> / <code>parameters</code> / <code>data</code>(命令列)/ <code>layout</code>(変換後の配置)</td></tr>
+    <tr><td>制御フローを書く</td><td><code>for_loop()</code> / <code>while_loop()</code> / <code>break_loop()</code> / <code>continue_loop()</code> / <code>if_test()</code></td></tr>
+    <tr><td>ビットやレジスタを足す</td><td><code>add_bits()</code> / <code>add_register()</code></td></tr>
+    <tr><td>パラメータを扱う</td><td><code>assign_parameters()</code>(値を入れる)/ <code>get_parameter()</code> / <code>has_parameter()</code></td></tr>
+    <tr><td>回路をつなぐ</td><td><code>compose()</code> または演算子 <code>&amp;</code></td></tr>
+  </table>
+  <div class="box why"><div class="t">💡 名前の規則(3つ)</div>
+  <p>① <strong>個数は <code>num_</code> + 対象</strong>。対象は種類ごとに分かれており(qubits / clbits / ancillas)、<strong>すべてを合算した名前は用意されていません</strong>。<br>
+  ② <strong>ループ関係はすべて <code>_loop</code> で終わります</strong>(for_loop, while_loop, break_loop, continue_loop)。1つ分かれば残りも同じ形だと分かります。<br>
+  ③ <strong>操作は「動詞_対象」</strong>(add_bits, get_parameter, assign_parameters)。動詞がない単独の名前は、たいてい属性かダミーです。</p></div>
+  <div class="box why"><div class="t">💡 制御付きゲートの作り方</div>
+  <p><code>.control()</code> は「<strong>そのゲートに制御を1つ追加する</strong>」メソッドです。したがって:</p>
+  <p>・<code>XGate().control()</code> → X に制御が1つ付いて <strong>CX(CNOT)</strong><br>
+  ・<code>ZGate().control()</code> → <strong>CZ</strong><br>
+  ・<code>XGate().control(2)</code> → 制御が2つで <strong>CCX(Toffoli)</strong></p>
+  <p>注意したいのは、<strong>すでに制御が付いているゲートに <code>.control()</code> を足すと、さらに制御が増える</strong>ことです。CX が欲しいときに <code>CXGate().control()</code> とすると、制御が2つの CCX になってしまいます。<strong>素のゲートから始める</strong>のが基本です。</p></div>
+  <div class="box why"><div class="t">💡 n qubit の行列の大きさ</div>
+  <p>n qubit の状態は $2^n$ 通りあるので、状態ベクトルは $2^n$ 個の要素を持ちます。そこに作用する演算子(ゲート)は<strong>$2^n \times 2^n$ の正方行列</strong>です。1 qubit なら 2×2、2 qubit なら 4×4、3 qubit なら 8×8。<strong>2の n 乗</strong>であって、2×n ではないことに注意してください。</p></div>
+</section>
+
+<section id="s4">
+  <p class="kicker">Textbook · Section 04</p>
+  <div class="sechead"><h2>量子回路の実行<br><span class="disp" style="font-size:16px;color:var(--muted)">Run quantum circuits</span></h2><span class="wtag">15%</span></div>
+
+  <h3>4-1. 実行までの流れ(Qiskit Patterns)</h3>
+  <p><strong>Map → Optimize(transpile)→ Execute(primitive)→ Post-process</strong>。実機・実シミュレータで動かすには、回路を <strong>ISA回路</strong>(その装置の基底ゲート・結合に合わせた形)に変換する必要がある。</p>
+
+  <h3>4-2. トランスパイル(超頻出)</h3>
+  <pre><code>from qiskit.transpiler.preset_passmanagers import generate_preset_pass_manager
+pm = generate_preset_pass_manager(
+        optimization_level=3,            <span class="cmt"># 0〜3、3が最大最適化</span>
+        coupling_map=[[0,1],[1,2]],      <span class="cmt"># 接続(0-1, 1-2のみ。0-2は直結不可)</span>
+        basis_gates=['h','swap','cx'],   <span class="cmt"># 使えるゲート</span>
+        initial_layout=[0,2])            <span class="cmt"># 論理q0→物理0, q1→物理2</span>
+isa = pm.run(qc)</code></pre>
+  <div class="box exam"><div class="t">⚑ 試験ポイント:SWAP挿入</div>
+  <code>coupling_map</code> で<strong>直結していない</strong>2qubit間にCXを掛けると、トランスパイラが<strong>SWAPゲートを自動挿入</strong>して物理的に隣接させる。「0と2が直結なし+CX」→ SWAPが入った回路図を選ぶ。<code>initial_layout</code> の対応(論理→物理)も図で確認する問題が出る。</div>
+  <p>実機を使う場合:<code>pm = generate_preset_pass_manager(optimization_level=1, backend=backend)</code> と <code>backend</code> を渡す。</p>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:図から optimization_level を逆算する</div>
+  <p>「どのコードでこの回路図になる?」型では、<strong>図に無駄なゲートが残っているか</strong>で level を判定:<br>
+  ・<strong>無駄な連続ゲート(例:H が2連続=$H\cdot H=I$)が残っている → <code>optimization_level=0</code></strong>(最適化なし)<br>
+  ・<strong>無駄なゲートが消えて整理されている → <code>optimization_level=1〜3</code></strong>(最適化あり。連続Hは削除される)<br>
+  <code>initial_layout</code> は図の「q0↦物理?, q1↦物理?」から読む(例:q0→物理1, q1→物理0 なら <code>[1,0]</code>)。</p></div>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:H で挟まれた CX は「向き反転」</div>
+  <p><code>coupling_map</code> は接続だけでなく<strong>CXの向き</strong>も制約することがある(例:0→1の向きしか使えない)。逆向き(1→0)のCXが必要なとき、<strong>両qubitをHで挟む</strong>と制御と標的が入れ替わる:$\text{CX}(1{\to}0)=(H\otimes H)\,\text{CX}(0{\to}1)\,(H\otimes H)$。<br>回路図で「余分なHに挟まれたCX(H–CX–H)」を見たら<strong>向き反転</strong>と読む。SWAP挿入(=直結していないqubit間)とは別物(こちらは向きが逆なだけ)。</p></div>
+
+  <h3>4-3. 実行モード(Execution modes・暗記)</h3>
+  <table>
+    <tr><th>モード</th><th>用途</th></tr>
+    <tr><td><strong>single job</strong>(job)</td><td>最もシンプル。1ジョブを試すとき</td></tr>
+    <tr><td><strong>batch</strong></td><td>複数ジョブをまとめて投入。<strong>実行順は保証されない</strong></td></tr>
+    <tr><td><strong>session</strong></td><td>専有タイムスロット。VQE/VQCなど量子-古典を交互に回す反復アルゴリズムで待ち時間を削減</td></tr>
+  </table>
+  <div class="box exam"><div class="t">⚑ 試験ポイント</div>
+  「Qiskit Runtimeの実行モードを3つ選べ」→ <strong>session / batch / single job</strong>。<br>ダミー:classical, parallel, quantum。<br>「sessionの目的は?」→ <strong>量子コンピュータへの一連の呼び出しをグループ化する(Group a collection of calls)</strong>。</div>
+  <div class="box why"><div class="t">💡 3つのモードは「何のために存在するか」で理解する</div>
+  <p>実機は多くの利用者で共有されているため、<strong>ジョブは順番待ちの列に並びます</strong>。この待ち時間をどう扱うかが、モードの違いを生んでいます。</p>
+  <p><strong>job mode(単一ジョブ)</strong> — 1つ投げて結果を待つだけ。最もシンプルで、試しに動かすときに使います。</p>
+  <p><strong>batch mode</strong> — 複数のジョブをまとめて投入します。まとめて効率よく処理される代わりに、<strong>投入した順に実行されるとは限りません</strong>。互いに独立した計算を大量に流したいときに向いています。</p>
+  <p><strong>session mode</strong> — <strong>専用の時間枠を確保</strong>します。VQE や QAOA のような変分アルゴリズムでは「量子計算 → 古典計算で次のパラメータを決める → また量子計算」と<strong>何度も往復</strong>します。もし毎回列の最後尾に並び直していたら、待ち時間だけで膨大な時間がかかってしまいます。session はこの往復を効率よく行うための仕組みです。</p>
+  <p>ですので、問題文に「<strong>順序が保証されない</strong>」とあれば batch、「<strong>変分アルゴリズム</strong>」「<strong>専用の枠</strong>」とあれば session、と自然に判断できます。</p></div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Which three are job execution modes in Qiskit Runtime? → session, batch, single job</div>
+  <div class="q">Purpose of a Qiskit Runtime session? → Group a collection of calls to the quantum computer</div></div>
+
+  <h3>4-4. サービスとバックエンド</h3>
+  <pre><code>from qiskit_ibm_runtime import QiskitRuntimeService, Session, Batch
+service = QiskitRuntimeService()
+backend = service.least_busy(operational=True, simulator=False)
+with Session(backend=backend) as session:
+    ...   <span class="cmt"># この中で primitive を実行</span>
+<span class="cmt"># ローカルなら: from qiskit_aer import AerSimulator; backend = AerSimulator()</span></code></pre>
+  <div class="box en"><div class="t">EN 英語での出題例(session生成)</div>
+  <div class="q">Correct way to open a session → service = QiskitRuntimeService(); session = Session(service.least_busy())</div>
+  <div class="q">(QuantumCircuit(2).open_session() のようなメソッドは存在しない=ダミー)</div></div>
+  <div class="box trap"><div class="t">✔ ここは覚えるしかない(数は少ないので確実に)</div>
+  <p>理屈で導けない名前は数が限られています。数が少ないぶん、<strong>ここは確実に暗記して得点源にしてください</strong>(覚えてさえいれば確実に取れる種類の設問です)。</p>
+  <p>・<strong>実機を選ぶ</strong>:<code>least_busy(operational=True, simulator=False)</code><br>
+  <span style="color:var(--muted)">実機を指定する引数はなく、「シミュレータではない」という<strong>否定形</strong>で表します。</span><br>
+  ・<strong>接続を保存</strong>:<code>save_account(token="...", instance="...", name="...")</code><br>
+  ・<strong>実行時間の上限</strong>:<code>Batch(backend=backend, max_time="10m")</code><br>
+  ・<strong>qubit の繋がり方</strong>:<code>coupling_map=[[0,1],[1,2]]</code>(接続を<strong>ペアのリスト</strong>で書く)</p></div>
+
+  <h3>4-5. ブロードキャストと PUB(プリミティブ入力)</h3>
+  <p>1ジョブで<strong>複数のパラメータ集合 × 複数オブザーバブル</strong>を渡せる。形の組合せは「標準の多次元配列の一般化(standard multidimensional array generalization)」= NumPy的ブロードキャスト。入力単位を <strong>PUB(Primitive Unified Bloc)</strong> と呼ぶ(詳細は⑤⑥)。</p>
+</section>
+
+<section id="s5">
+  <p class="kicker">Textbook · Section 05</p>
+  <div class="sechead"><h2>Sampler プリミティブ<br><span class="disp" style="font-size:16px;color:var(--muted)">Use the sampler primitive</span></h2><span class="wtag">12%</span></div>
+
+  <div class="box exam"><div class="t">⚑ Primitive は暗記が効きにくい領域です</div>
+  ブループリントは §5・§6 に「Understand the theoretical background behind the primitive(理論的背景を理解する)」を到達目標として明示しています。つまり<strong>メソッド名を覚えるだけでは足りず、「この道具は何をするものか」を理解している必要がある</strong>ということです。以下は暗記用の要約ではなく、<strong>納得して使えるようになるための説明</strong>です。</div>
+
+  <h3>5-0. そもそも Primitive とは何か</h3>
+  <p>量子コンピュータに計算をさせて、私たちが最終的に知りたいことは、突き詰めると<strong>2種類しかありません</strong>。</p>
+  <ul style="margin:10px 0 10px 18px;line-height:1.9">
+    <li><strong>「どの状態が、どれくらいの確率で出るのか」を知りたい</strong> — 例:組合せ最適化で「良い答えの候補」を集めたいとき。<strong>→ Sampler</strong></li>
+    <li><strong>「ある物理量の平均値はいくつか」を知りたい</strong> — 例:分子のエネルギーを求めたいとき。<strong>→ Estimator</strong></li>
+  </ul>
+  <p>この2つを標準的な道具として用意したものが <strong>Primitive(プリミティブ=基本要素)</strong> です。「量子計算のやりたいことは、結局この2つに集約できる」という設計思想から、この名前が付いています。</p>
+
+  <h3>5-1. Sampler は「分布を見る」道具</h3>
+  <p>Sampler は回路を<strong>何度も繰り返し実行し、測定結果を集計</strong>して、どのビット列が何回出たかを返します。サイコロを何百回も振って出目を数えるイメージです。</p>
+  <pre><code>from qiskit_ibm_runtime import SamplerV2 as Sampler
+sampler = Sampler(mode=backend)          <span class="cmt"># 実行の場を渡す(§0参照)</span>
+sampler.options.default_shots = 300      <span class="cmt"># 「回路を何回実行するか」</span>
+job = sampler.run([isa_circuit])         <span class="cmt"># PUB のリストを渡す</span>
+result = job.result()
+counts = result[0].data.meas.get_counts()</code></pre>
+
+  <div class="box why"><div class="t">💡 なぜ Sampler には <code>measure</code> が必要なのか</div>
+  <p>Sampler が返すのは「<strong>測定した結果の集計</strong>」です。つまり<strong>測定していないものは集計できません</strong>。だから回路に <code>measure</code> が入っていなければ、Sampler は何も数えられず意味のある結果になりません。</p>
+  <p>逆に言えば、「measure が必要かどうか」は暗記ではなく、<strong>返すものが測定結果の集計だから当然必要</strong>、と理解できます。</p></div>
+
+  <div class="box why"><div class="t">💡 shots(ショット数)の意味</div>
+  <p>量子測定は本質的に確率的なので、1回実行しただけでは分布は分かりません。<strong>同じ回路を何度も実行して、はじめて「どの状態が何割出るか」が見えてきます</strong>。この繰り返し回数が <strong>shots</strong> です。</p>
+  <p>shots を増やすほど分布の精度は上がりますが、その分だけ実行時間もかかります。<code>default_shots</code> は「<strong>回路を実行する回数</strong>」を指す、という理解で正確です。</p></div>
+
+  <h3>5-2. Sampler と Estimator の違い(ここを理解すれば⑤⑥は解ける)</h3>
+  <p>この2つの対比は、形を変えて何度も問われる論点です。<strong>すべては「返すものが違う」という一点から導けます</strong>。</p>
+  <table>
+    <tr><th></th><th>Sampler</th><th>Estimator</th></tr>
+    <tr><td><strong>返すもの</strong></td><td>測定結果の<strong>分布</strong>(どのビット列が何回出たか)</td><td>物理量の<strong>期待値</strong>(1つの数値)+ その誤差</td></tr>
+    <tr><td>知りたいこと</td><td>「どの答えがよく出るか」</td><td>「この量の平均はいくつか」</td></tr>
+    <tr><td><code>measure</code></td><td><strong>必要</strong>(測らないと数えられない)</td><td><strong>不要</strong>(observable で何を測るか伝えている)</td></tr>
+    <tr><td>observable</td><td>不要</td><td><strong>必要</strong>(測る対象そのもの)</td></tr>
+    <tr><td>精度の指定</td><td><code>shots</code>(実行回数)</td><td><code>precision</code>(許容誤差)</td></tr>
+    <tr><td>結果の取り出し</td><td><code>data.&lt;レジスタ名&gt;.get_counts()</code></td><td><code>data.evs</code> / <code>data.stds</code></td></tr>
+    <tr><td>典型的な用途</td><td>QAOA、組合せ最適化、サンプリング</td><td>VQE、化学計算、量子機械学習</td></tr>
+  </table>
+  <div class="box why"><div class="t">💡 迷ったときの判断のしかた</div>
+  <p>問題文に <strong>observable / expectation value / precision</strong> が出てきたら Estimator の話、<strong>counts / distribution / shots / measure</strong> が出てきたら Sampler の話です。</p>
+  <p>さらに根本に戻ると、<strong>「答えの候補を集めたいのか(Sampler)」「1つの数値を求めたいのか(Estimator)」</strong>を考えれば、どちらの道具かは必ず決まります。</p></div>
+
+  <h3>5-3. run() の使い方</h3>
+  <p><code>run()</code> には<strong>PUB のリスト</strong>を渡します。リストで渡すのは、<strong>複数の依頼をまとめて投げられる</strong>ようにするためです。</p>
+  <pre><code>sampler.run([isa_circuit])           <span class="cmt"># 依頼1件(回路だけの簡略形)</span>
+sampler.run([pub1, pub2, pub3])      <span class="cmt"># 依頼3件をまとめて</span></code></pre>
+  <p>結果も同じ順番のリストで返るので、<code>result[0]</code> が1件目、<code>result[1]</code> が2件目に対応します。</p>
+</section>
+
+<section id="s6">
+  <p class="kicker">Textbook · Section 06</p>
+  <div class="sechead"><h2>Estimator プリミティブ<br><span class="disp" style="font-size:16px;color:var(--muted)">Use the estimator primitive</span></h2><span class="wtag">12%</span></div>
+
+  <h3>6-1. Estimator は「平均値を求める」道具</h3>
+  <p>Estimator は、回路が作った状態に対して<strong>ある物理量の平均値(期待値)</strong>を返します。返ってくるのは分布ではなく、<strong>1つの数値</strong>です。</p>
+  <pre><code>from qiskit_ibm_runtime import EstimatorV2 as Estimator
+from qiskit.quantum_info import SparsePauliOp
+
+obs = SparsePauliOp("ZZ")                <span class="cmt"># 測りたい物理量(オブザーバブル)</span>
+estimator = Estimator(mode=backend)
+job = estimator.run([(isa_circuit, obs)])
+evs = job.result()[0].data.evs           <span class="cmt"># 期待値。誤差は .stds</span></code></pre>
+
+  <div class="box why"><div class="t">💡 オブザーバブル(observable)とは何か</div>
+  <p>オブザーバブルは<strong>「何を測りたいか」を指定するもの</strong>です。日本語では「観測量」と訳されます。</p>
+  <p>たとえば同じ量子状態でも、「Z方向の値を知りたい」のか「X方向の値を知りたいのか」で、測るべき量は変わります。<code>SparsePauliOp("ZZ")</code> は「2つの qubit の Z を掛け合わせた量」を意味します。<strong>回路が「どんな状態を作るか」を決め、オブザーバブルが「その状態の何を測るか」を決める</strong>、という役割分担です。</p></div>
+
+  <div class="box why"><div class="t">💡 なぜ Estimator には <code>measure</code> が要らないのか</div>
+  <p>Sampler では自分で <code>measure</code> を書きました。しかし Estimator では書きません。理由は、<strong>「何をどう測るか」をオブザーバブルとして既に渡しているから</strong>です。</p>
+  <p>Estimator は、渡されたオブザーバブルに応じて<strong>必要な測定を内部で自動的に組み立てて実行</strong>します。私たちが手で <code>measure</code> を書くと、むしろその仕組みと衝突してしまいます。</p>
+  <p>つまり:<strong>Sampler は「測って数える」ので measure が要る。Estimator は「何を測るか」を observable で伝えるので measure は要らない</strong>。これは暗記ではなく、役割の違いから自然に導けます。</p></div>
+
+  <div class="box why"><div class="t">💡 期待値(expectation value)とは</div>
+  <p>期待値は<strong>「何度も測ったときの平均値」</strong>です。量子測定は1回ごとに結果がばらつくので、たくさん測って平均を取ります。その平均が期待値で、結果の <code>data.evs</code>(expectation values)に入ります。</p>
+  <p>平均には必ず<strong>ばらつき(誤差)</strong>が伴うので、Estimator は <code>data.stds</code>(standard deviations=標準偏差)も返します。<strong>「値」と「その誤差」がセット</strong>で返ってくる、と理解してください。</p></div>
+
+  <h3>6-2. PUB — プリミティブに渡す「1件の計算依頼」</h3>
+  <p><strong>PUB(Primitive Unified Bloc)</strong> は、「この回路で、これを、この条件で計算してください」という<strong>依頼1件分のまとまり</strong>です。<code>run()</code> にはこの依頼をリストで渡します(複数件まとめて頼めます)。</p>
+  <table>
+    <tr><th></th><th>PUB の中身</th><th>意味</th></tr>
+    <tr><td><strong>Sampler</strong></td><td><code>(circuit, parameters, shots)</code></td><td>この回路を、この値を入れて、何回実行するか</td></tr>
+    <tr><td><strong>Estimator</strong></td><td><code>(circuit, observable, parameters, precision)</code></td><td>この回路の、この物理量を、この値を入れて、どの精度で求めるか</td></tr>
+  </table>
+  <div class="box why"><div class="t">💡 PUB に入るもの・入らないものの区別</div>
+  <p>PUB に入るのは<strong>「計算の内容」</strong>だけです。<strong>「どこで・どう実行するかという設定」は入りません</strong>。</p>
+  <p>・<strong>計算内容(PUBに入る)</strong>:回路、オブザーバブル、パラメータ値、精度<br>
+  ・<strong>実行の設定(PUBに入らない)</strong>:バックエンド(プリミティブ作成時の <code>mode=</code> で指定)、誤り緩和の強さ(<code>options</code> で指定)</p>
+  <p>「何を計算するか」と「どう実行するか」は別のレイヤーだ、と考えると自然に切り分けられます。</p></div>
+  <div class="box why"><div class="t">💡 パラメータ回路 — 値を後から差し込める回路</div>
+  <p>PUB の parameters は「<strong>パラメータ回路の空欄に入れる値</strong>」です。</p>
+  <p>通常の回路は <code>qc.ry(0.5, 0)</code> のように角度が固定されています。これに対し <code>theta = Parameter('θ')</code> として <code>qc.ry(theta, 0)</code> と書くと、<strong>角度を空欄にしたまま回路の形だけを組める</strong>ようになります。料理のレシピで「塩を X g」と書いておくようなものです。</p>
+  <p>これが効くのは <strong>VQE や QAOA</strong> のように、<strong>角度を少しずつ変えながら何十回・何百回と試して最適な値を探す</strong>アルゴリズムです。毎回回路を組み直す代わりに、同じ回路に値だけを差し替えて実行できます。</p></div>
+
+  <h3>6-3. precision と shots の関係(計算問題)</h3>
+  <p>必要ショット数は精度の2乗に反比例:$\text{shots}\propto 1/\text{precision}^2$。<strong>precisionの値を大きくする(=精度を粗くする)とショット数は減る</strong>。例:0.015625→0.03125(2倍粗く)で、ショットは約 $1/4$ に減少。ワナ:precisionは「許容誤差」なので<strong>値が大きい=精度が低い</strong>(逆)。結果の <code>data.stds</code>(標準偏差=誤差)は precision を小さくする(shots増)ほど小さくなる。</p>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">If precision changes 0.015625 → 0.03125, the number of shots... → It decreases the number of shots</div></div>
+
+  <h3>6-4. 誤り抑制(suppression)と誤り緩和(mitigation)</h3>
+  <table>
+    <tr><th>分類</th><th>手法</th><th>設定場所</th></tr>
+    <tr><td>抑制 Suppression</td><td>Dynamical Decoupling (DD) / Pauli Twirling</td><td><code>options.dynamical_decoupling</code> / <code>options.twirling</code></td></tr>
+    <tr><td>緩和 Mitigation</td><td>Zero Noise Extrapolation (ZNE) / TREX(測定) / PEC</td><td><code>options.resilience</code></td></tr>
+  </table>
+  <p><code>resilience_level</code>:0=なし、1=最小(既定で測定誤り緩和TREX)、2=中(ZNEなど)。</p>
+  <div class="box why"><div class="t">💡 3つの言葉を、意味から区別する</div>
+  <p>誤りへの対処には3つのレベルがあり、英単語の意味がそのまま違いを表しています。</p>
+  <p>・<strong>error suppression(抑制)</strong> — suppress は「抑え込む」。<strong>実行している最中に、ノイズが乗るのを予防</strong>します。<br>
+  ・<strong>error mitigation(緩和)</strong> — mitigate は「和らげる」。<strong>実行が終わった後に、結果を計算で補正</strong>します。<br>
+  ・<strong>error correction(訂正)</strong> — correct は「訂正する」。<strong>誤りを検出して直接修正</strong>する最も高度な方法で、<strong>現在のプリミティブでは提供されていません</strong>。</p>
+  <p>したがって「誤り訂正がデフォルトで有効になっている」という趣旨の選択肢は誤りです。<strong>予防(実行中)→ 補正(実行後)→ 訂正(未提供)</strong>という段階で捉えてください。</p></div>
+
+  <div class="box why"><div class="t">💡 DD と Twirling — 何をしているかで区別する</div>
+  <p>どちらも抑制(実行中の予防)ですが、<strong>アプローチが全く違います</strong>。</p>
+  <p><strong>DD(Dynamical Decoupling)は「パルスで守る」</strong><br>
+  qubit は放っておくと周囲の環境の影響で状態が崩れていきます。そこで<strong>短いパルスを一定の間隔で繰り返しかけ続ける</strong>ことで、環境からの影響を打ち消し、<strong>状態をより長く保ちます</strong>。decoupling(切り離す)という名前は、qubit を環境ノイズから切り離すことを表しています。</p>
+  <p><strong>Twirling は「ランダム化してならす」</strong><br>
+  実機のノイズには「いつも同じ方向に偏る」性質(系統誤差)があります。そこで<strong>回路にランダムな変化を加えて何度も実行し、偏りを平均化して打ち消します</strong>。twirl(ひねる・回す)という名前は、このランダムな変換を表しています。</p>
+  <p>整理すると、<strong>DD = パルスで状態を保つ / Twirling = ランダム化して誤差を平均化する</strong>。この2つは説明が入れ替えて出題されやすいので、「パルス」と「ランダム化」という語で区別してください。</p></div>
+
+  <div class="box why"><div class="t">💡 緩和の3手法と、resilience との関係</div>
+  <p><strong>resilience</strong> は「回復力・耐性」という意味で、<strong>誤り緩和(mitigation)の設定</strong>を指します。ここに入るのは緩和の手法だけです。</p>
+  <p>・<strong>ZNE</strong>(Zero Noise Extrapolation)— <strong>わざとノイズを増やして</strong>何度か測り、その傾向から<strong>「ノイズが0だったらどうなるか」を外挿</strong>して推定します。<br>
+  ・<strong>TREX</strong>(Twirled Readout Error eXtinction)— <strong>測定そのものの読み取り誤り</strong>を学習して取り除きます。<br>
+  ・<strong>PEC</strong>(Probabilistic Error Cancellation)— ノイズの逆の操作を確率的に混ぜて<strong>誤りを相殺</strong>します。最も精度が高い一方、コストも最大です。</p>
+  <p>一方 <strong>DD と Twirling は抑制</strong>なので resilience には含まれず、それぞれ別の設定項目になります。</p></div>
+
+  <div class="box why"><div class="t">💡 どちらのプリミティブで使えるのか</div>
+  <p>・<strong>抑制(DD / Twirling)は Sampler でも Estimator でも使えます。</strong>実行中にノイズを防ぐ工夫なので、何を返す道具かに関係なく有効だからです。<br>
+  ・<strong>緩和(ZNE / TREX / PEC)は Estimator が中心です。</strong>これらは<strong>期待値という「数値」を補正する</strong>技術なので、期待値を返す Estimator と結びついています。</p></div>
+
+  <h3>6-5. ブロードキャスト(4パターン・図問題対応)</h3>
+  <p>1つのPUBで「複数のパラメータ集合 × 複数のオブザーバブル」をまとめて渡すとき、その<strong>組み合わせ方(ブロードキャストのルール)</strong>が4種類ある。図で <code>(3,6)</code> のような <strong>shape(形)</strong> が示され、「どのパターンか」を問われる。まず全体像:</p>
+  <table>
+    <tr><th>パターン</th><th>やること</th><th>見分け方(shape)</th></tr>
+    <tr><td><strong>broadcast single observable</strong></td><td>オブザーバブル<strong>1個</strong>を、全パラメータ集合に配る</td><td>observableが1個だけ(形が(1,)や単体)</td></tr>
+    <tr><td><strong>zip</strong></td><td>パラメータと観測量を<strong>1対1で対応</strong>(先頭から順にペア)</td><td>両者が<strong>同じ形</strong>(例 両方(3,))→ 結果も同じ形</td></tr>
+    <tr><td><strong>outer / product</strong></td><td><strong>全組み合わせ(直積)</strong>を作る</td><td>別々の軸に並ぶ(例 (3,1)と(1,2)→(3,2))</td></tr>
+    <tr><td><strong>standard nd generalization</strong></td><td>形の違う配列を<strong>NumPy式ブロードキャスト</strong>(1の次元を相手に合わせて拡張)</td><td>形が違い、<strong>1の次元が拡張</strong>される(例 (3,6)と(2,3,1)→(2,3,6))</td></tr>
+  </table>
+
+  <p style="margin-top:16px"><strong>4つのパターンを図にすると、違いがはっきりします</strong>(丸=パラメータ集合、四角=オブザーバブル、線=1回の計算):</p>
+  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:14px 0 6px">
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:12px;background:#fff">
+      <svg viewBox="0 0 240 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <text x="46" y="16" font-size="10" fill="#7b7b95" text-anchor="middle">params (3,)</text>
+        <text x="196" y="16" font-size="10" fill="#7b7b95" text-anchor="middle">observable 1個</text>
+        <circle cx="46" cy="42" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="46" y="46" font-size="10" text-anchor="middle" fill="#16162a">p0</text>
+        <circle cx="46" cy="82" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="46" y="86" font-size="10" text-anchor="middle" fill="#16162a">p1</text>
+        <circle cx="46" cy="122" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="46" y="126" font-size="10" text-anchor="middle" fill="#16162a">p2</text>
+        <rect x="178" y="68" width="38" height="28" rx="5" fill="#fdf0f8" stroke="#c0399f"/><text x="197" y="86" font-size="11" text-anchor="middle" fill="#16162a">O</text>
+        <line x1="59" y1="42" x2="177" y2="78" stroke="#8a8db0" stroke-width="1.3"/>
+        <line x1="59" y1="82" x2="177" y2="82" stroke="#8a8db0" stroke-width="1.3"/>
+        <line x1="59" y1="122" x2="177" y2="86" stroke="#8a8db0" stroke-width="1.3"/>
+        <text x="120" y="146" font-size="10" text-anchor="middle" fill="#2e8b57">結果 3件</text>
+      </svg>
+      <div style="font-size:12px;margin-top:4px"><strong>broadcast single observable</strong><br><span style="color:#7b7b95">1個の観測量を全パラメータに配る</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:12px;background:#fff">
+      <svg viewBox="0 0 240 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <text x="46" y="16" font-size="10" fill="#7b7b95" text-anchor="middle">params (3,)</text>
+        <text x="194" y="16" font-size="10" fill="#7b7b95" text-anchor="middle">obs (3,)</text>
+        <circle cx="46" cy="42" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="46" y="46" font-size="10" text-anchor="middle" fill="#16162a">p0</text>
+        <circle cx="46" cy="82" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="46" y="86" font-size="10" text-anchor="middle" fill="#16162a">p1</text>
+        <circle cx="46" cy="122" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="46" y="126" font-size="10" text-anchor="middle" fill="#16162a">p2</text>
+        <rect x="176" y="28" width="38" height="28" rx="5" fill="#fdf0f8" stroke="#c0399f"/><text x="195" y="46" font-size="10" text-anchor="middle" fill="#16162a">O0</text>
+        <rect x="176" y="68" width="38" height="28" rx="5" fill="#fdf0f8" stroke="#c0399f"/><text x="195" y="86" font-size="10" text-anchor="middle" fill="#16162a">O1</text>
+        <rect x="176" y="108" width="38" height="28" rx="5" fill="#fdf0f8" stroke="#c0399f"/><text x="195" y="126" font-size="10" text-anchor="middle" fill="#16162a">O2</text>
+        <line x1="59" y1="42" x2="175" y2="42" stroke="#2e8b57" stroke-width="1.6"/>
+        <line x1="59" y1="82" x2="175" y2="82" stroke="#2e8b57" stroke-width="1.6"/>
+        <line x1="59" y1="122" x2="175" y2="122" stroke="#2e8b57" stroke-width="1.6"/>
+        <text x="120" y="146" font-size="10" text-anchor="middle" fill="#2e8b57">結果 3件(同じ形)</text>
+      </svg>
+      <div style="font-size:12px;margin-top:4px"><strong>zip</strong><br><span style="color:#7b7b95">先頭から1対1でペアにする</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:12px;background:#fff">
+      <svg viewBox="0 0 240 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <text x="42" y="16" font-size="10" fill="#7b7b95" text-anchor="middle">params (3,1)</text>
+        <text x="196" y="16" font-size="10" fill="#7b7b95" text-anchor="middle">obs (1,2)</text>
+        <circle cx="42" cy="42" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="42" y="46" font-size="10" text-anchor="middle" fill="#16162a">p0</text>
+        <circle cx="42" cy="82" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="42" y="86" font-size="10" text-anchor="middle" fill="#16162a">p1</text>
+        <circle cx="42" cy="122" r="13" fill="#efe9ff" stroke="#5b3df0"/><text x="42" y="126" font-size="10" text-anchor="middle" fill="#16162a">p2</text>
+        <rect x="178" y="46" width="38" height="26" rx="5" fill="#fdf0f8" stroke="#c0399f"/><text x="197" y="63" font-size="10" text-anchor="middle" fill="#16162a">O0</text>
+        <rect x="178" y="92" width="38" height="26" rx="5" fill="#fdf0f8" stroke="#c0399f"/><text x="197" y="109" font-size="10" text-anchor="middle" fill="#16162a">O1</text>
+        <line x1="55" y1="42" x2="177" y2="56" stroke="#8a8db0" stroke-width="1.1"/>
+        <line x1="55" y1="42" x2="177" y2="100" stroke="#8a8db0" stroke-width="1.1"/>
+        <line x1="55" y1="82" x2="177" y2="60" stroke="#8a8db0" stroke-width="1.1"/>
+        <line x1="55" y1="82" x2="177" y2="104" stroke="#8a8db0" stroke-width="1.1"/>
+        <line x1="55" y1="122" x2="177" y2="66" stroke="#8a8db0" stroke-width="1.1"/>
+        <line x1="55" y1="122" x2="177" y2="110" stroke="#8a8db0" stroke-width="1.1"/>
+        <text x="120" y="146" font-size="10" text-anchor="middle" fill="#2e8b57">結果 3×2 = 6件</text>
+      </svg>
+      <div style="font-size:12px;margin-top:4px"><strong>outer / product</strong><br><span style="color:#7b7b95">全組み合わせ(直積)を作る</span></div>
+    </div>
+
+    <div style="border:1px solid #e3e4ee;border-radius:10px;padding:12px;background:#fff">
+      <svg viewBox="0 0 240 150" width="100%" xmlns="http://www.w3.org/2000/svg">
+        <rect x="14" y="26" width="96" height="26" rx="6" fill="#efe9ff" stroke="#5b3df0"/>
+        <text x="62" y="44" font-size="11" text-anchor="middle" fill="#16162a">(3, 6)</text>
+        <rect x="130" y="26" width="96" height="26" rx="6" fill="#fdf0f8" stroke="#c0399f"/>
+        <text x="178" y="44" font-size="11" text-anchor="middle" fill="#16162a">(2, 3, 1)</text>
+        <g font-family="monospace" font-size="13" text-anchor="middle">
+          <text x="120" y="78" fill="#16162a">( <tspan fill="#e8920c" font-weight="bold">1</tspan> , 3 , 6 )</text>
+          <text x="120" y="98" fill="#16162a">( 2 , 3 , <tspan fill="#e8920c" font-weight="bold">1</tspan> )</text>
+        </g>
+        <line x1="58" y1="106" x2="182" y2="106" stroke="#c9cbe0" stroke-width="1.4"/>
+        <text x="120" y="126" font-family="monospace" font-size="13" text-anchor="middle" fill="#2e8b57" font-weight="bold">( 2 , 3 , 6 )</text>
+        <text x="120" y="145" font-size="9" text-anchor="middle" fill="#7b7b95">右端から揃え、1 の次元が相手に拡張される</text>
+      </svg>
+      <div style="font-size:12px;margin-top:4px"><strong>standard nd generalization</strong><br><span style="color:#7b7b95">形が違う配列をNumPy式に拡張(頻出)</span></div>
+    </div>
+  </div>
+
+  <div class="box why"><div class="t">💡 shape から判定する手順(NumPyルール)</div>
+  <p>2つの形を<strong>右端(末尾)から揃えて</strong>比較する。各次元で:<br>
+  ・数が同じ → そのまま<br>
+  ・片方が1 → もう片方の数に<strong>拡張</strong><br>
+  ・どちらも1でなく違う → エラー(組めない)<br>
+  例:<code>(3,6)</code> と <code>(2,3,1)</code> → 右揃えで <code>(1,3,6)</code> と <code>(2,3,1)</code> → 末尾 6と1→<strong>6</strong>、中央 3と3→<strong>3</strong>、先頭 1と2→<strong>2</strong> → 結果 <code>(2,3,6)</code>。これが <strong>standard nd generalization</strong>。</p></div>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:4パターンの取り違え</div>
+  <p>・観測量が<strong>1個だけ</strong>を配る → <strong>broadcast single observable</strong><br>
+  ・両者<strong>同じ形で1対1</strong> → <strong>zip</strong>(結果の要素数も同じ)<br>
+  ・<strong>全組み合わせ(直積)</strong>で要素が増える → <strong>outer/product</strong><br>
+  ・<strong>形が違い、1の次元が拡張</strong>されて結果shapeになる → <strong>standard nd generalization</strong>(今回の頻出図)<br>
+  図で示された「入力shape → 結果shape」を見て、<strong>1の次元が相手の数に化けていたら standard nd generalization</strong>。</p></div>
+  <div class="box exam"><div class="t">⚑ 難易度と優先度</div>
+  この4パターン識別は出題頻度が低く難しめ。まず「<strong>ブロードキャスト=standard multidimensional array generalization(NumPyの多次元配列の一般化)</strong>」という基本を押さえれば大半に対応できる。1問落としても合否に影響しないので、深追いは不要。</div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Which broadcasting pattern is represented (shapes (3,6) + (2,3,1) → (2,3,6))? → Standard nd generalization</div>
+  <div class="q">One observable applied to all parameter sets → broadcast single observable</div>
+  <div class="q">Parameters and observables paired one-to-one → zip</div>
+  <div class="q">All combinations produced → outer / product</div></div>
+</section>
+
+<section id="s7">
+  <p class="kicker">Textbook · Section 07</p>
+  <div class="sechead"><h2>結果の取得と分析<br><span class="disp" style="font-size:16px;color:var(--muted)">Retrieve and analyze results</span></h2><span class="wtag">10%</span></div>
+
+  <div class="box exam" style="max-width:none"><div class="t">⚑ このセクションの学び方</div>
+  結果の取得は、<strong>「実行 → ジョブ → 結果 → データ」という入れ子構造</strong>を理解すれば、コードの形が自然に読めるようになります。メソッド名を個別に暗記するより、<strong>今どの階層にいるのかを意識する</strong>ほうが確実です。</div>
+
+  <h3>7-1. ジョブと結果オブジェクト</h3>
+  <pre><code>job = sampler.run([isa])
+job.job_id(); job.status()         <span class="cmt"># 例: 'DONE','QUEUED'...</span>
+result = job.result()              <span class="cmt"># PrimitiveResult</span>
+pub_res = result[0]                <span class="cmt"># PubResult(PUBごと)</span>
+data = pub_res.data                <span class="cmt"># DataBin</span>
+<span class="cmt"># Sampler: data.&lt;creg&gt;.get_counts() / .get_bitstrings()</span>
+<span class="cmt"># Estimator: data.evs(期待値), data.stds(標準偏差)</span></code></pre>
+  <div class="box why"><div class="t">💡 結果は「入れ子」になっている</div>
+  <p>結果の取り出しが長く見えるのは、<strong>階層をたどっているだけ</strong>だからです。</p>
+  <p><strong>job</strong>(実行の依頼票)→ <code>.result()</code> → <strong>結果全体</strong>(依頼が複数あるのでリスト)→ <code>[0]</code> → <strong>1件目の結果</strong> → <code>.data</code> → <strong>データ本体</strong> → <strong>中身</strong>(Sampler ならレジスタ名、Estimator なら evs)</p>
+  <p>つまり <code>job.result()[0].data.c.get_counts()</code> は、「<strong>ジョブの結果の、1件目の、データの、c レジスタの、集計</strong>」と読めます。丸暗記ではなく、<strong>外側から内側へ順にたどっている</strong>と理解してください。</p></div>
+
+  <h3>7-1b. ジョブの状態を調べるメソッド</h3>
+  <p>ジョブは投入してすぐに終わるとは限らないため、状態を確認する手段が用意されています。名前は<strong>やりたいことを素直な英語にしたもの</strong>です。</p>
+  <table>
+    <tr><th>やりたいこと</th><th>メソッド</th><th>返るもの</th></tr>
+    <tr><td>今の状態を知る</td><td><code>status()</code></td><td>文字列('QUEUED' 'RUNNING' 'DONE' など)</td></tr>
+    <tr><td>実行中かどうか</td><td><code>running()</code></td><td>True / False</td></tr>
+    <tr><td>正常に終わったか</td><td><code>done()</code></td><td>True / False</td></tr>
+    <tr><td>もう変化しない状態か</td><td><code>in_final_state()</code></td><td>True / False</td></tr>
+    <tr><td>終わるまで待つ</td><td><code>wait_for_final_state()</code></td><td>(完了まで待機する)</td></tr>
+    <tr><td>失敗の理由を見る</td><td><code>error_message()</code></td><td>エラーメッセージ</td></tr>
+    <tr><td>ジョブIDを得る</td><td><code>job_id()</code></td><td>ID文字列</td></tr>
+  </table>
+  <div class="box why"><div class="t">💡 名前の考え方(2つだけ意識すれば十分)</div>
+  <p>・<strong>状態を尋ねるものは、状態を表す形</strong>になります。「実行する」は <code>run()</code> ですが、「実行中ですか?」は <code>running()</code> です。動作と状態は別物、という区別だけ持っておいてください。<br>
+  ・<strong>最終状態(final state)</strong>とは、DONE・ERROR・CANCELLED のように<strong>もうそれ以上変化しない状態</strong>のことです。「今そうなっているか」を尋ねるのが <code>in_final_state()</code>、「そうなるまで待つ」のが <code>wait_for_final_state()</code> です。</p></div>
+  <p>過去のジョブを取り出したいときは <code>service.job(job_id)</code>(1件)/ <code>service.jobs()</code>(一覧)、バックエンドは <code>service.backend("名前")</code>(1件)/ <code>service.backends()</code>(一覧)を使います。<strong>単数形が1件、複数形が一覧</strong>という素直な対応です。</p>
+
+  <h3>7-2. 測定結果の取り出し方:<code>.data.c</code> と <code>.data.meas</code></h3>
+  <p>Samplerの結果は「<code>result[0].data.<span style="color:var(--amber)">レジスタ名</span>.get_counts()</code>」で取る。この<strong>レジスタ名が、測定コードによって変わる</strong>のが最大の罠。</p>
+  <table>
+    <tr><th>測定コード</th><th>作られる古典レジスタ名</th><th>結果取得</th></tr>
+    <tr><td><code>QuantumCircuit(2, 2)</code> + <code>measure([0,1],[0,1])</code></td><td><code>c</code>(既定名)</td><td><code>data.c.get_counts()</code></td></tr>
+    <tr><td><code>ClassicalRegister(2,"myc")</code> を使う</td><td>付けた名前 <code>myc</code></td><td><code>data.myc.get_counts()</code></td></tr>
+    <tr><td><code>measure_all()</code></td><td><strong><code>meas</code></strong>(自動)</td><td><code>data.meas.get_counts()</code></td></tr>
+  </table>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:コードの追加問題は「取得側の名前」と合わせる</div>「既存コードに測定を追加せよ」型の問題は、<strong>下の方にある取得コードが <code>.data.c</code> か <code>.data.meas</code> か</strong>を見て決める。<code>.data.c</code> なら <code>measure([0,1],[0,1])</code>、<code>.data.meas</code> なら <code>measure_all()</code>。逆にすると名前が合わずエラー。<code>measure_all()</code> が作る名前は必ず <strong><code>meas</code></strong>。<br>なお <code>Measure(...)</code>/<code>Measure_all()</code>(大文字始まり)や引数なしの <code>measure()</code> は<strong>すべて実行エラー</strong>=消去できる。</div>
+
+  <h3>7-3. カウント辞書から値を取り出す</h3>
+  <p><code>get_counts()</code> が返すのは<strong>ただのPython辞書</strong>(例 <code>{'00':512,'11':512}</code>)。だから値の取り出しはPython標準の方法:</p>
+  <pre><code>counts = job.result()[0].data.c.get_counts()
+counts.get('00')     <span class="cmt"># 512(get メソッド。無いキーは None)</span>
+counts['00']         <span class="cmt"># 512(角カッコ。無いキーは KeyError)</span></code></pre>
+  <div class="box why"><div class="t">💡 ここは Qiskit ではなく Python の知識で解ける</div>
+  <p><code>get_counts()</code> が返すのは<strong>ごく普通の Python 辞書</strong>です。したがって特定のビット列の回数を知りたければ、Python の通常の書き方 <code>.get('00')</code> または <code>['00']</code> を使います。</p>
+  <p>コード中に <code>result()</code> が何度も出てくるため引きずられやすいのですが、<strong><code>result()</code> はジョブに対して使うもの</strong>で、辞書に対しては使いません。<strong>今どの型のものを触っているのか</strong>を意識すると迷いません。</p></div>
+
+  <h3>7-4. BitArray の扱い</h3>
+  <p>SamplerV2の測定結果は <code>BitArray</code>。<code>.get_counts()</code>(辞書)、<code>.get_bitstrings()</code>(1ショットずつのリスト)、<code>.array</code>(NumPy配列)、<code>.num_shots</code> などを持つ。</p>
+  <div class="box why"><div class="t">💡 略語の意味(覚えやすくなる)</div>
+  <p><code>creg</code>=classical register、<code>qreg</code>=quantum register。<code>evs</code>=<strong>e</strong>xpectation <strong>v</strong>alue<strong>s</strong>(期待値)、<code>stds</code>=<strong>st</strong>andard <strong>d</strong>eviation<strong>s</strong>(標準偏差=誤差)。末尾のsは「複数返りうる」から複数形。Estimator結果は「値(evs)+誤差(stds)」のペア。<code>mpl</code>=matplotlib(<code>qc.draw("mpl")</code>。他に "text"/"latex")。Pythonでは虚数を <strong><code>j</code></strong> と書く=数学の <em>i</em>。<code>0.-1.j</code> は <em>−i</em>、<code>1.+0.j</code> はただの1(<code>+0.j</code> は飾り)。</p></div>
+
+  <h3>7-5. セッションの情報を見る</h3>
+  <p>セッションには、情報を取り出すメソッドが3つあります。<strong>返ってくるものが違う</strong>ので、目的に応じて使い分けます。</p>
+  <table>
+    <tr><th>メソッド</th><th>返るもの</th><th>使う場面</th></tr>
+    <tr><td><code>session.details()</code></td><td>セッション情報の<strong>辞書</strong></td><td>詳細をまとめて見たいとき</td></tr>
+    <tr><td><code>session.status()</code></td><td>状態の<strong>文字列</strong></td><td>今開いているか等を知りたいとき</td></tr>
+    <tr><td><code>session.usage()</code></td><td>使用時間の<strong>数値(秒)</strong></td><td>どれだけ使ったか知りたいとき</td></tr>
+  </table>
+  <div class="box why"><div class="t">💡 details に入っているのは「セッション自身の情報」だけ</div>
+  <p><code>details()</code> の辞書には、<strong>そのセッションについての情報</strong>が入っています。大きく4種類です。</p>
+  <p>・<strong>身元</strong>:<code>id</code> / <code>backend_name</code> / <code>mode</code><br>
+  ・<strong>状態</strong>:<code>state</code> / <code>accepting_jobs</code>(新しいジョブを受け付けるか)<br>
+  ・<strong>時刻</strong>:<code>started_at</code> / <code>closed_at</code> / <code>activated_at</code> / <code>last_job_started</code> / <code>last_job_completed</code><br>
+  ・<strong>時間</strong>:<code>usage_time</code> / <code>max_time</code> / <code>interactive_timeout</code> / <code>active_timeout</code></p>
+  <p>逆に言えば、<strong>セッション自身のことではないもの</strong>——たとえば実行した回路の中身や、誤り緩和の設定、量子デバイス側の状態——は含まれません。<strong>「これはセッション自身の情報か?」</strong>という基準で判断できます。</p></div>
+  <div class="box why"><div class="t">💡 セッションの閉じ方は2種類ある</div>
+  <p>どちらもセッションを終了しますが、<strong>実行中のジョブの扱いが逆</strong>です。</p>
+  <p>・<strong><code>close()</code></strong> — 新しい受付は止めるが、<strong>すでに投入済みのジョブは最後まで実行させます</strong>。お店の「閉店作業」に近く、中のお客さんは対応し終えてから閉めるイメージです。<br>
+  ・<strong><code>cancel()</code></strong> — <strong>実行中・待機中のジョブごと打ち切ります</strong>。</p>
+  <p>「ジョブを完了させたい」なら <code>close()</code>、「今すぐ止めたい」なら <code>cancel()</code>。<strong>目的で選び分けてください。</strong></p></div>
+</section>
+
+<section id="s8">
+  <p class="kicker">Textbook · Section 08</p>
+  <div class="sechead"><h2>OpenQASM<br><span class="disp" style="font-size:16px;color:var(--muted)">Operate with OpenQASM</span></h2><span class="wtag">6%</span></div>
+
+  <h3>8-1. OpenQASM 3 の古典型(頻出)</h3>
+  <p>OpenQASM 3 が<strong>サポートする</strong>古典スカラ型:<code>bit</code>, <code>bool</code>, <code>int</code>, <code>uint</code>, <code>float</code>, <code>angle</code>, <code>complex</code>, <code>duration</code>, <code>stretch</code>。</p>
+  <div class="box exam"><div class="t">⚑ 試験ポイント</div>
+  「OpenQASM 3 がサポートする古典型は?」→ <strong>complex</strong>。<br>ダミー(非サポート):<code>class</code>, <code>char</code>, <code>enum</code>, <code>string</code>。</div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Which is a classical data type supported by OpenQASM 3? → complex</div></div>
+
+  <h3>8-2. QiskitとOpenQASMの相互変換</h3>
+  <pre><code>from qiskit import qasm3, qasm2
+<span class="cmt"># --- OpenQASM 3 ---</span>
+qasm3.dump(qc, file_stream)   <span class="cmt"># ファイルストリームに書き出す</span>
+s = qasm3.dumps(qc)           <span class="cmt"># 文字列で得る</span>
+qc = qasm3.loads(s)           <span class="cmt"># 文字列から読み込む</span>
+<span class="cmt"># --- OpenQASM 2 ---</span>
+qasm2.dump(qc, "bell.qasm"); qc = qasm2.load("bell.qasm")</code></pre>
+  <div class="box exam"><div class="t">⚑ 試験ポイント:export</div>
+  回路 <code>qc</code> をOpenQASM3でファイルストリーム <code>qasmprogram</code> に保存 → <strong><code>qiskit.qasm3.dump(qc, qasmprogram)</code></strong>。<br>
+  ✗ <code>qc.to_openqasm3(...)</code>、✗ <code>qasm3.export(...)</code>(どちらもエラー)。「文字列が欲しい=<code>dumps</code>」「ファイル=<code>dump</code>」の使い分け。</div>
+  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="q">Export qc to OpenQASM 3 into a file stream qasmprogram → qiskit.qasm3.dump(qc, qasmprogram)</div></div>
+  <pre><code><span class="cmt"># dump 後のファイル中身イメージ</span>
+OPENQASM 3.0;
+include "stdgates.inc";
+qubit[2] q;
+h q[0];
+cx q[0], q[1];</code></pre>
+
+  <h3>8-3. QASMプログラムの構文ルール(loads で読む問題)</h3>
+  <p>QASM文字列を <code>qasm3.loads(program)</code> で読み込む問題では、<strong>program 文字列の書式</strong>が正しいものを選ぶ。</p>
+  <div class="box trap"><div class="t">⚠ 勘違い注意:3つの必須ルール</div>
+  <p>① <strong>1行目は正確に <code>OPENQASM 3.0;</code></strong>(<code>OPENQASM</code>=OPEN+QASM、全部大文字1語)。<code>QASM 3.0;</code>(OPEN欠落)はエラー。<br>
+  ② <strong><code>OPENQASM 3.0;</code> は必ず最初の行</strong>(includeや宣言より前)。位置がずれた選択肢はエラー。<br>
+  ③ <strong>使う変数(<code>bit</code>/<code>qubit</code>)は使う前に宣言</strong>する。<code>meas[0] = measure q[0];</code> があるのに <code>bit[1] meas;</code> が無ければ未宣言エラー。<br>
+  正しい順序:<code>OPENQASM 3.0;</code> → <code>include</code> → <code>bit/qubit</code> 宣言 → 操作。Qiskitの「測定結果は古典ビットに格納」がQASMでは「<code>bit</code> を宣言してから <code>measure</code>」に対応。QASM問題は毎回<strong>違う箇所</strong>(綴り/位置/宣言漏れ)を突くので全項目チェック。</p></div>
+  <pre><code>OPENQASM 3.0;                <span class="cmt"># ① 必ず先頭</span>
+include "stdgates.inc";
+bit[1] meas;                 <span class="cmt"># ② 使う古典ビットを宣言</span>
+qubit[1] q;
+h q[0];
+meas[0] = measure q[0];</code></pre>
+</section>
+
+<section id="exam">
+  <p class="kicker">Practice · 問題集</p>
+  <div class="sechead"><h2>問題集</h2></div>
+  <p>問題文は<strong>試験と同じ英語</strong>、解説は日本語です。「▸ 解答・解説」をタップで開きます。
+  <strong>Part A</strong> は公式サンプルテストの<strong>論点マップ</strong>(問題文は再掲せず、IBMの配布物を参照)。
+  <strong>Part B〜E の64問</strong>は<span class="src" style="display:inline-block">予想</span>=このガイドのオリジナル予想問題です。</p>
+
+  <h3>Part A — 公式サンプルテスト(21問)の論点マップ</h3>
+
+  <div class="box exam"><div class="t">⚑ 問題文はIBMの配布物を直接参照してください</div>
+  <p style="margin:8px 0">公式サンプルテストの問題文そのものはIBMの著作物なので、このガイドでは<strong>再掲していません</strong>。
+  IBMが配布しているサンプルテストを手元で開き、下の表と突き合わせて使ってください。</p>
+  <p style="margin:8px 0">・<strong>公式サンプルテスト・試験ブループリント</strong>:<a href="https://www.ibm.com/training/certification/C0010300" target="_blank">IBM Certification — Qiskit v2.X Developer</a><br>
+  ・<strong>日本語の詳しい解説</strong>:<a href="https://schrodinteq.github.io/japanese/ibmcertsamplev2x01/" target="_blank">前編(Q1〜Q11)</a> / <a href="https://schrodinteq.github.io/japanese/ibmcertsamplev2x02/" target="_blank">後編(Q12〜Q21)</a></p></div>
+
+  <p>下の表は、21問が<strong>どのセクションの何を問うているか</strong>と、その論点に対する<strong>このガイドの要点</strong>の対応表です。
+  サンプルテストを解いたあと、間違えた問題の行から該当セクション(§)に戻ってください。
+  <strong>解答そのものは載せていません</strong>ので、答え合わせはIBMの配布物で行ってください。</p>
+
+  <table>
+    <tr><th>#</th><th>§</th><th>問われている論点</th><th>このガイドの要点</th></tr>
+    <tr><td><strong>Q1</strong></td><td>§1</td><td>Pauli文字列と行列の対応</td><td><code>Pauli('AB')</code>=A⊗B。<strong>右端が qubit 0</strong>、先頭の <code>-</code> は全体係数。対角に1,-1,1,-1 なら $I\otimes Z$。</td></tr>
+    <tr><td><strong>Q2</strong></td><td>§1</td><td>位相ゲートが |1⟩ に与える位相</td><td><strong>T→π/4、S→π/2、Z→π</strong>。diag(1,·) の形なので |0⟩ には効かない。</td></tr>
+    <tr><td><strong>Q3</strong></td><td>§1</td><td>RY で作る確率</td><td>$P(1)=\sin^2(\theta/2)$。π/2→0.5、π→1.0、π/4→0.146。</td></tr>
+    <tr><td><strong>Q4</strong></td><td>§2/3</td><td>ダイナミック回路と回路図の対応</td><td><code>if_test((c0,1))</code> ⇄ 図の <code>c_0=0x1</code>(16進)。<strong>else の有無・if側のゲート種別・条件値</strong>の3点で選択肢を絞る。</td></tr>
+    <tr><td><strong>Q5</strong></td><td>§2</td><td>Statevector からヒストグラム</td><td>index $k$ を2進 $q_{n-1}..q_0$ と読む。<strong>符号(位相)は棒の高さに出ない</strong>。</td></tr>
+    <tr><td><strong>Q6</strong></td><td>§2</td><td>qsphere の読み方</td><td><strong>色=位相</strong>、大きさ=確率。同色なら $\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$、<code>z(0)</code> を足すと色が変わる。</td></tr>
+    <tr><td><strong>Q7</strong></td><td>§3</td><td>パラメータ化回路</td><td><code>Parameter('theta')</code> を作って <code>qc.rx(theta,0)</code>。文字列を直接渡すのは誤り。</td></tr>
+    <tr><td><strong>Q8</strong></td><td>§3</td><td>レジスタの種類</td><td>測定結果を格納するのは <strong>Classical register</strong>。「Circuit register」は存在しない。</td></tr>
+    <tr><td><strong>Q9</strong></td><td>§4</td><td>トランスパイルと SWAP 挿入</td><td><code>coupling_map</code> で<strong>直結していない</strong>2qubit間に CX を置くと <strong>SWAP が自動挿入</strong>される。<code>initial_layout</code> は論理→物理の対応。</td></tr>
+    <tr><td><strong>Q10</strong></td><td>§4</td><td>実行モード</td><td><strong>session / batch / single job</strong> の3つ。classical・parallel・quantum はダミー。</td></tr>
+    <tr><td><strong>Q11</strong></td><td>§4</td><td>Session の開き方</td><td><code>QiskitRuntimeService()</code> → <code>Session(service.least_busy())</code>。<code>open_session()</code> のようなメソッドは存在しない。</td></tr>
+    <tr><td><strong>Q12</strong></td><td>§6</td><td>ブロードキャストのパターン</td><td>形の違う配列を1の次元で拡張するのは <strong>standard multidimensional array generalization</strong>(§6-5 の図)。</td></tr>
+    <tr><td><strong>Q13</strong></td><td>§5</td><td>shots の意味</td><td><code>default_shots</code> は<strong>回路を実行する回数</strong>。</td></tr>
+    <tr><td><strong>Q14</strong></td><td>§5</td><td>Sampler の run()</td><td><strong>PUB のリスト</strong>を渡す(<code>sampler.run([isa])</code>)。<code>distribution</code> や <code>runs</code> という引数は無い。</td></tr>
+    <tr><td><strong>Q15</strong></td><td>§6</td><td>precision と shots</td><td>precision を大きく(粗く)すると shots は<strong>減る</strong>($\propto 1/\text{precision}^2$)。</td></tr>
+    <tr><td><strong>Q16</strong></td><td>§6</td><td>resilience で使える手法</td><td><strong>ZNE</strong>。DD と Pauli twirling は<strong>抑制(suppression)側</strong>、誤り訂正は未提供。</td></tr>
+    <tr><td><strong>Q17</strong></td><td>§6</td><td>Estimator の PUB</td><td><code>(circuit, observable, parameter_values, <strong>precision</strong>)</code>。末尾が precision。</td></tr>
+    <tr><td><strong>Q18</strong></td><td>§4</td><td>session の目的</td><td>量子コンピュータへの<strong>一連の呼び出しをグループ化</strong>する(反復アルゴリズムの待ち時間削減)。</td></tr>
+    <tr><td><strong>Q19</strong></td><td>§7</td><td>session.details() の中身</td><td><strong>セッション自身の情報</strong>だけ(state、最後に完了したジョブの時刻など)。回路の深さやPUBは入らない。</td></tr>
+    <tr><td><strong>Q20</strong></td><td>§8</td><td>OpenQASM 3 の古典型</td><td><strong>complex</strong> はサポート。class・char・enum・string は非サポート。</td></tr>
+    <tr><td><strong>Q21</strong></td><td>§8</td><td>OpenQASM 3 への書き出し</td><td>ファイルストリームは <code>qiskit.qasm3.<strong>dump</strong>(qc, stream)</code>、文字列は <code>dumps</code>。</td></tr>
+  </table>
+
+  <div class="box why"><div class="t">💡 この表の使い方</div>
+  <p>1周目はサンプルテストを時間を計って通しで解き、2周目はこの表の「要点」を見ずに自分の言葉で言えるか試してください。
+  言えなかった行が弱点です。<strong>該当の §</strong> に戻って読み直し、Part B〜E の予想問題で同じ論点を潰すと定着します。</p></div>
+</section>
+
+<section id="examB">
+  <p class="kicker">Practice · Part B</p>
+  <div class="sechead"><h2>オリジナル予想問題 30問</h2></div>
+  <p>公式と同じ形式・難度で作成。全問解けるまで反復してください。</p>
+
+  <div class="q"><div class="qh"><span class="qnum">B1</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Which gate puts |0⟩ into an equal superposition (|0⟩+|1⟩)/√2 ?</div>
+  <ul class="opts"><li data-k="A"><code>qc.x(0)</code></li><li data-k="B"><code>qc.h(0)</code></li><li data-k="C"><code>qc.z(0)</code></li><li data-k="D"><code>qc.t(0)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Hadamardが等重ね合わせを作る。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B2</span><span class="src">予想 · §1</span></div>
+  <div class="stem">What tensor product does <code>Pauli('XZ')</code> represent?</div>
+  <ul class="opts"><li data-k="A">$Z\otimes X$</li><li data-k="B">$X\otimes Z$ (q1=X, q0=Z)</li><li data-k="C">$X+Z$</li><li data-k="D">$XZ$ on one qubit</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>左の文字=上位qubit。<code>'XZ'</code>=$X\otimes Z$、右端Zがq0。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B3</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Applying the S gate to |1⟩ introduces which phase?</div>
+  <ul class="opts"><li data-k="A">π/4</li><li data-k="B">π/2</li><li data-k="C">π</li><li data-k="D">−π/2</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>S=diag(1,$i$)=diag(1,$e^{i\pi/2}$)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B4</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Probability of measuring 0 after <code>qc.x(0); qc.h(0)</code> ?</div>
+  <ul class="opts"><li data-k="A">0.0</li><li data-k="B">0.25</li><li data-k="C">0.5</li><li data-k="D">1.0</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br>X→|1⟩、H|1⟩=(|0⟩−|1⟩)/√2。P(0)=0.5。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B5</span><span class="src">予想 · §1</span></div>
+  <div class="stem">For a 2-qubit system, which builds the observable "Z on qubit 0, I on qubit 1"?</div>
+  <ul class="opts"><li data-k="A"><code>SparsePauliOp("ZI")</code></li><li data-k="B"><code>SparsePauliOp("IZ")</code></li><li data-k="C"><code>SparsePauliOp("Z")</code></li><li data-k="D"><code>Pauli("ZZ")</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>右端=q0。q0にZ、q1にIなら<code>"IZ"</code>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B6</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Which call renders the circuit using matplotlib?</div>
+  <ul class="opts"><li data-k="A"><code>qc.show()</code></li><li data-k="B"><code>qc.draw("mpl")</code></li><li data-k="C"><code>qc.plot()</code></li><li data-k="D"><code>draw_circuit(qc)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br><code>output</code>は<code>"text"/"mpl"/"latex"</code>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B7</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Which function shows each qubit as a separate Bloch sphere?</div>
+  <ul class="opts"><li data-k="A"><code>plot_histogram</code></li><li data-k="B"><code>plot_state_city</code></li><li data-k="C"><code>plot_bloch_multivector</code></li><li data-k="D"><code>plot_state_qsphere</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br>multivector=各qubitのBloch球。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B8</span><span class="src">予想 · §2</span></div>
+  <div class="stem"><code>Statevector([0,0,0,1])</code> represents which basis state?</div>
+  <ul class="opts"><li data-k="A">|00⟩</li><li data-k="B">|01⟩</li><li data-k="C">|10⟩</li><li data-k="D">|11⟩</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 D</span><br>index3 = 2進11 = |11⟩。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B9</span><span class="src">予想 · §3</span></div>
+  <div class="stem">What is the name of the classical register added by <code>qc.measure_all()</code>?</div>
+  <ul class="opts"><li data-k="A"><code>c</code></li><li data-k="B"><code>meas</code></li><li data-k="C"><code>creg</code></li><li data-k="D"><code>classical</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>結果取得時 <code>data.meas</code> でアクセス。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B10</span><span class="src">予想 · §3</span></div>
+  <div class="stem">Given <code>theta = Parameter("θ")</code>, how do you bind it to 1.57?</div>
+  <ul class="opts"><li data-k="A"><code>qc.assign_parameters({theta: 1.57})</code></li><li data-k="B"><code>qc.set(theta, 1.57)</code></li><li data-k="C"><code>theta = 1.57</code></li><li data-k="D"><code>qc.bind(1.57)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br><code>assign_parameters</code>(辞書 or リスト)で代入。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B11</span><span class="src">予想 · §3</span></div>
+  <div class="stem">Which constructs a loop that repeats a body 3 times in a dynamic circuit?</div>
+  <ul class="opts"><li data-k="A"><code>for i in range(3): qc.x(0)</code></li><li data-k="B"><code>with qc.for_loop(range(3)): qc.x(0)</code></li><li data-k="C"><code>qc.repeat(3)</code></li><li data-k="D"><code>qc.loop(3, qc.x(0))</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Aは「Python側で3回追加」で実行時ループではない。動的制御フローは<code>for_loop</code>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B12</span><span class="src">予想 · §3</span></div>
+  <div class="stem">Which appends circuit <code>sub</code> onto <code>qc</code>?</div>
+  <ul class="opts"><li data-k="A"><code>qc + sub</code> only</li><li data-k="B"><code>qc.compose(sub)</code></li><li data-k="C"><code>qc.merge(sub)</code></li><li data-k="D"><code>qc.join(sub)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br><code>compose</code>で連結(<code>append</code>でゲート/命令追加も可)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B13</span><span class="src">予想 · §3</span></div>
+  <div class="stem">What is the correct condition format for <code>if_test</code>?</div>
+  <ul class="opts"><li data-k="A"><code>if_test(c0 == 1)</code></li><li data-k="B"><code>if_test((c0, 1))</code></li><li data-k="C"><code>if_test(c0, 1)</code></li><li data-k="D"><code>if_test("c0=1")</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br><code>(古典ビット/レジスタ, 値)</code>のタプル。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B14</span><span class="src">予想 · §4</span></div>
+  <div class="stem">Valid range of <code>optimization_level</code> in <code>generate_preset_pass_manager</code>?</div>
+  <ul class="opts"><li data-k="A">0 to 3</li><li data-k="B">1 to 5</li><li data-k="C">0 to 10</li><li data-k="D">−1 to 1</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br>0(最小)〜3(最大最適化)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B15</span><span class="src">予想 · §4</span></div>
+  <div class="stem">Which selects the least busy real (non-simulator) backend?</div>
+  <ul class="opts"><li data-k="A"><code>service.least_busy(simulator=False)</code></li><li data-k="B"><code>service.backend("fastest")</code></li><li data-k="C"><code>service.get_least()</code></li><li data-k="D"><code>QiskitRuntimeService.fast()</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br><code>least_busy(operational=True, simulator=False)</code>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B16</span><span class="src">予想 · §4</span></div>
+  <div class="stem">Why must a circuit be transpiled to an ISA circuit before running on hardware?</div>
+  <ul class="opts"><li data-k="A">To add more qubits</li><li data-k="B">To match the backend's basis gates and coupling map</li><li data-k="C">To encrypt the circuit</li><li data-k="D">To remove all measurements</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>装置の基底ゲート・接続制約に合わせるため。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B17</span><span class="src">予想 · §4</span></div>
+  <div class="stem">Which statement about batch mode is TRUE?</div>
+  <ul class="opts"><li data-k="A">Jobs always run in submission order</li><li data-k="B">Execution order is not guaranteed</li><li data-k="C">Only one job allowed</li><li data-k="D">It reserves an exclusive time slot</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>batchは順序保証なし。専有スロットはsession。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B18</span><span class="src">予想 · §5</span></div>
+  <div class="stem">For the Sampler primitive, the circuit must contain...</div>
+  <ul class="opts"><li data-k="A">an observable</li><li data-k="B">measurement instructions</li><li data-k="C">a precision value</li><li data-k="D">no gates</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Samplerは測定が必要(Estimatorは不要)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B19</span><span class="src">予想 · §5</span></div>
+  <div class="stem">After <code>measure_all()</code>, how do you get counts from a SamplerV2 result?</div>
+  <ul class="opts"><li data-k="A"><code>result.get_counts()</code></li><li data-k="B"><code>result[0].data.meas.get_counts()</code></li><li data-k="C"><code>result.counts</code></li><li data-k="D"><code>result[0].evs</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>PubResult→DataBin→該当creg(<code>meas</code>)→<code>get_counts()</code>。<code>evs</code>はEstimator用。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B20</span><span class="src">予想 · §5</span></div>
+  <div class="stem">Which sets the default number of shots for a SamplerV2 instance?</div>
+  <ul class="opts"><li data-k="A"><code>sampler.shots = 1000</code></li><li data-k="B"><code>sampler.options.default_shots = 1000</code></li><li data-k="C"><code>sampler.run(qc, 1000)</code></li><li data-k="D"><code>sampler.set_shots(1000)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br><code>options.default_shots</code>で設定。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B21</span><span class="src">予想 · §6</span></div>
+  <div class="stem">Where are expectation values found in an EstimatorV2 result?</div>
+  <ul class="opts"><li data-k="A"><code>result[0].data.evs</code></li><li data-k="B"><code>result[0].data.meas</code></li><li data-k="C"><code>result.counts</code></li><li data-k="D"><code>result[0].bitstrings</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br><code>evs</code>=期待値、<code>stds</code>=標準偏差。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B22</span><span class="src">予想 · §6</span></div>
+  <div class="stem">Does a circuit submitted to the Estimator need measurement instructions?</div>
+  <ul class="opts"><li data-k="A">Yes, always</li><li data-k="B">No — the observable defines what is measured</li><li data-k="C">Only for 1 qubit</li><li data-k="D">Only in session mode</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Estimatorはオブザーバブルで測るので<code>measure</code>不要。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B23</span><span class="src">予想 · §6</span></div>
+  <div class="stem">Increasing the <code>precision</code> value of the Estimator generally...</div>
+  <ul class="opts"><li data-k="A">requires more shots and is more accurate</li><li data-k="B">requires fewer shots and is less accurate</li><li data-k="C">has no effect</li><li data-k="D">disables the backend</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>precision値↑=粗い=ショット少=精度低い。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B24</span><span class="src">予想 · §6</span></div>
+  <div class="stem">Dynamical decoupling is an example of...</div>
+  <ul class="opts"><li data-k="A">error mitigation in resilience options</li><li data-k="B">error suppression</li><li data-k="C">quantum error correction</li><li data-k="D">a visualization method</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>DD・Pauli twirlingは抑制(suppression)。ZNE/TREXが緩和(resilience)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B25</span><span class="src">予想 · §7</span></div>
+  <div class="stem">Which returns the unique identifier of a submitted job?</div>
+  <ul class="opts"><li data-k="A"><code>job.id</code></li><li data-k="B"><code>job.job_id()</code></li><li data-k="C"><code>job.uuid</code></li><li data-k="D"><code>job.get_id</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br><code>job.job_id()</code>。状態は<code>job.status()</code>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B26</span><span class="src">予想 · §7</span></div>
+  <div class="stem">How do you retrieve a previously run job by its id?</div>
+  <ul class="opts"><li data-k="A"><code>service.job(job_id)</code></li><li data-k="B"><code>service.retrieve(job_id)</code></li><li data-k="C"><code>QiskitRuntimeService.load(job_id)</code></li><li data-k="D"><code>job.reload(job_id)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br><code>service.job(id)</code>。複数は<code>service.jobs()</code>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B27</span><span class="src">予想 · §7</span></div>
+  <div class="stem">Which is NOT returned by <code>session.details()</code>?</div>
+  <ul class="opts"><li data-k="A">Session state</li><li data-k="B">Timestamp of the last completed job</li><li data-k="C">Quantum circuit depth</li><li data-k="D">Backend name</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br>回路の深さはセッション情報に含まれない。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B28</span><span class="src">予想 · §8</span></div>
+  <div class="stem">Which returns the OpenQASM 3 representation of <code>qc</code> as a string?</div>
+  <ul class="opts"><li data-k="A"><code>qiskit.qasm3.dump(qc)</code></li><li data-k="B"><code>qiskit.qasm3.dumps(qc)</code></li><li data-k="C"><code>qc.to_qasm3_string()</code></li><li data-k="D"><code>qiskit.qasm3.load(qc)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>文字列=<code>dumps</code>、ファイル=<code>dump</code>。<code>load/loads</code>は読み込み。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B29</span><span class="src">予想 · §8</span></div>
+  <div class="stem">Which is NOT a supported classical type in OpenQASM 3?</div>
+  <ul class="opts"><li data-k="A"><code>int</code></li><li data-k="B"><code>float</code></li><li data-k="C"><code>bool</code></li><li data-k="D"><code>string</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 D</span><br>int/uint/float/bool/bit/angle/complex/durationはOK。stringは非サポート。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">B30</span><span class="src">予想 · §8</span></div>
+  <div class="stem">How do you build a QuantumCircuit from an OpenQASM 3 string <code>s</code>?</div>
+  <ul class="opts"><li data-k="A"><code>qiskit.qasm3.loads(s)</code></li><li data-k="B"><code>qiskit.qasm3.dumps(s)</code></li><li data-k="C"><code>QuantumCircuit(s)</code></li><li data-k="D"><code>qiskit.qasm3.parse(s)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br>文字列から読込=<code>loads</code>、ファイルから=<code>load</code>。</div></details></div>
+
+  <p style="margin-top:24px;font-weight:600;color:var(--violet-deep)">Part B 解答:B1B B2B B3B B4C B5B B6B B7C B8D B9B B10A B11B B12B B13B B14A B15A B16B B17B B18B B19B B20B B21A B22B B23B B24B B25B B26A B27C B28B B29D B30A</p>
+</section>
+
+<section id="examC">
+  <p class="kicker">Practice · Part C</p>
+  <div class="sechead"><h2>図つき予想問題 8問</h2></div>
+  <p>差がつきやすい「図を読む」問題を、実際の図つきで用意しました。qsphere・回路図・Bloch球・ヒストグラムの4カテゴリです。図の下の「▸ 解答・解説」で答え合わせを。</p>
+
+  <h4 style="margin-top:26px">◆ qsphere(色=位相)</h4>
+
+  <div class="q"><div class="qh"><span class="qnum">C1</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Which code fragment generates the given qsphere?<br><span style="color:var(--muted);font-size:13px">Note: the two circles are the SAME color.</span>
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 200 210" width="200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="105" r="72" fill="none" stroke="#e3e4ee" stroke-width="1.5"/>
+    <ellipse cx="100" cy="105" rx="72" ry="22" fill="none" stroke="#e3e4ee" stroke-width="1.2"/>
+    <line x1="100" y1="105" x2="100" y2="33" stroke="#c9cbe0" stroke-width="1.2"/>
+    <line x1="100" y1="105" x2="100" y2="177" stroke="#c9cbe0" stroke-width="1.2"/>
+    <circle cx="100" cy="33" r="8" fill="#5b3df0"/>
+    <circle cx="100" cy="177" r="8" fill="#5b3df0"/>
+    <text x="100" y="20" text-anchor="middle" font-size="12" fill="#16162a">|00⟩</text>
+    <text x="100" y="200" text-anchor="middle" font-size="12" fill="#16162a">|11⟩</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>qc.h(0); qc.z(0); qc.cx(0,1)</code></li><li data-k="B"><code>qc.h(0); qc.cx(0,1)</code></li><li data-k="C"><code>qc.x(1); qc.h(0); qc.cx(0,1)</code></li><li data-k="D"><code>qc.h(0); qc.s(0); qc.cx(0,1)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>|00⟩と|11⟩が<strong>同じ色=同位相</strong> → $\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$。素直なBell回路 <code>h(0);cx(0,1)</code>。A/Dは位相ゲート(z,s)で|11⟩の色が変わる、Cはx(1)で状態が変わる。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">C2</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Which code fragment generates the given qsphere?<br><span style="color:var(--muted);font-size:13px">Note: the two circles are DIFFERENT colors.</span>
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 200 210" width="200" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="100" cy="105" r="72" fill="none" stroke="#e3e4ee" stroke-width="1.5"/>
+    <ellipse cx="100" cy="105" rx="72" ry="22" fill="none" stroke="#e3e4ee" stroke-width="1.2"/>
+    <line x1="100" y1="105" x2="100" y2="33" stroke="#c9cbe0" stroke-width="1.2"/>
+    <line x1="100" y1="105" x2="100" y2="177" stroke="#c9cbe0" stroke-width="1.2"/>
+    <circle cx="100" cy="33" r="8" fill="#5b3df0"/>
+    <circle cx="100" cy="177" r="8" fill="#e8920c"/>
+    <text x="100" y="20" text-anchor="middle" font-size="12" fill="#16162a">|00⟩</text>
+    <text x="100" y="200" text-anchor="middle" font-size="12" fill="#16162a">|11⟩</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>qc.h(0); qc.cx(0,1)</code></li><li data-k="B"><code>qc.h(0); qc.z(0); qc.cx(0,1)</code></li><li data-k="C"><code>qc.h(0)</code></li><li data-k="D"><code>qc.x(0); qc.x(1)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>色が違う=<strong>位相差あり</strong> → $\frac{1}{\sqrt2}(|00\rangle-|11\rangle)$。<code>z(0)</code>が|1⟩側の位相を反転させ|11⟩の色を変える。AはC1の同色版、Dは|11⟩単独(重ね合わせでない)。</div></details></div>
+
+  <h4 style="margin-top:26px">◆ 回路図(SWAP挿入・ダイナミック)</h4>
+
+  <div class="q"><div class="qh"><span class="qnum">C3</span><span class="src">予想 · §4</span></div>
+  <div class="stem">A circuit does <code>cx(q0, q1)</code>. It is transpiled with the coupling map below and <code>initial_layout=[0, 2]</code> (q0→phys 0, q1→phys 2). What will the transpiler do?
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 320 80" width="320" xmlns="http://www.w3.org/2000/svg">
+    <line x1="55" y1="40" x2="160" y2="40" stroke="#5b3df0" stroke-width="2"/>
+    <line x1="160" y1="40" x2="265" y2="40" stroke="#5b3df0" stroke-width="2"/>
+    <circle cx="40" cy="40" r="16" fill="#fff" stroke="#5b3df0" stroke-width="2"/>
+    <circle cx="160" cy="40" r="16" fill="#fff" stroke="#5b3df0" stroke-width="2"/>
+    <circle cx="280" cy="40" r="16" fill="#fff" stroke="#5b3df0" stroke-width="2"/>
+    <text x="40" y="45" text-anchor="middle" font-size="14" fill="#16162a">0</text>
+    <text x="160" y="45" text-anchor="middle" font-size="14" fill="#16162a">1</text>
+    <text x="280" y="45" text-anchor="middle" font-size="14" fill="#16162a">2</text>
+    <text x="160" y="72" text-anchor="middle" font-size="11" fill="#7b7b95">0–2 は直結なし</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A">エラーで停止する</li><li data-k="B">qubit数を増やす</li><li data-k="C"><strong>SWAPゲートを自動挿入</strong>して0と2を隣接させる</li><li data-k="D">CXを削除する</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br>物理0と物理2は直結していない(結合は0–1と1–2のみ)。直結しない2qubit間のCXは、トランスパイラが<strong>SWAP挿入</strong>で物理的に隣接させてから実行する。公式Q9と同型。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">C4</span><span class="src">予想 · §3</span></div>
+  <div class="stem">Which code fragment produced the circuit below?
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 360 130" width="360" xmlns="http://www.w3.org/2000/svg">
+    <line x1="30" y1="35" x2="340" y2="35" stroke="#c9cbe0" stroke-width="1.5"/>
+    <line x1="30" y1="80" x2="340" y2="80" stroke="#c9cbe0" stroke-width="1.5"/>
+    <text x="14" y="40" font-size="13" fill="#16162a">q0</text>
+    <text x="14" y="85" font-size="13" fill="#16162a">q1</text>
+    <rect x="45" y="20" width="30" height="30" rx="4" fill="#5b3df0"/>
+    <text x="60" y="40" text-anchor="middle" font-size="14" fill="#fff">H</text>
+    <rect x="95" y="20" width="30" height="30" rx="4" fill="#16162a"/>
+    <text x="110" y="40" text-anchor="middle" font-size="12" fill="#fff">M</text>
+    <rect x="160" y="10" width="150" height="110" rx="6" fill="none" stroke="#e8920c" stroke-width="1.5" stroke-dasharray="5 4"/>
+    <text x="235" y="24" text-anchor="middle" font-size="10" fill="#b9740a">if c_0=0x1</text>
+    <rect x="180" y="65" width="30" height="30" rx="4" fill="#5b3df0"/>
+    <text x="195" y="85" text-anchor="middle" font-size="14" fill="#fff">H</text>
+    <text x="235" y="85" text-anchor="middle" font-size="10" fill="#b9740a">else</text>
+    <rect x="260" y="65" width="30" height="30" rx="4" fill="#c0399f"/>
+    <text x="275" y="85" text-anchor="middle" font-size="14" fill="#fff">X</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>h(q0); measure(q0,c0); with if_test((c0,1)) as else_: h(q1); with else_: x(q1)</code></li><li data-k="B"><code>h(q0); measure(q0,c0); with if_test((c0,0)) as else_: h(q1); with else_: x(q1)</code></li><li data-k="C"><code>h(q0); measure(q0,c0); with if_test((c0,1)): x(q1)</code>(elseなし)</li><li data-k="D"><code>h(q0); with if_test((c0,1)) as else_: x(q1); with else_: h(q1)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br>①<code>else</code>あり(2分岐)→Cを除外。②if内がH・else内がX→D(逆)を除外。③条件表示 <code>c_0=0x1</code>=<code>(c0,1)</code>→<code>0x0</code>のBを除外。公式Q4と同型。</div></details></div>
+
+  <h4 style="margin-top:26px">◆ Bloch球</h4>
+
+  <div class="q"><div class="qh"><span class="qnum">C5</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Starting from |0⟩, which single gate produces the Bloch vector shown (pointing to the equator, +x)?
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 180 190" width="180" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="90" cy="95" r="65" fill="none" stroke="#e3e4ee" stroke-width="1.5"/>
+    <ellipse cx="90" cy="95" rx="65" ry="20" fill="none" stroke="#e3e4ee" stroke-width="1"/>
+    <line x1="90" y1="30" x2="90" y2="160" stroke="#e3e4ee" stroke-width="1"/>
+    <line x1="25" y1="95" x2="155" y2="95" stroke="#e3e4ee" stroke-width="1"/>
+    <line x1="90" y1="95" x2="153" y2="95" stroke="#5b3df0" stroke-width="3"/>
+    <polygon points="153,95 143,90 143,100" fill="#5b3df0"/>
+    <circle cx="90" cy="95" r="3" fill="#16162a"/>
+    <text x="90" y="24" text-anchor="middle" font-size="12" fill="#16162a">|0⟩</text>
+    <text x="90" y="178" text-anchor="middle" font-size="12" fill="#16162a">|1⟩</text>
+    <text x="163" y="99" text-anchor="middle" font-size="11" fill="#7b7b95">+x</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>qc.h(0)</code></li><li data-k="B"><code>qc.z(0)</code></li><li data-k="C"><code>qc.s(0)</code></li><li data-k="D"><code>qc.t(0)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br>矢印が赤道(+x)=$\frac{1}{\sqrt2}(|0\rangle+|1\rangle)$。これを|0⟩から作るのはH。z/s/tは|0⟩を北極に留めたまま(位相を変えるだけで倒れない)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">C6</span><span class="src">予想 · §1</span></div>
+  <div class="stem">For the state shown (Bloch vector at the south pole), what is the probability of measuring 1?
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 180 190" width="180" xmlns="http://www.w3.org/2000/svg">
+    <circle cx="90" cy="95" r="65" fill="none" stroke="#e3e4ee" stroke-width="1.5"/>
+    <ellipse cx="90" cy="95" rx="65" ry="20" fill="none" stroke="#e3e4ee" stroke-width="1"/>
+    <line x1="90" y1="30" x2="90" y2="160" stroke="#e3e4ee" stroke-width="1"/>
+    <line x1="90" y1="95" x2="90" y2="158" stroke="#5b3df0" stroke-width="3"/>
+    <polygon points="90,158 85,148 95,148" fill="#5b3df0"/>
+    <circle cx="90" cy="95" r="3" fill="#16162a"/>
+    <text x="90" y="24" text-anchor="middle" font-size="12" fill="#16162a">|0⟩</text>
+    <text x="90" y="178" text-anchor="middle" font-size="12" fill="#16162a">|1⟩</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A">0.0</li><li data-k="B">0.5</li><li data-k="C">0.707</li><li data-k="D">1.0</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 D</span><br>矢印が南極=状態は|1⟩そのもの。測定すれば必ず1が出る → P(1)=1.0。(赤道なら0.5、北極なら0.0)</div></details></div>
+
+  <h4 style="margin-top:26px">◆ ヒストグラム / 状態ベクトル</h4>
+
+  <div class="q"><div class="qh"><span class="qnum">C7</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Which Statevector would produce the histogram below?
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 260 150" width="260" xmlns="http://www.w3.org/2000/svg">
+    <line x1="30" y1="120" x2="240" y2="120" stroke="#c9cbe0" stroke-width="1.5"/>
+    <line x1="30" y1="20" x2="30" y2="120" stroke="#c9cbe0" stroke-width="1.5"/>
+    <rect x="70" y="45" width="44" height="75" fill="#5b3df0"/>
+    <rect x="150" y="45" width="44" height="75" fill="#5b3df0"/>
+    <text x="92" y="135" text-anchor="middle" font-size="12" fill="#16162a">010</text>
+    <text x="172" y="135" text-anchor="middle" font-size="12" fill="#16162a">101</text>
+    <text x="92" y="40" text-anchor="middle" font-size="10" fill="#7b7b95">0.5</text>
+    <text x="172" y="40" text-anchor="middle" font-size="10" fill="#7b7b95">0.5</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>Statevector([0,0,0.707,0,0,0.707,0,0])</code></li><li data-k="B"><code>Statevector([0.707,0,0,0,0,0,0,0.707])</code></li><li data-k="C"><code>Statevector([0,0,0.707,0,0,-0.707,0,0])</code></li><li data-k="D">AとC両方が該当する</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 D</span><br>3qubit。index2=|010⟩、index5=|101⟩ に振幅。<strong>符号(位相)は確率に出ない</strong>ので、+0.707でも−0.707でもヒストは同一。よってAもCも同じ図を出す。Bはindex0=|000⟩とindex7=|111⟩なので別物。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">C8</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Which circuit produces the measurement histogram below?
+  <div style="text-align:center;margin:14px 0">
+  <svg viewBox="0 0 260 150" width="260" xmlns="http://www.w3.org/2000/svg">
+    <line x1="30" y1="120" x2="240" y2="120" stroke="#c9cbe0" stroke-width="1.5"/>
+    <line x1="30" y1="20" x2="30" y2="120" stroke="#c9cbe0" stroke-width="1.5"/>
+    <rect x="75" y="48" width="44" height="72" fill="#5b3df0"/>
+    <rect x="150" y="48" width="44" height="72" fill="#5b3df0"/>
+    <text x="97" y="135" text-anchor="middle" font-size="12" fill="#16162a">00</text>
+    <text x="172" y="135" text-anchor="middle" font-size="12" fill="#16162a">11</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>qc.h(0); qc.h(1); measure_all()</code></li><li data-k="B"><code>qc.h(0); qc.cx(0,1); measure_all()</code></li><li data-k="C"><code>qc.x(0); qc.x(1); measure_all()</code></li><li data-k="D"><code>qc.h(0); measure_all()</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>00と11のみ等確率=Bell状態 $\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$ → <code>h(0);cx(0,1)</code>。Aは00/01/10/11が各25%、Cは11のみ100%、Dは00/01が各50%。</div></details></div>
+
+  <p style="margin-top:24px;font-weight:600;color:var(--violet-deep)">Part C 解答:C1B C2B C3C C4A C5A C6D C7D C8B</p>
+</section>
+
+<section id="examD">
+  <p class="kicker">Practice · Part D</p>
+  <div class="sechead"><h2>コード・API系 予想問題 14問</h2></div>
+  <p>多くの受験者がつまずく「メソッド名・引数名・結果取得・構文」の問題を集めました。特に④〜⑦の暗記系は、ここで慣れておくと確実な得点源になります。</p>
+
+  <div class="q"><div class="qh"><span class="qnum">D1</span><span class="src">予想 · §7</span></div>
+  <div class="stem">The retrieval line is <code>job.result()[0].data.c.get_counts()</code>. Which measurement code should be added?</div>
+  <ul class="opts"><li data-k="A"><code>qc.measure_all()</code></li><li data-k="B"><code>qc.measure([0,1],[0,1])</code></li><li data-k="C"><code>qc.Measure_all()</code></li><li data-k="D"><code>qc.measure()</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>取得側が <code>.data.c</code> なので、<code>c</code> レジスタに書く <code>measure([0,1],[0,1])</code>。<code>measure_all()</code> だと <code>.data.meas</code> が必要でエラー。C(大文字)・D(引数なし)もエラー。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D2</span><span class="src">予想 · §7</span></div>
+  <div class="stem">The retrieval line is <code>job.result()[0].data.meas.get_counts()</code>. Which measurement code should be added?</div>
+  <ul class="opts"><li data-k="A"><code>qc.measure([0,1],[0,1])</code></li><li data-k="B"><code>qc.measure_all()</code></li><li data-k="C"><code>qc.measure_all</code></li><li data-k="D"><code>qc.MeasureAll()</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>取得側が <code>.data.meas</code> → <code>measure_all()</code>(自動で <code>meas</code> レジスタを作る)。D1と対。C(カッコなし=呼び出していない)・D(存在しない)はダメ。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D3</span><span class="src">予想 · §7</span></div>
+  <div class="stem">To display how many times <code>'00'</code> was observed, which code is correct?</div>
+  <ul class="opts"><li data-k="A"><code>counts.get_result('00')</code></li><li data-k="B"><code>counts.result('00')</code></li><li data-k="C"><code>counts.get('00')</code></li><li data-k="D"><code>counts.count('00')</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br><code>get_counts()</code> の戻り値はただのPython辞書。値取得は <code>.get('00')</code> か <code>['00']</code>。<code>get_result</code>/<code>result</code> は存在しない(<code>result()</code>はジョブ用)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D4</span><span class="src">予想 · §4</span></div>
+  <div class="stem">To run the Estimator in batch mode, which code opens the batch correctly?</div>
+  <ul class="opts"><li data-k="A"><code>Batch(device=backend)</code></li><li data-k="B"><code>Batch(q_device=backend)</code></li><li data-k="C"><code>Batch(simulator=backend)</code></li><li data-k="D"><code>Batch(backend=backend)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 D</span><br>Session/Batch のバックエンド指定は常に <code>backend=</code>。device/q_device/simulator は存在しない引数。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D5</span><span class="src">予想 · §7</span></div>
+  <div class="stem">Which two can be obtained from <code>session.details()</code>? (choose two)</div>
+  <ul class="opts"><li data-k="A"><code>backend_name</code></li><li data-k="B"><code>mitigation_method</code></li><li data-k="C"><code>quantum_device_status</code></li><li data-k="D"><code>last_job_completed</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A, D</span><br>身元(backend_name)と時刻(last_job_completed)は入る。<code>mitigation_method</code>はプリミティブ設定、<code>quantum_device_status</code>はデバイス情報でどちらもダミー。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D6</span><span class="src">予想 · §7</span></div>
+  <div class="stem">Which is NOT a key of <code>session.details()</code>?</div>
+  <ul class="opts"><li data-k="A"><code>usage_time</code></li><li data-k="B"><code>usage</code></li><li data-k="C"><code>max_time</code></li><li data-k="D"><code>accepting_jobs</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>本物は語尾付きの <code>usage_time</code>。素の <code>usage</code> は独立メソッド <code>session.usage()</code> であって details のキーではない。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D7</span><span class="src">予想 · §3</span></div>
+  <div class="stem">Which two codes join two circuits qc0 and qc1? (choose two)</div>
+  <ul class="opts"><li data-k="A"><code>qc0.add(qc1)</code></li><li data-k="B"><code>qc0.compose(qc1)</code></li><li data-k="C"><code>(qc0 &amp; qc1)</code></li><li data-k="D"><code>(qc0 add qc1)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B, C</span><br>連結は <code>compose</code> メソッドと <code>&amp;</code> 演算子。<code>add</code> はメソッドとしても演算子としても存在しない。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D8</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Which output corresponds to <code>Pauli('IY').to_matrix()</code>? (hint: look for imaginary parts)</div>
+  <ul class="opts"><li data-k="A">反対角に <code>1.+0.j</code>(実数1)</li><li data-k="B">反対角に <code>0.-1.j</code> と <code>0.+1.j</code>(±i)</li><li data-k="C">対角に <code>1,-1,1,-1</code></li><li data-k="D">対角に <code>-1,-1,1,1</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Yは虚数 $i$ を持つ。<code>0.-1.j</code>=−i、<code>0.+1.j</code>=+i。Aは <code>IX</code>(実数)、Cは <code>IZ</code>、Dは <code>-ZI</code>。<strong>出力に虚部(±1.j)があれば Y</strong>。正解の実際の出力($I\otimes Y$):
+  <pre style="font-size:12px;margin-top:8px"><code>[[0.+0.j 0.-1.j 0.+0.j 0.+0.j]
+ [0.+1.j 0.+0.j 0.+0.j 0.+0.j]
+ [0.+0.j 0.+0.j 0.+0.j 0.-1.j]
+ [0.+0.j 0.+0.j 0.+1.j 0.+0.j]]</code></pre></div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D9</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Which two gates do NOT change the states |+⟩ and |−⟩? (choose two)</div>
+  <ul class="opts"><li data-k="A">Z</li><li data-k="B">S</li><li data-k="C">I</li><li data-k="D">X</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C, D</span><br>|±⟩ はX軸上 → X軸回転(X)で動かない。I は常に不変。Z・S は位相ゲートで |±⟩ を変える($Z|+\rangle=|-\rangle$)。<strong>「状態が乗る軸のゲートが動かさない」</strong>。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D10</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Which gates are involutory ($M^2=I$)? (choose all)</div>
+  <ul class="opts"><li data-k="A">X</li><li data-k="B">H</li><li data-k="C">T</li><li data-k="D">Z</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A, B, D</span><br>X,Y,Z,H,I は $M^2=I$。T は $T^2=S\ne I$(位相を半端に回すので一周しない)。同様に S も不可。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D11</span><span class="src">予想 · §1</span></div>
+  <div class="stem">Which generates a random unitary operator of dimension 3?</div>
+  <ul class="opts"><li data-k="A"><code>qi.random(3)</code></li><li data-k="B"><code>qi.unitary(3)</code></li><li data-k="C"><code>qi.random_unitary(3)</code></li><li data-k="D"><code>qi.RandomUnitary(3)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br>スネークケース＋対象明示の <code>random_unitary</code>。<code>random</code>(対象なし)・<code>unitary</code>・<code>RandomUnitary</code>(大文字=クラス風)はダミー。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D12</span><span class="src">予想 · §2</span></div>
+  <div class="stem">Result is <code>{'00':~250,'01':~250,'10':~250,'11':~250}</code>(4状態均等). Which code produced it? (2 qubits)
+  <div style="text-align:center;margin:12px 0">
+  <svg viewBox="0 0 300 140" width="280" xmlns="http://www.w3.org/2000/svg">
+    <line x1="30" y1="115" x2="290" y2="115" stroke="#c9cbe0" stroke-width="1.5"/>
+    <line x1="30" y1="20" x2="30" y2="115" stroke="#c9cbe0" stroke-width="1.5"/>
+    <rect x="55" y="55" width="40" height="60" fill="#5b3df0"/>
+    <rect x="115" y="55" width="40" height="60" fill="#5b3df0"/>
+    <rect x="175" y="55" width="40" height="60" fill="#5b3df0"/>
+    <rect x="235" y="55" width="40" height="60" fill="#5b3df0"/>
+    <text x="75" y="130" text-anchor="middle" font-size="11" fill="#16162a">00</text>
+    <text x="135" y="130" text-anchor="middle" font-size="11" fill="#16162a">01</text>
+    <text x="195" y="130" text-anchor="middle" font-size="11" fill="#16162a">10</text>
+    <text x="255" y="130" text-anchor="middle" font-size="11" fill="#16162a">11</text>
+  </svg></div></div>
+  <ul class="opts"><li data-k="A"><code>qc.h(0)</code> のみ</li><li data-k="B"><code>qc.h(0); qc.h(1)</code></li><li data-k="C"><code>qc.h(0); qc.cx(0,1)</code></li><li data-k="D"><code>qc.x(0); qc.x(1)</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>4状態均等=<strong>Hが2個</strong>。Aは2状態(00/01)、CはBell(00/11のみ)、Dは11のみ。レジスタ全体に <code>qc.h(qreg)</code> でも同じ。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D13</span><span class="src">予想 · §2</span></div>
+  <div class="stem">What does <code>Statevector(qc)</code> print for <code>qc.h(0); qc.x(1)</code>? (2 qubits)</div>
+  <ul class="opts"><li data-k="A"><code>[0.5,0.5,0.5,0.5]</code></li><li data-k="B"><code>[0,0,0.707,0.707]</code></li><li data-k="C"><code>[0.707,0.707,0,0]</code></li><li data-k="D"><code>[0,0,0,1]</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>h(0)でq0が重ね合わせ、x(1)でq1が1に確定 → $\frac{1}{\sqrt2}(|10\rangle+|11\rangle)$。index2(|10⟩)とindex3(|11⟩)に0.707。Aは h(1) にした場合(4状態)。X(反転)は広げない。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">D14</span><span class="src">予想 · §2/Python</span></div>
+  <div class="stem">A function ends with <code>return qc.draw()</code>, and it is called as <code>result = f(qc)</code>. What happens?</div>
+  <ul class="opts"><li data-k="A">回路図が標準出力に表示され、result に exit code が入る</li><li data-k="B">何も表示されず、result に回路図が入る</li><li data-k="C">exit code が表示され、result に回路図が入る</li><li data-k="D">回路図が表示され、result に回路図が入る</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br><code>return</code> は値を返すだけで表示しない(<code>print</code> なら表示)。戻り値の回路図が result に格納される。"exit code" はダミー。Python の return/print の区別問題。</div></details></div>
+
+  <p style="margin-top:24px;font-weight:600;color:var(--violet-deep)">Part D 解答:D1B D2B D3C D4D D5AD D6B D7BC D8B D9CD D10ABD D11C D12B D13B D14B</p>
+</section>
+
+<section id="examE">
+  <p class="kicker">Practice · Part E</p>
+  <div class="sechead"><h2>実行順・定義・理解を問う問題 12問</h2></div>
+  <p>ブループリントが「理解」を求めている3つの側面——<strong>処理の実行順</strong>、<strong>「PUB とは / Estimator とは」のような用語の定義</strong>、<strong>Primitive の仕組み</strong>——に対応した問題です。名前の暗記ではなく、<strong>流れと役割</strong>で考えてください。</p>
+
+  <div class="q"><div class="qh"><span class="qnum">E1</span><span class="src">予想 · §0</span></div>
+  <div class="stem">Arrange the following lines in the correct execution order.
+  <pre style="margin-top:10px"><code>(a) job = sampler.run([isa])
+(b) service = QiskitRuntimeService()
+(c) isa = pm.run(qc)
+(d) backend = service.least_busy(operational=True, simulator=False)
+(e) sampler = Sampler(mode=backend)
+(f) pm = generate_preset_pass_manager(optimization_level=1, backend=backend)</code></pre></div>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 b → d → f → c → e → a</span><br>
+  依存関係をたどるだけで決まります。<code>service</code> が無ければ <code>least_busy</code> は呼べず(b→d)、<code>backend</code> が無ければ pass manager は作れず(d→f)、<code>pm</code> が無ければ変換できず(f→c)、<code>backend</code> が無ければプリミティブは作れず(d→e)、<strong>変換済みの isa とプリミティブの両方</strong>が揃って初めて実行できます(c,e→a)。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E2</span><span class="src">予想 · §0</span></div>
+  <div class="stem">Why must transpilation happen before calling <code>run()</code>?</div>
+  <ul class="opts"><li data-k="A">実行速度を上げるための任意の最適化だから</li><li data-k="B">実機には使えるゲートと qubit の接続に制約があり、そのままの回路では動かないから</li><li data-k="C">測定結果の形式を変換するため</li><li data-k="D">ジョブIDを発行するため</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>私たちが書く回路は理想的な装置を前提にしています。実機は<strong>限られた基本ゲートしか実行できず、qubit も隣接するものだけが繋がっている</strong>ため、その制約に合わせて書き換える必要があります。最適化(A)は付随的な効果であって、主目的ではありません。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E3</span><span class="src">予想 · §5</span></div>
+  <div class="stem">You want to know which bit strings appear most often when running an optimization circuit. Which primitive should you use, and does the circuit need measurement?</div>
+  <ul class="opts"><li data-k="A">Sampler / measure は不要</li><li data-k="B">Sampler / measure が必要</li><li data-k="C">Estimator / measure が必要</li><li data-k="D">Estimator / measure は不要</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>「どのビット列がよく出るか」= <strong>分布</strong>を知りたいので Sampler。そして Sampler は<strong>測定結果を集計する</strong>道具なので、測定していなければ何も数えられません。よって <code>measure</code> が必要です。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E4</span><span class="src">予想 · §6</span></div>
+  <div class="stem">Why does the Estimator not require <code>measure</code> in the circuit?</div>
+  <ul class="opts"><li data-k="A">Estimator は測定を行わないから</li><li data-k="B">observable で「何を測るか」を伝えており、必要な測定は内部で組み立てられるから</li><li data-k="C">期待値は測定なしで計算できるから</li><li data-k="D">measure は Sampler 専用の機能だから</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Estimator も内部では測定します。ただし<strong>何をどう測るかは observable として渡されている</strong>ため、私たちが手で <code>measure</code> を書く必要がありません。「測定しない」(A・C)は誤りです。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E5</span><span class="src">予想 · §0/§6</span></div>
+  <div class="stem">Which of the following belongs in a PUB rather than in the primitive's options? (choose all)</div>
+  <ul class="opts"><li data-k="A">observable</li><li data-k="B">backend</li><li data-k="C">parameter values</li><li data-k="D">誤り緩和の強さ(resilience level)</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A, C</span><br>PUB は「<strong>何を計算するか</strong>」のまとまりです。observable(測る対象)とパラメータ値(回路に入れる数値)は計算内容そのものなので PUB に入ります。一方 backend は<strong>どこで実行するか</strong>(<code>mode=</code>)、resilience は<strong>どう実行するか</strong>(options)という設定であり、計算内容ではありません。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E6</span><span class="src">予想 · §0</span></div>
+  <div class="stem">Which pair of arguments is correct?</div>
+  <ul class="opts"><li data-k="A"><code>Session(mode=backend)</code> と <code>Sampler(backend=backend)</code></li><li data-k="B"><code>Session(backend=backend)</code> と <code>Sampler(mode=session)</code></li><li data-k="C">両方とも <code>backend=</code></li><li data-k="D">両方とも <code>mode=</code></li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Session / Batch は「<strong>どの実機を確保するか</strong>」を決めるので <code>backend=</code>。プリミティブは「<strong>どういう文脈で実行するか</strong>」を受け取り、backend でも Session でも Batch でも渡せるため、より広い意味の <code>mode=</code> になっています。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E7</span><span class="src">予想 · §6</span></div>
+  <div class="stem">A colleague says "dynamical decoupling randomizes the circuit to average out errors." What is wrong?</div>
+  <ul class="opts"><li data-k="A">何も間違っていない</li><li data-k="B">それは twirling の説明。DD は短いパルス列で状態を保つ手法</li><li data-k="C">DD は誤り訂正なので説明が根本的に違う</li><li data-k="D">DD は実行後に結果を補正する手法</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>「回路をランダム化して誤差を平均化する」のは <strong>twirling</strong>。<strong>DD は短いパルスを繰り返しかけて qubit を環境ノイズから切り離し、状態を長く保つ</strong>手法です。どちらも実行中に効く<strong>抑制</strong>である点は共通しています。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E8</span><span class="src">予想 · §7</span></div>
+  <div class="stem">Read the expression <code>job.result()[0].data.evs</code>. What does each step mean?</div>
+  <ul class="opts"><li data-k="A">ジョブ結果 → 1件目のPUB結果 → データ本体 → 期待値</li><li data-k="B">ジョブ結果 → 0番目のqubit → データ → 誤差</li><li data-k="C">ジョブ → shots数 → データ → ビット列</li><li data-k="D">ジョブ → 回路 → 測定 → カウント</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 A</span><br><code>result()</code> は依頼(PUB)ごとの結果のリストを返すので、<code>[0]</code> は<strong>1件目の依頼の結果</strong>です(qubit番号ではありません)。<code>.data</code> がデータ本体、<code>.evs</code> が期待値(expectation values)。<strong>外側から内側へたどっている</strong>と読めれば正解できます。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E9</span><span class="src">予想 · §6(定義問題)</span></div>
+  <div class="stem">Which of the following correctly describes a PUB (Primitive Unified Bloc)?</div>
+  <ul class="opts"><li data-k="A">実行するバックエンドと誤り緩和の設定をまとめたもの</li><li data-k="B">プリミティブに渡す「1件の計算依頼」で、回路・(Estimatorなら)観測量・パラメータ値などをまとめたタプル</li><li data-k="C">ジョブの実行結果を格納するオブジェクト</li><li data-k="D">複数のバックエンドをまとめて管理する仕組み</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>PUB は「この回路で、これを、この条件で計算してほしい」という<strong>依頼1件分のまとまり</strong>です。<code>run()</code> にはこのタプルをリストで渡します。A のような実行設定(backend・resilience)は PUB には含まれません(<code>mode=</code> や options で別に指定)。C は結果側(PubResult)、D は無関係です。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E10</span><span class="src">予想 · §6(定義問題)</span></div>
+  <div class="stem">Which of the following correctly describes the Estimator primitive?</div>
+  <ul class="opts"><li data-k="A">回路を繰り返し実行し、ビット列ごとの出現回数の分布を返す</li><li data-k="B">回路が作る状態に対して、指定した観測量(observable)の期待値とその誤差を返す</li><li data-k="C">回路を実機で動く形に変換する</li><li data-k="D">回路の行列(ユニタリ)を返す</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Estimator は「状態の何を測るか」を observable として受け取り、その<strong>期待値(evs)と標準偏差(stds)</strong>を返します。A は Sampler、C はトランスパイル(pass manager)、D はシミュレータの unitary メソッドの説明です。<strong>「分布か、期待値か」で Sampler と Estimator を切り分ける</strong>のが定義問題の軸になります。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E11</span><span class="src">予想 · §5(定義問題)</span></div>
+  <div class="stem">Which of the following correctly describes the Sampler primitive?</div>
+  <ul class="opts"><li data-k="A">観測量の期待値を1つの数値として返す</li><li data-k="B">回路を測定付きで繰り返し実行し、得られたビット列の分布(どの結果が何回出たか)を返す</li><li data-k="C">セッションを開いて専用の実行枠を確保する</li><li data-k="D">誤り緩和を適用して結果を補正する</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 B</span><br>Sampler は<strong>測定結果を集計して分布を返す</strong>道具です(だから回路に <code>measure</code> が必要)。A は Estimator、C は Session、D は resilience(緩和)の説明。定義問題では、各選択肢が<strong>別の道具の説明</strong>になっているのが典型なので、「これはどの道具の説明か」を1つずつ当てはめると確実です。</div></details></div>
+
+  <div class="q"><div class="qh"><span class="qnum">E12</span><span class="src">予想 · §0(定義問題)</span></div>
+  <div class="stem">Which of the following correctly describes an ISA circuit?</div>
+  <ul class="opts"><li data-k="A">測定を含まない理想的な回路</li><li data-k="B">OpenQASM 形式で保存された回路</li><li data-k="C">トランスパイルによって、実機の基本ゲートと接続制約に合わせて変換された回路</li><li data-k="D">パラメータがすべて未確定のままの回路</li></ul>
+  <details class="ans"><summary>解答・解説</summary><div class="ansbody"><span class="correct">正解 C</span><br>ISA(Instruction Set Architecture)回路は、<strong>その実機が実際に実行できる形に変換済みの回路</strong>です。プリミティブの <code>run()</code> に渡すのはこの変換後の回路であり、変換前の理想回路をそのまま渡すのは誤りです(§0 の流れで transpile が run より前にある理由)。</div></details></div>
+
+  <p style="margin-top:24px;font-weight:600;color:var(--violet-deep)">Part E 解答:E1 b→d→f→c→e→a / E2B / E3B / E4B / E5AC / E6B / E7B / E8A / E9B / E10B / E11B / E12C</p>
+</section>
+
+<section id="cheat">
+  <p class="kicker">直前チートシート</p>
+  <div class="sechead"><h2>試験当日に思い出すこと</h2></div>
+  <div class="cheat">
+    <div class="ch" style="grid-column:1/-1;background:#f3f0ff;border-color:#cfc3ff"><h4>実行フロー(並び替え問題はこれ)</h4><ul><li><strong>service</strong> → <strong>backend</strong> → <strong>回路</strong> → <strong>transpile(ISA)</strong> → <strong>primitive</strong> → <strong>run</strong> → <strong>result</strong></li><li>判断基準:<strong>使う変数は、使う前に作られている</strong></li><li>プリミティブ=<code>mode=</code>(実行の場) / Session・Batch=<code>backend=</code>(実機)</li><li>プリミティブに渡すのは<strong>変換済み(ISA)回路</strong></li></ul></div>
+    <div class="ch"><h4>位相(対|1⟩)</h4><ul><li>T → π/4</li><li>S → π/2</li><li>Z → π</li><li>Tdg/Sdg → 負符号</li><li>P(λ) → λ</li></ul></div>
+    <div class="ch"><h4>Pauli / 状態の順序</h4><ul><li><code>Pauli('AB')</code>=A⊗B</li><li><strong>右端 = qubit 0</strong></li><li>先頭の<code>-</code>は全体係数</li><li>Statevector index $k$=2進 $q_{n-1}..q_0$</li></ul></div>
+    <div class="ch"><h4>RY確率</h4><ul><li>$P(1)=\sin^2(\theta/2)$</li><li>π/2→0.5, π→1.0</li><li>π/4→0.146, 3π/4→0.854</li></ul></div>
+    <div class="ch"><h4>qsphere</h4><ul><li>色=位相(同色=同位相)</li><li>大きさ=確率</li><li>z(0)足すと色変化</li></ul></div>
+    <div class="ch"><h4>レジスタ</h4><ul><li>測定結果→<strong>Classical</strong></li><li>量子→Quantum、補助→Ancilla</li><li>Circuit registerは無い</li></ul></div>
+    <div class="ch"><h4>実行モード</h4><ul><li>single job / batch / session</li><li>batch=順序保証なし</li><li>session=専有・呼出をグループ化</li></ul></div>
+    <div class="ch"><h4>トランスパイル</h4><ul><li><code>generate_preset_pass_manager</code></li><li>opt_level 0〜3</li><li>非直結+CX→<strong>SWAP挿入</strong></li><li>ISA回路=装置に適合</li></ul></div>
+    <div class="ch"><h4>Sampler</h4><ul><li>分布を返す/<strong>measure必要</strong></li><li><code>run([pub])</code></li><li>shots=実行回数</li><li>結果 <code>data.meas.get_counts()</code></li></ul></div>
+    <div class="ch"><h4>Estimator</h4><ul><li>期待値/<strong>measure不要</strong></li><li>PUB=(circ, obs, params, <strong>precision</strong>)</li><li>precision↑→shots↓→精度↓</li><li>結果 <code>data.evs</code></li></ul></div>
+    <div class="ch"><h4>誤り対策</h4><ul><li><strong>DD</strong>=パルスで状態を保つ / <strong>Twirling</strong>=回路をランダム化(両方=抑制)</li><li>抑制:DD, Twirling(Sampler/Estimator両方)</li><li>緩和=resilience:<strong>ZNE</strong>, PEC, TREX(Estimatorのみ)</li><li>resilienceにDD/Twirlingは入らない</li><li>correction(訂正)は未提供=「デフォルト有効」は誤り</li></ul></div>
+    <div class="ch"><h4>session.details() 入る</h4><ul><li>身元:id / backend_name / mode</li><li>状態:state / accepting_jobs</li><li>時刻:started_at / closed_at / activated_at / last_job_started / last_job_completed</li><li>時間:usage_time / max_time / interactive_timeout / active_timeout</li></ul></div>
+    <div class="ch"><h4>結果の取り出し</h4><ul><li>measure([0,1],[0,1])→<code>.data.c</code></li><li>measure_all()→<code>.data.meas</code></li><li>回数:<code>get_counts().get('00')</code></li><li>プリミティブ=<code>mode=</code> / Session・Batch=<code>backend=</code></li><li>閉じる:<code>close()</code>=ジョブ完了 / <code>cancel()</code>=中断</li></ul></div>
+    <div class="ch"><h4>覚えるしかない引数名</h4><ul><li>実機:<code>simulator=False</code></li><li>接続保存:<code>token=</code></li><li>時間上限:<code>max_time=</code></li><li>結合:<code>coupling_map=[[0,1],..]</code></li></ul></div>
+    <div class="ch"><h4>ジョブ状態メソッド</h4><ul><li>状態:<code>status()</code></li><li>実行中:<code>running()</code></li><li>完了:<code>done()</code></li><li>最終状態か:<code>in_final_state()</code></li><li>終わるまで待つ:<code>wait_for_final_state()</code></li><li>エラー:<code>error_message()</code></li></ul></div>
+    <div class="ch"><h4>名前の規則</h4><ul><li>個数=<code>num_</code>+対象</li><li>ループ=全部<code>_loop</code></li><li>操作=動詞_対象(add_bits等)</li><li>単数=1件 / 複数形=一覧</li><li>n qubit → <strong>2ⁿ×2ⁿ</strong> 行列</li></ul></div>
+    <div class="ch"><h4>状態と軸(見分け)</h4><ul><li>Z軸:|0⟩|1⟩ / X軸:|±⟩ / Y軸:|±i⟩</li><li>係数±1=X軸、±i=Y軸</li><li>乗る軸のゲートが動かさない</li><li>虚数(<code>j</code>)あり→Y</li></ul></div>
+    <div class="ch"><h4>Hの個数</h4><ul><li>H 1個→2状態(0.707×2)</li><li>H 2個→4状態(0.5×4)</li><li>Xは広げない(確定反転)</li><li><code>h(reg)</code>=全qubit / <code>h(reg[i])</code>=1個</li></ul></div>
+    <div class="ch"><h4>回路連結 / involutory</h4><ul><li>連結:<code>compose</code> と <code>&amp;</code>(addは×)</li><li>involutory($M^2=I$):X,Y,Z,H,I</li><li>T,S は違う($T^2=S$)</li></ul></div>
+    <div class="ch"><h4>OpenQASM 3</h4><ul><li>型:int/uint/float/bool/bit/<strong>complex</strong>/angle/duration</li><li>✗ class/char/enum/string</li><li>ファイル=<code>dump</code>/文字列=<code>dumps</code>/読込=<code>load</code>/<code>loads</code></li><li>program は <code>OPENQASM 3.0;</code> 先頭＋変数宣言</li></ul></div>
+  </div>
+  <div class="box exam"><div class="t">⚑ 試験テクニック</div>
+  ①選択肢に<strong>存在しないメソッド/引数</strong>(open_session, distribution, runs, device, get_result, add, to_openqasm3 等)が混ざる→消去法が効く。②「choose two/three」は数を必ず確認。③コード選択問題は「実行するとエラーになる選択肢」をまず除外(大文字始まり・引数なし・未宣言)。④結果取得は下の <code>.data.c</code>/<code>.data.meas</code> を見て測定コードを合わせる。⑤量子で威圧してくるが Python の <code>return</code>/<code>print</code>・辞書 <code>.get()</code> だけで解ける問題もある。⑥90分で68問=1問約80秒。迷ったらフラグして先へ。</div>
+</section>
+
+<footer><div>
+  <p><strong>免責</strong> — 本教材は<strong>個人が作成した非公式の学習用まとめ</strong>です。IBMが作成・監修・推奨したものではなく、IBMの見解を代表するものでもありません。
+  公開されているIBM公式試験ブループリント(C1000-179)とQiskit公式ドキュメントに基づいて執筆しており、
+  <strong>実際の試験問題や試験の構成に関する情報は含みません</strong>。公式サンプルテストの問題文も再掲していません(Part Aは論点の対応表のみ)。</p>
+  <p>試験範囲やAPI仕様は変更されます。最新の情報は <a href="https://quantum.cloud.ibm.com/docs/">Qiskit公式ドキュメント</a> と
+  <a href="https://www.ibm.com/training/certification/C0010300">IBM Certification</a> で確認してください。内容の正確性は保証しません。
+  誤りを見つけたら <a href="https://github.com/Kotaro-Okamoto/qiskit-v2x-exam-guide/issues">GitHub の Issue</a> で教えていただけると助かります。</p>
+  <p>Qiskit は IBM Corp. の商標です。合格を祈っています。</p>
+</div></footer>
+
+</main>
+</body>
+</html>
