@@ -8,9 +8,9 @@
 IBM Certification **C1000-179 / Fundamentals of Quantum Computing Using Qiskit v2.X Developer**
 に向けた、日本語の学習用まとめです。単一の HTML ファイルで、依存は MathJax と Google Fonts だけです。
 
-> **公開状態:** 現在このリポジトリは private で、GitHub Pages も停止しています。
-> 一般公開は IBM Community Japan 事務局の成果物二次利用申請の**承認後**に行います（下記「著作権・二次利用について」）。
-> 手元で見る場合は `index.html` をブラウザで開いてください。
+**👉 [ガイドを読む](https://kotaro-okamoto.github.io/qiskit-v2x-exam-guide/)**
+
+一般公開は IBM Community Japan 事務局の成果物二次利用申請の承認を得て行っています（下記「著作権・二次利用について」）。
 
 ## 位置づけと免責
 
