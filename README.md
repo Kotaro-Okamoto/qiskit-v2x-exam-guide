@@ -1,5 +1,10 @@
 # Qiskit v2.X Developer 認定試験 (C1000-179) 対策ガイド
 
+この記事は、[IBM Community Japan](https://www.ibm.com/community/japan/jp-ja/)の主催する[2026年ナレッジモール研究](https://community.ibm.com/community/user/japan/blogs/ibm-ibm-community-japan-office1/2022/08/05/knowledge-mall-research?CommunityKey=7777a681-adc0-4486-820a-f67b0dfde91b#content)における、「WG ID: 2026-B-04-b 量子コンピューターの活用研究 -量子ユーティリティーの実験-」の成果物です。
+当記事の著作権はIBMに帰属します。詳細は[こちら](https://higherlogicdownload.s3.amazonaws.com/IMWUC/2fde9da6-6e7d-43b4-bae3-7f25168bbbd0/UploadedImages/japan/2025/download/ibm-community-japan-disclaimer.pdf)を参照ください。
+
+---
+
 IBM Certification **C1000-179 / Fundamentals of Quantum Computing Using Qiskit v2.X Developer**
 に向けた、日本語の学習用まとめです。単一の HTML ファイルで、依存は MathJax と Google Fonts だけです。
 
