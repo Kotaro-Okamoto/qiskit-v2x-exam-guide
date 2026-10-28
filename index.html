@@ -199,12 +199,12 @@ footer{padding:36px 0 60px; color:var(--muted); font-size:13px}
   <h1>Qiskit v2.X Developer 認定試験<br><span class="g">完全対策ガイド</span></h1>
   <p class="lead">公式ブループリント全8セクションの教科書 ＋ 公式サンプルテストの論点マップ ＋ オリジナル予想問題64問(図問題つき)。問題文は試験と同じ英語、解説は日本語です。このガイドは<strong>「仕組みを理解すれば解ける」</strong>ことを最優先に構成しています。短期集中なら7日プラン、じっくり派は §0 の全体フローから読み進めてください。</p>
   <div class="box exam" style="max-width:720px"><div class="t">⚑ このガイドの学習方針</div>
-  <p style="margin:8px 0"><strong>「暗記だけ」でも「理解だけ」でも足りない試験だと考えて準備するのが安全です。</strong>公式ブループリントは8セクションそれぞれに到達目標を挙げており、覚えるべき名前と、理解していないと答えられない概念の両方が含まれます。そこで次の5点を軸に構成しました。</p>
+  <p style="margin:8px 0"><strong>「暗記」と「理解」の両輪で準備するのが確実です。</strong>公式ブループリントは8セクションそれぞれに到達目標を挙げており、覚えるべき名前と、理解していないと答えられない概念の両方が含まれます。そこで次の5点を軸に構成しました。</p>
   <ul style="margin:8px 0 8px 18px;line-height:1.85">
     <li><strong>理屈で導けない名前は確実に固める。</strong>メソッド名・引数名・実行モード名などは数が限られているので、覚えれば確実な得点源になります。⚠注意コラムに集めました。</li>
-    <li><strong>回路を1ゲートずつ追う練習をする。</strong>状態ベクトル・qsphere・ヒストグラムから回路を逆算する力が、図を読む設問の土台になります。</li>
-    <li><strong>処理の流れ全体を押さえる。</strong>service → backend → transpile → primitive → run → result の依存関係が分かっていれば、実行順を問う形式に強くなります(§0)。</li>
-    <li><strong>用語を自分の言葉で言えるようにする。</strong>「PUB とは何か」「Estimator は何を返す道具か」を説明できる状態にしておくと、概念の説明文を選ぶ形式に対応できます。</li>
+    <li><strong>回路を1ゲートずつ追う練習をする。</strong>状態ベクトル・qsphere・ヒストグラムから回路を逆算する力が、図を読み解く力の土台になります。</li>
+    <li><strong>処理の流れ全体を押さえる。</strong>service → backend → transpile → primitive → run → result の依存関係が分かっていれば、個々のコードの意味が自然に読めるようになります(§0)。</li>
+    <li><strong>用語を自分の言葉で言えるようにする。</strong>「PUB とは何か」「Estimator は何を返す道具か」を説明できる状態にしておくと、知識が応用の利く形で定着します。</li>
     <li><strong>Primitive は丸暗記を避ける。</strong>Sampler と Estimator は「何のための道具か」から入ると定着します(§5・§6 を理解ベースで書いた理由です)。</li>
   </ul>
   <p style="margin:8px 0">仕組みを理解して解ける部分は理解で、覚えるしかない部分は「覚えること」として明示しました。<strong>ブループリントの配点が高いセクションから優先</strong>するのが基本方針です(下の重点グラフ)。</p></div>
@@ -277,7 +277,7 @@ footer{padding:36px 0 60px; color:var(--muted); font-size:13px}
   <p class="kicker">Textbook · Section 00</p>
   <div class="sechead"><h2>実行の全体フロー<br><span class="disp" style="font-size:16px;color:var(--muted)">The whole pipeline — 順序を理解する</span></h2><span class="wtag">最重要</span></div>
 
-  <p><strong>コードの実行順を問う形式</strong>に備えておく価値があります。個々のメソッド名を覚えていても、「なぜこの順番でなければならないのか」が分かっていないと解けません。逆にここを理解すると、④⑤⑥⑦の問題がまとめて解けるようになります。まずこの流れを頭に入れてください。</p>
+  <p><strong>コードの実行順</strong>を理解することが、すべての土台になります。個々のメソッド名を覚えていても、「なぜこの順番でなければならないのか」が分かっていないと解けません。逆にここを理解すると、④⑤⑥⑦の問題がまとめて解けるようになります。まずこの流れを頭に入れてください。</p>
 
   <pre><code><span class="cmt"># ① サービスに接続する(IBMの量子計算サービスへの窓口を作る)</span>
 from qiskit_ibm_runtime import QiskitRuntimeService, SamplerV2 as Sampler
@@ -324,7 +324,7 @@ counts = result[0].data.c.get_counts()</code></pre>
   </g>
 </svg>
 
-<h3>0-1. なぜこの順番なのか(理由が分かれば並び替え問題は解ける)</h3>
+<h3>0-1. なぜこの順番なのか(理由が分かれば順番は覚えなくてよい)</h3>
   <table>
     <tr><th>順番</th><th>やること</th><th>なぜその位置なのか</th></tr>
     <tr><td>①</td><td><code>QiskitRuntimeService()</code></td><td>すべての出発点。<strong>バックエンドはサービス経由でしか取得できない</strong>ので、必ず最初。</td></tr>
@@ -336,7 +336,7 @@ counts = result[0].data.c.get_counts()</code></pre>
     <tr><td>⑦</td><td><code>result()</code></td><td>実行後にしか結果は存在しない。当然いちばん最後。</td></tr>
   </table>
 
-  <div class="box why"><div class="t">💡 並び替え問題は「依存関係」で解く</div>
+  <div class="box why"><div class="t">💡 順番は「依存関係」で決まる</div>
   <p>順番を丸暗記する必要はありません。<strong>「その行が必要とするものが、それより前で作られているか」</strong>を見れば決まります。</p>
   <p>・<code>service.least_busy()</code> は <code>service</code> が要る → service が先<br>
   ・<code>generate_preset_pass_manager(backend=backend)</code> は <code>backend</code> が要る → backend が先<br>
@@ -364,7 +364,7 @@ counts = result[0].data.c.get_counts()</code></pre>
   <p>つまり <code>mode=</code> は「実行の場所・文脈」を指す包括的な引数、<code>backend=</code> は「実機」を指す具体的な引数、という関係です。</p></div>
 
   <div class="box exam"><div class="t">⚑ ここは最優先で押さえる</div>
-  実行順を問う形式は、この流れがそのまま骨格になります。<strong>service → backend → circuit → transpile → primitive → run → result</strong>。迷ったら「この行が使っている変数は、どこで作られたか」を確認してください。</div>
+  Qiskit のプログラムは、この流れがそのまま骨格になります。<strong>service → backend → circuit → transpile → primitive → run → result</strong>。迷ったら「この行が使っている変数は、どこで作られたか」を確認してください。</div>
 </section>
 
 <section id="s1">
@@ -388,7 +388,7 @@ counts = result[0].data.c.get_counts()</code></pre>
   </table>
   <div class="box exam"><div class="t">⚑ 試験ポイント:Z軸回転ゲートの位相</div>
   <strong>T → π/4、S → π/2、Z → π</strong>(いずれも $|1\rangle$ への位相)。公式サンプルQ2の頻出ネタ。「Tゲートを$|1\rangle$に作用させると位相は?」→ <strong>π/4</strong>。</div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Applying the Qiskit T Gate to a qubit in state |1⟩ introduces which global phase? → π/4 phase</div></div>
 
   <div class="box why"><div class="t">💡 なぜ位相ゲートは |1⟩ にだけ効くのか(頻出の落とし穴)</div>
@@ -522,7 +522,7 @@ plot_histogram(counts)</code></pre>
   </ul>
   <div class="box exam"><div class="t">⚑ 試験ポイント:qsphere</div>
   「$|00\rangle$ と $|11\rangle$ が<strong>同じ色</strong>」= $\frac{1}{\sqrt2}(|00\rangle+|11\rangle)$(<code>h(0);cx(0,1)</code>)。もし <code>z(0)</code> を足すと $|11\rangle$ の位相が反転し $\frac{1}{\sqrt2}(|00\rangle-|11\rangle)$ になり<strong>色が変わる</strong>。コードと図を結びつける問題が出る。</div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Which code fragment generates the given qsphere where the circles are the same color? → h(0); cx(0,1) (a Bell state with equal phase)</div></div>
 
   <h3>2-4. ダイナミック回路図の見分け方</h3>
@@ -666,7 +666,7 @@ plot_histogram(counts)</code></pre>
     <tr><td><code>ClassicalRegister</code></td><td><strong>測定結果を格納</strong>(これが正解になる問題が頻出)</td></tr>
     <tr><td><code>AncillaRegister</code></td><td>補助qubit(誤り訂正・アルゴリズム用)</td></tr>
   </table>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Which register stores the result of a measured circuit? → Classical register</div>
   <div class="q">("Circuit register" という選択肢はQiskitに存在しない=ダミー)</div></div>
 
@@ -689,7 +689,7 @@ bound = qc.assign_parameters({theta: 3.14})   <span class="cmt"># 後で値を�
   <div class="box exam"><div class="t">⚑ 試験ポイント</div>
   「初期値未定の回転ゲートを作るには?」→ <code>Parameter('theta')</code> を作って <code>qc.rx(theta, 0)</code>。<br>
   ✗ <code>qc.rx('theta', 0)</code>(文字列はNG)、✗ <code>ParameterExpression('theta')</code>(実行エラー)。</div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Which fragment creates a rotation gate with an initially undefined value?<br>→ theta = Parameter('theta'); qc.rx(theta, 0)</div></div>
   <div class="box why"><div class="t">💡 作る=Parameter / 入れる=assign_parameters(辞書)</div>
   <p>2ステップで1組:<strong>① 空箱を作る</strong> <code>Parameter("θ")</code> → 回路に組む <code>qc.ry(theta,0)</code>。<strong>② 値を入れる</strong> <code>qc.assign_parameters({theta: 1.57})</code>(<strong>辞書</strong> {param:値} で渡すのが鍵)。<code>theta = 1.57</code> と上書きしても回路内のParameterには反映されない。存在しないメソッド <code>set</code>/<code>bind</code> が誤答の定番(bindはv2で assign に統一)。VQE等で「同じ回路に値を次々入れて試す」ための仕組み。</p></div>
@@ -802,7 +802,7 @@ isa = pm.run(qc)</code></pre>
   <p><strong>batch mode</strong> — 複数のジョブをまとめて投入します。まとめて効率よく処理される代わりに、<strong>投入した順に実行されるとは限りません</strong>。互いに独立した計算を大量に流したいときに向いています。</p>
   <p><strong>session mode</strong> — <strong>専用の時間枠を確保</strong>します。VQE や QAOA のような変分アルゴリズムでは「量子計算 → 古典計算で次のパラメータを決める → また量子計算」と<strong>何度も往復</strong>します。もし毎回列の最後尾に並び直していたら、待ち時間だけで膨大な時間がかかってしまいます。session はこの往復を効率よく行うための仕組みです。</p>
   <p>ですので、問題文に「<strong>順序が保証されない</strong>」とあれば batch、「<strong>変分アルゴリズム</strong>」「<strong>専用の枠</strong>」とあれば session、と自然に判断できます。</p></div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Which three are job execution modes in Qiskit Runtime? → session, batch, single job</div>
   <div class="q">Purpose of a Qiskit Runtime session? → Group a collection of calls to the quantum computer</div></div>
 
@@ -813,11 +813,11 @@ backend = service.least_busy(operational=True, simulator=False)
 with Session(backend=backend) as session:
     ...   <span class="cmt"># この中で primitive を実行</span>
 <span class="cmt"># ローカルなら: from qiskit_aer import AerSimulator; backend = AerSimulator()</span></code></pre>
-  <div class="box en"><div class="t">EN 英語での出題例(session生成)</div>
+  <div class="box en"><div class="t">EN 英語表現の例(session生成)</div>
   <div class="q">Correct way to open a session → service = QiskitRuntimeService(); session = Session(service.least_busy())</div>
   <div class="q">(QuantumCircuit(2).open_session() のようなメソッドは存在しない=ダミー)</div></div>
   <div class="box trap"><div class="t">✔ ここは覚えるしかない(数は少ないので確実に)</div>
-  <p>理屈で導けない名前は数が限られています。数が少ないぶん、<strong>ここは確実に暗記して得点源にしてください</strong>(覚えてさえいれば確実に取れる種類の設問です)。</p>
+  <p>理屈で導けない名前は数が限られています。数が少ないぶん、<strong>ここは確実に暗記して得点源にしてください</strong>。</p>
   <p>・<strong>実機を選ぶ</strong>:<code>least_busy(operational=True, simulator=False)</code><br>
   <span style="color:var(--muted)">実機を指定する引数はなく、「シミュレータではない」という<strong>否定形</strong>で表します。</span><br>
   ・<strong>接続を保存</strong>:<code>save_account(token="...", instance="...", name="...")</code><br>
@@ -861,7 +861,7 @@ counts = result[0].data.meas.get_counts()</code></pre>
   <p>shots を増やすほど分布の精度は上がりますが、その分だけ実行時間もかかります。<code>default_shots</code> は「<strong>回路を実行する回数</strong>」を指す、という理解で正確です。</p></div>
 
   <h3>5-2. Sampler と Estimator の違い(ここを理解すれば⑤⑥は解ける)</h3>
-  <p>この2つの対比は、形を変えて何度も問われる論点です。<strong>すべては「返すものが違う」という一点から導けます</strong>。</p>
+  <p>この2つの対比が、Primitive を理解するうえでの核心です。<strong>すべては「返すものが違う」という一点から導けます</strong>。</p>
   <table>
     <tr><th></th><th>Sampler</th><th>Estimator</th></tr>
     <tr><td><strong>返すもの</strong></td><td>測定結果の<strong>分布</strong>(どのビット列が何回出たか)</td><td>物理量の<strong>期待値</strong>(1つの数値)+ その誤差</td></tr>
@@ -929,7 +929,7 @@ evs = job.result()[0].data.evs           <span class="cmt"># 期待値。誤差�
 
   <h3>6-3. precision と shots の関係(計算問題)</h3>
   <p>必要ショット数は精度の2乗に反比例:$\text{shots}\propto 1/\text{precision}^2$。<strong>precisionの値を大きくする(=精度を粗くする)とショット数は減る</strong>。例:0.015625→0.03125(2倍粗く)で、ショットは約 $1/4$ に減少。ワナ:precisionは「許容誤差」なので<strong>値が大きい=精度が低い</strong>(逆)。結果の <code>data.stds</code>(標準偏差=誤差)は precision を小さくする(shots増)ほど小さくなる。</p>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">If precision changes 0.015625 → 0.03125, the number of shots... → It decreases the number of shots</div></div>
 
   <h3>6-4. 誤り抑制(suppression)と誤り緩和(mitigation)</h3>
@@ -952,7 +952,7 @@ evs = job.result()[0].data.evs           <span class="cmt"># 期待値。誤差�
   qubit は放っておくと周囲の環境の影響で状態が崩れていきます。そこで<strong>短いパルスを一定の間隔で繰り返しかけ続ける</strong>ことで、環境からの影響を打ち消し、<strong>状態をより長く保ちます</strong>。decoupling(切り離す)という名前は、qubit を環境ノイズから切り離すことを表しています。</p>
   <p><strong>Twirling は「ランダム化してならす」</strong><br>
   実機のノイズには「いつも同じ方向に偏る」性質(系統誤差)があります。そこで<strong>回路にランダムな変化を加えて何度も実行し、偏りを平均化して打ち消します</strong>。twirl(ひねる・回す)という名前は、このランダムな変換を表しています。</p>
-  <p>整理すると、<strong>DD = パルスで状態を保つ / Twirling = ランダム化して誤差を平均化する</strong>。この2つは説明が入れ替えて出題されやすいので、「パルス」と「ランダム化」という語で区別してください。</p></div>
+  <p>整理すると、<strong>DD = パルスで状態を保つ / Twirling = ランダム化して誤差を平均化する</strong>。この2つは取り違えやすいので、「パルス」と「ランダム化」という語で区別してください。</p></div>
 
   <div class="box why"><div class="t">💡 緩和の3手法と、resilience との関係</div>
   <p><strong>resilience</strong> は「回復力・耐性」という意味で、<strong>誤り緩和(mitigation)の設定</strong>を指します。ここに入るのは緩和の手法だけです。</p>
@@ -966,7 +966,7 @@ evs = job.result()[0].data.evs           <span class="cmt"># 期待値。誤差�
   ・<strong>緩和(ZNE / TREX / PEC)は Estimator が中心です。</strong>これらは<strong>期待値という「数値」を補正する</strong>技術なので、期待値を返す Estimator と結びついています。</p></div>
 
   <h3>6-5. ブロードキャスト(4パターン・図問題対応)</h3>
-  <p>1つのPUBで「複数のパラメータ集合 × 複数のオブザーバブル」をまとめて渡すとき、その<strong>組み合わせ方(ブロードキャストのルール)</strong>が4種類ある。図で <code>(3,6)</code> のような <strong>shape(形)</strong> が示され、「どのパターンか」を問われる。まず全体像:</p>
+  <p>1つのPUBで「複数のパラメータ集合 × 複数のオブザーバブル」をまとめて渡すとき、その<strong>組み合わせ方(ブロードキャストのルール)</strong>が4種類ある。図で <code>(3,6)</code> のような <strong>shape(形)</strong> の組み合わせから、どのパターンかを見分けられるようにしておく。まず全体像:</p>
   <table>
     <tr><th>パターン</th><th>やること</th><th>見分け方(shape)</th></tr>
     <tr><td><strong>broadcast single observable</strong></td><td>オブザーバブル<strong>1個</strong>を、全パラメータ集合に配る</td><td>observableが1個だけ(形が(1,)や単体)</td></tr>
@@ -1063,8 +1063,8 @@ evs = job.result()[0].data.evs           <span class="cmt"># 期待値。誤差�
   ・<strong>形が違い、1の次元が拡張</strong>されて結果shapeになる → <strong>standard nd generalization</strong>(今回の頻出図)<br>
   図で示された「入力shape → 結果shape」を見て、<strong>1の次元が相手の数に化けていたら standard nd generalization</strong>。</p></div>
   <div class="box exam"><div class="t">⚑ 難易度と優先度</div>
-  この4パターン識別は出題頻度が低く難しめ。まず「<strong>ブロードキャスト=standard multidimensional array generalization(NumPyの多次元配列の一般化)</strong>」という基本を押さえれば大半に対応できる。1問落としても合否に影響しないので、深追いは不要。</div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  この4パターン識別は細かい論点で難しめ。まず「<strong>ブロードキャスト=standard multidimensional array generalization(NumPyの多次元配列の一般化)</strong>」という基本を押さえれば大半に対応できる。優先度は低いので、深追いは不要。</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Which broadcasting pattern is represented (shapes (3,6) + (2,3,1) → (2,3,6))? → Standard nd generalization</div>
   <div class="q">One observable applied to all parameter sets → broadcast single observable</div>
   <div class="q">Parameters and observables paired one-to-one → zip</div>
@@ -1162,7 +1162,7 @@ counts['00']         <span class="cmt"># 512(角カッコ。無いキーは KeyE
   <p>OpenQASM 3 が<strong>サポートする</strong>古典スカラ型:<code>bit</code>, <code>bool</code>, <code>int</code>, <code>uint</code>, <code>float</code>, <code>angle</code>, <code>complex</code>, <code>duration</code>, <code>stretch</code>。</p>
   <div class="box exam"><div class="t">⚑ 試験ポイント</div>
   「OpenQASM 3 がサポートする古典型は?」→ <strong>complex</strong>。<br>ダミー(非サポート):<code>class</code>, <code>char</code>, <code>enum</code>, <code>string</code>。</div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Which is a classical data type supported by OpenQASM 3? → complex</div></div>
 
   <h3>8-2. QiskitとOpenQASMの相互変換</h3>
@@ -1176,7 +1176,7 @@ qasm2.dump(qc, "bell.qasm"); qc = qasm2.load("bell.qasm")</code></pre>
   <div class="box exam"><div class="t">⚑ 試験ポイント:export</div>
   回路 <code>qc</code> をOpenQASM3でファイルストリーム <code>qasmprogram</code> に保存 → <strong><code>qiskit.qasm3.dump(qc, qasmprogram)</code></strong>。<br>
   ✗ <code>qc.to_openqasm3(...)</code>、✗ <code>qasm3.export(...)</code>(どちらもエラー)。「文字列が欲しい=<code>dumps</code>」「ファイル=<code>dump</code>」の使い分け。</div>
-  <div class="box en"><div class="t">EN 英語での出題例</div>
+  <div class="box en"><div class="t">EN 英語表現の例</div>
   <div class="q">Export qc to OpenQASM 3 into a file stream qasmprogram → qiskit.qasm3.dump(qc, qasmprogram)</div></div>
   <pre><code><span class="cmt"># dump 後のファイル中身イメージ</span>
 OPENQASM 3.0;
@@ -1252,7 +1252,7 @@ meas[0] = measure q[0];</code></pre>
 <section id="examB">
   <p class="kicker">Practice · Part B</p>
   <div class="sechead"><h2>オリジナル予想問題 30問</h2></div>
-  <p>公式と同じ形式・難度で作成。全問解けるまで反復してください。</p>
+  <p>公式サンプルテストの形式を参考に作成。全問解けるまで反復してください。</p>
 
   <div class="q"><div class="qh"><span class="qnum">B1</span><span class="src">予想 · §1</span></div>
   <div class="stem">Which gate puts |0⟩ into an equal superposition (|0⟩+|1⟩)/√2 ?</div>
@@ -1410,7 +1410,7 @@ meas[0] = measure q[0];</code></pre>
 <section id="examC">
   <p class="kicker">Practice · Part C</p>
   <div class="sechead"><h2>図つき予想問題 8問</h2></div>
-  <p>差がつきやすい「図を読む」問題を、実際の図つきで用意しました。qsphere・回路図・Bloch球・ヒストグラムの4カテゴリです。図の下の「▸ 解答・解説」で答え合わせを。</p>
+  <p>「図を読む」問題を、実際の図つきで用意しました。qsphere・回路図・Bloch球・ヒストグラムの4カテゴリです。図の下の「▸ 解答・解説」で答え合わせを。</p>
 
   <h4 style="margin-top:26px">◆ qsphere(色=位相)</h4>
 
@@ -1562,7 +1562,7 @@ meas[0] = measure q[0];</code></pre>
 <section id="examD">
   <p class="kicker">Practice · Part D</p>
   <div class="sechead"><h2>コード・API系 予想問題 14問</h2></div>
-  <p>多くの受験者がつまずく「メソッド名・引数名・結果取得・構文」の問題を集めました。特に④〜⑦の暗記系は、ここで慣れておくと確実な得点源になります。</p>
+  <p>つまずきやすい「メソッド名・引数名・結果取得・構文」の問題を集めました。特に④〜⑦の暗記系は、ここで慣れておくと確実な得点源になります。</p>
 
   <div class="q"><div class="qh"><span class="qnum">D1</span><span class="src">予想 · §7</span></div>
   <div class="stem">The retrieval line is <code>job.result()[0].data.c.get_counts()</code>. Which measurement code should be added?</div>
@@ -1732,7 +1732,7 @@ meas[0] = measure q[0];</code></pre>
   <p class="kicker">直前チートシート</p>
   <div class="sechead"><h2>試験当日に思い出すこと</h2></div>
   <div class="cheat">
-    <div class="ch" style="grid-column:1/-1;background:#f3f0ff;border-color:#cfc3ff"><h4>実行フロー(並び替え問題はこれ)</h4><ul><li><strong>service</strong> → <strong>backend</strong> → <strong>回路</strong> → <strong>transpile(ISA)</strong> → <strong>primitive</strong> → <strong>run</strong> → <strong>result</strong></li><li>判断基準:<strong>使う変数は、使う前に作られている</strong></li><li>プリミティブ=<code>mode=</code>(実行の場) / Session・Batch=<code>backend=</code>(実機)</li><li>プリミティブに渡すのは<strong>変換済み(ISA)回路</strong></li></ul></div>
+    <div class="ch" style="grid-column:1/-1;background:#f3f0ff;border-color:#cfc3ff"><h4>実行フロー(すべての土台)</h4><ul><li><strong>service</strong> → <strong>backend</strong> → <strong>回路</strong> → <strong>transpile(ISA)</strong> → <strong>primitive</strong> → <strong>run</strong> → <strong>result</strong></li><li>判断基準:<strong>使う変数は、使う前に作られている</strong></li><li>プリミティブ=<code>mode=</code>(実行の場) / Session・Batch=<code>backend=</code>(実機)</li><li>プリミティブに渡すのは<strong>変換済み(ISA)回路</strong></li></ul></div>
     <div class="ch"><h4>位相(対|1⟩)</h4><ul><li>T → π/4</li><li>S → π/2</li><li>Z → π</li><li>Tdg/Sdg → 負符号</li><li>P(λ) → λ</li></ul></div>
     <div class="ch"><h4>Pauli / 状態の順序</h4><ul><li><code>Pauli('AB')</code>=A⊗B</li><li><strong>右端 = qubit 0</strong></li><li>先頭の<code>-</code>は全体係数</li><li>Statevector index $k$=2進 $q_{n-1}..q_0$</li></ul></div>
     <div class="ch"><h4>RY確率</h4><ul><li>$P(1)=\sin^2(\theta/2)$</li><li>π/2→0.5, π→1.0</li><li>π/4→0.146, 3π/4→0.854</li></ul></div>
@@ -1767,6 +1767,7 @@ meas[0] = measure q[0];</code></pre>
   <hr style="border:none;border-top:1px solid var(--line);margin:22px 0">
   <div style="font-size:11.5px;line-height:1.75;color:var(--ink-soft)">
   <p style="margin:10px 0">本資料の著作権は、日本アイ・ビー・エム株式会社（IBM Corporationを含み、以下、IBMといいます。）に帰属します。</p>
+  <p style="margin:10px 0">© Copyright IBM Corporation 2026</p>
   <p style="margin:10px 0">ワークショップ、セッション、および資料は、IBMまたはセッション発表者によって準備され、それぞれ独自の見解を反映したものです。それらは情報提供の目的のみで提供されており、いかなる参加者に対しても法律的またはその他の指導や助言を意図したものではなく、またそのような結果を生むものでもありません。本資料に含まれている情報については、完全性と正確性を期するよう努力しましたが、「現状のまま」提供され、明示または暗示にかかわらずいかなる保証も伴わないものとします。本資料またはその他の資料の使用によって、あるいはその他の関連によって、いかなる損害が生じた場合も、IBMまたはセッション発表者は責任を負わないものとします。本資料に含まれている内容は、IBMまたはそのサプライヤーやライセンス交付者からいかなる保証または表明を引きだすことを意図したものでも、IBMソフトウェアの使用を規定する適用ライセンス契約の条項を変更することを意図したものでもなく、またそのような結果を生むものでもありません。</p>
   <p style="margin:10px 0">本資料でIBM製品、プログラム、またはサービスに言及していても、IBMが営業活動を行っているすべての国でそれらが使用可能であることを暗示するものではありません。本資料で言及している製品リリース日付や製品機能は、市場機会またはその他の要因に基づいてIBM独自の決定権をもっていつでも変更できるものとし、いかなる方法においても将来の製品または機能が使用可能になると確約することを意図したものではありません。本資料に含まれている内容は、参加者が開始する活動によって特定の販売、売上高の向上、またはその他の結果が生じると述べる、または暗示することを意図したものでも、またそのような結果を生むものでもありません。パフォーマンスは、管理された環境において標準的なIBMベンチマークを使用した測定と予測に基づいています。ユーザーが経験する実際のスループットやパフォーマンスは、ユーザーのジョブ・ストリームにおけるマルチプログラミングの量、入出力構成、ストレージ構成、および処理されるワークロードなどの考慮事項を含む、数多くの要因に応じて変化します。したがって、個々のユーザーがここで述べられているものと同様の結果を得られると確約するものではありません。</p>
   <p style="margin:10px 0">記述されているすべてのお客様事例は、それらのお客様がどのようにIBM製品を使用したか、またそれらのお客様が達成した結果の実例として示されたものです。実際の環境コストおよびパフォーマンス特性は、お客様ごとに異なる場合があります。</p>
